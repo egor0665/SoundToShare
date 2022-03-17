@@ -6,22 +6,30 @@
         <entry key="..\:/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="..\:/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1075" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/angle_button.xml" value="0.1045" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/gradient_home.xml" value="0.1045" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/gradient_spotify_view.xml" value="0.1325" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/gradient_yandex_view.xml" value="0.1325" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic__home.xml" value="0.1" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic__map.xml" value="0.1" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic__settings.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_arrow_down_left_icon.xml" value="0.1325" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_arrow_down_right_icon.xml" value="0.1325" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_arrow_icon.xml" value="0.1325" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_google.xml" value="0.1045" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_incognito.xml" value="0.1045" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1075" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_spotify.xml" value="0.1045" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_yandex.xml" value="0.1045" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/oval_button.xml" value="0.1045" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/rounded_button.xml" value="0.1325" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/style_button.xml" value="0.1045" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/font/abril_fatface.xml" value="0.1935185185185185" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.152" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.11302083333333333" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_map.xml" value="0.12953367875647667" />
-        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_settings.xml" value="0.2" />
-        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_settings.xml" value="0.264" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.264" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/settings.xml" value="0.16799999999999998" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1075" />
         <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1075" />

@@ -58,26 +58,79 @@
             />
 
     <ImageButton
-            android:id="@+id/spotify"
+            android:id="@+id/leftArrow"
             android:background="@drawable/oval_button"
             android:layout_below="@+id/selection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:importantForAutofill="auto"
-            android:src="@drawable/ic_spotify"
-            android:keepScreenOn="true"
+            android:src="@drawable/ic_arrow_down_left_icon"
             tools:ignore="MissingConstraints"
             app:layout_constraintLeft_toLeftOf="parent"
 
             app:layout_constraintTop_toBottomOf="@+id/selection"
             android:layout_marginTop="15sp"
-            app:layout_constraintRight_toLeftOf="@+id/yandex"
+            app:layout_constraintRight_toLeftOf="@+id/rightArrow"
             />
+    <ImageButton
+            android:id="@+id/rightArrow"
+            android:background="@drawable/oval_button"
+            android:layout_below="@+id/selection"
+            android:layout_marginLeft="40sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="auto"
+            android:src="@drawable/ic_arrow_down_right_icon"
+            android:keepScreenOn="true"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/selection"
+            android:layout_marginTop="15sp"
+            app:layout_constraintLeft_toRightOf="@+id/leftArrow"
+            />
+    <View
+            android:id="@+id/yandexView"
+            tools:ignore="MissingConstraints"
+            android:layout_height="350sp"
+            android:layout_width="150sp"
+            app:layout_constraintRight_toRightOf="parent"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/gradient_yandex_view"
+         />
+
+    <View
+            android:id="@+id/spotifyView"
+            tools:ignore="MissingConstraints"
+            android:layout_height="350sp"
+            android:layout_width="150sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/gradient_spotify_view"
+
+            />
+    <View
+            android:id="@+id/questionView"
+            tools:ignore="MissingConstraints"
+            android:layout_height="200sp"
+            android:layout_width="240sp"
+            app:layout_constraintLeft_toRightOf="@+id/spotifyView"
+            app:layout_constraintRight_toLeftOf="@+id/yandexView"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="60sp"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/ic_question_service_icon"
+            />
+
     <ImageButton
             android:id="@+id/yandex"
             android:background="@drawable/oval_button"
             android:layout_below="@+id/selection"
-            android:layout_marginLeft="40sp"
+            android:layout_marginEnd="40sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:importantForAutofill="auto"
@@ -85,9 +138,25 @@
             android:keepScreenOn="true"
             tools:ignore="MissingConstraints"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selection"
+            app:layout_constraintTop_toTopOf="@+id/yandexView"
             android:layout_marginTop="15sp"
-            app:layout_constraintLeft_toRightOf="@+id/spotify"
+
+            />
+    <ImageButton
+            android:id="@+id/spotify"
+            android:background="@drawable/oval_button"
+            android:layout_below="@+id/selection"
+            android:layout_marginStart="40sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="auto"
+            android:src="@drawable/ic_spotify"
+            android:keepScreenOn="true"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/spotifyView"
+            android:layout_marginTop="15sp"
+
             />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
