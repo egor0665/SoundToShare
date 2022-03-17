@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,10 @@
             android:fontFamily="@font/abril_fatface"
             android:gravity="center_vertical|center_horizontal"
 
-            />
+            tools:ignore="MissingConstraints"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
     <Button
             android:id="@+id/buttonSignIn"
@@ -29,14 +32,17 @@
             android:fontFamily="@font/abril_fatface"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_below="@+id/logo"
-            android:layout_marginTop="15sp"
             android:backgroundTint="@color/green"
             android:textColor="@color/black"
 
 
             android:drawableLeft="@drawable/ic_spotify"
 
-            />
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@id/logo"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="15sp"/>
 
     <Button
             android:id="@+id/buttonSignOut"
@@ -48,12 +54,16 @@
             android:fontFamily="@font/abril_fatface"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_below="@+id/buttonSignIn"
-            android:layout_marginTop="15sp"
             android:backgroundTint="@color/green"
             android:textColor="@color/black"
 
             android:drawableLeft="@drawable/ic_google"
-            />
+
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@id/buttonSignIn"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="15sp" />
 
     <Button
             android:id="@+id/buttonIncognito"
@@ -65,12 +75,16 @@
             android:fontFamily="@font/abril_fatface"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_below="@+id/buttonSignOut"
-            android:layout_marginTop="15sp"
             android:backgroundTint="@color/green"
             android:textColor="@color/black"
 
             android:drawableLeft="@drawable/ic_incognito"
 
-            />
+            tools:ignore="MissingConstraints"
 
-</RelativeLayout>
+            app:layout_constraintTop_toBottomOf="@id/buttonSignOut"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="15sp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
