@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setUpTabBar()
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        //binding = ActivityMainBinding.inflate(layoutInflater)
+        //setContentView(binding.root)
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result: ActivityResult ->
