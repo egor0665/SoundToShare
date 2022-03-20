@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.soundtoshare.R
 
-class HomeFragment : Fragment() {
+class MapFragment : Fragment() {
 
     //2
     companion object {
 
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
+        fun newInstance(): MapFragment {
+            return MapFragment()
         }
     }
 
@@ -21,7 +21,7 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_sign_in, container, false)
+        return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
 }
