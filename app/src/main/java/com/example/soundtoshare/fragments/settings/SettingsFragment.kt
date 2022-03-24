@@ -1,4 +1,4 @@
-package com.example.soundtoshare.fragments
+package com.example.soundtoshare.fragments.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.soundtoshare.R
+import com.example.soundtoshare.fragments.home.HomeFragment
 
 class SettingsFragment: Fragment(){
 
     //2
     companion object{
 
-        fun newInstance():HomeFragment{
+        fun newInstance(): HomeFragment {
             return HomeFragment()
         }
     }

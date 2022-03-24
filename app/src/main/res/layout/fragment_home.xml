@@ -8,7 +8,7 @@
 
     <TextView
             android:id="@+id/logo"
-            android:background="@color/green"
+            android:background="@color/primary_green"
             android:layout_width="match_parent"
             android:layout_height="80sp"
             android:text="@string/app_name"

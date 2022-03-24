@@ -1,4 +1,4 @@
-package com.example.soundtoshare.fragments
+package com.example.soundtoshare.fragments.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

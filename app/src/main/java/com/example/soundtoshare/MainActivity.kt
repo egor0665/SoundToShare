@@ -11,8 +11,6 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.soundtoshare.databinding.ActivityMainBinding
-import com.example.soundtoshare.fragments.HomeFragment
-import com.example.soundtoshare.fragments.SpotifyAPI
 import com.spotify.sdk.android.auth.AuthorizationClient
 
 class MainActivity : AppCompatActivity() {

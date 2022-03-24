@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "945814714923",
+    "project_id": "soundtoshare",
+    "storage_bucket": "soundtoshare.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945814714923:android:df15b1f8081db3a730886e",
+        "android_client_info": {
+          "package_name": "com.example.soundtoshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945814714923-qik4amona3v82j3druup0jjncgihq92n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.soundtoshare",
+            "certificate_hash": "842d7f3190a84391f7e31b32b3c5032c645e3d4d"
+          }
+        },
+        {
+          "client_id": "945814714923-el5funcks7gmusi94digoatu0boj7260.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH0FecMF8ey6gzwPtOwv_aV7D2c8hDIJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945814714923-el5funcks7gmusi94digoatu0boj7260.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
