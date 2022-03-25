@@ -10,11 +10,12 @@ import com.example.soundtoshare.fragments.home.HomeFragment
 
 class SettingsFragment: Fragment(){
 
+
     //2
     companion object{
 
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
+        fun newInstance(): SettingsFragment {
+            return SettingsFragment()
         }
     }
 
@@ -23,6 +24,7 @@ class SettingsFragment: Fragment(){
                               container:ViewGroup?,
                               savedInstanceState:Bundle?):View?{
         return inflater.inflate(R.layout.fragment_settings,container,false)
+
     }
 
 }

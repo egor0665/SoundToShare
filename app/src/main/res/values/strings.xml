@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SoundToShare</string>
+    <string name="sign_in_first">Войдите в свои аккаунты Spotify и Google!</string>
 </resources>
