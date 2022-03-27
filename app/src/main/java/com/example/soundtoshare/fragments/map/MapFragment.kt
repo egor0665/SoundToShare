@@ -3,12 +3,12 @@ package com.example.soundtoshare.fragments.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,21 +17,19 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.soundtoshare.MainActivity
 import com.example.soundtoshare.R
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.location.*
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-
 
 class MapFragment : Fragment() {
 
     private var map: GoogleMap? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var locationRequest: LocationRequest
 
     private val defaultLocation = LatLng(-33.8523341, 151.2106085)
     private var locationPermissionGranted = false
@@ -41,6 +39,8 @@ class MapFragment : Fragment() {
         private const val DEFAULT_ZOOM = 15
         private const val KEY_LOCATION = "location"
     }
+
+
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
@@ -67,6 +67,21 @@ class MapFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    Log.d("Location", "Location changed $location")
+                    (activity as MainActivity).firebaseData.updateUserLocation(location.altitude, location.latitude, "kek")
+                }
+            }
+        }
+        locationRequest = LocationRequest.create().apply {
+            interval = 100
+            fastestInterval = 50
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            maxWaitTime= 100
+        }
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -75,6 +90,18 @@ class MapFragment : Fragment() {
             outState.putParcelable(KEY_LOCATION, lastKnownLocation)
         }
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (true) startLocationUpdates()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
     }
 
     @SuppressLint("MissingPermission")
@@ -96,7 +123,6 @@ class MapFragment : Fragment() {
         }
     }
 
-
     @SuppressLint("MissingPermission")
     private fun getDeviceLocation() {
         try {
@@ -106,6 +132,7 @@ class MapFragment : Fragment() {
                     if (task.isSuccessful) {
                         lastKnownLocation = task.result
                         if (lastKnownLocation != null) {
+                            Log.d("Location", "Location changed")
                             map?.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 LatLng(lastKnownLocation!!.latitude,
                                     lastKnownLocation!!.longitude), DEFAULT_ZOOM.toFloat()))

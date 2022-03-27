@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.soundtoshare.databases.FirebaseData
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.spotify.sdk.android.auth.AuthorizationClient
 
@@ -17,9 +18,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var launcher: ActivityResultLauncher<Intent>
     private var token : String? = null
+    var firebaseData: FirebaseData = FirebaseData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        firebaseData.initializeDbRef()
+
         setContentView(R.layout.activity_main)
         setUpTabBar()
 
@@ -31,6 +36,8 @@ class MainActivity : AppCompatActivity() {
             if (result.resultCode == Activity.RESULT_OK)
                 token = AuthorizationClient.getResponse(result.resultCode, result.data).accessToken
         }
+
+
 
         /*binding.spotifyLoginBtn.setOnClickListener {
             launcher.launch(AuthorizationClient.createLoginActivityIntent(this, SpotifyAPI.getAuthenticationRequest()))
