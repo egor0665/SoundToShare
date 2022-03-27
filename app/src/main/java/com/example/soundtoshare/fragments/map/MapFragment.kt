@@ -4,15 +4,17 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.soundtoshare.R
@@ -22,8 +24,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 
 
 class MapFragment : Fragment() {
@@ -36,18 +38,15 @@ class MapFragment : Fragment() {
     private var lastKnownLocation: Location? = null
 
     companion object {
-        fun newInstance(): MapFragment {
-            return MapFragment()
-        }
         private const val DEFAULT_ZOOM = 15
-        private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
-
-        // Keys for storing activity state.
         private const val KEY_LOCATION = "location"
     }
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
+        map?.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_without_labels_style)
+        )
         getLocationPermission()
         updateLocationUI()
         getDeviceLocation()
@@ -78,25 +77,6 @@ class MapFragment : Fragment() {
         super.onSaveInstanceState(outState)
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
-        locationPermissionGranted = false
-        when (requestCode) {
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermissionGranted = true
-                }
-            }
-        }
-        updateLocationUI()
-    }
-
     @SuppressLint("MissingPermission")
     private fun updateLocationUI() {
         if (map == null) {
@@ -110,7 +90,6 @@ class MapFragment : Fragment() {
                 map?.isMyLocationEnabled = false
                 map?.uiSettings?.isMyLocationButtonEnabled = false
                 lastKnownLocation = null
-                getLocationPermission()
             }
         } catch (e: SecurityException) {
             Log.e("Exception: %s", e.message, e)
@@ -147,7 +126,34 @@ class MapFragment : Fragment() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
         locationPermissionGranted = isGranted
-        updateLocationUI()
+        if (locationPermissionGranted) {
+            updateLocationUI()
+            getDeviceLocation()
+        }
+        else {
+
+            val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+
+            alertDialogBuilder.setTitle("Permission needed")
+            alertDialogBuilder.setMessage("Location permission needed for accessing app")
+            alertDialogBuilder.setPositiveButton("Open Setting"
+            ) { _, _ ->
+                val intent = Intent()
+                intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                val uri: Uri = Uri.fromParts(
+                    "package", requireActivity().getPackageName(),
+                    null
+                )
+                intent.data = uri
+                requireActivity().startActivity(intent)
+            }
+            alertDialogBuilder.setNegativeButton("Cancel") { _, _ ->
+                //TODO Cancel action
+            }
+
+            val dialog: AlertDialog = alertDialogBuilder.create()
+            dialog.show()
+        }
     }
 
     private fun getLocationPermission() {
@@ -155,13 +161,10 @@ class MapFragment : Fragment() {
                 Manifest.permission.ACCESS_FINE_LOCATION)
             == PackageManager.PERMISSION_GRANTED) {
             locationPermissionGranted = true
-        } else {
-            //ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-             //   , PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
-            //requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+        }
+        else {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
-
 
 }
