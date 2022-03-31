@@ -4,14 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
+import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.soundtoshare.databases.FirebaseData
 import com.example.soundtoshare.databinding.ActivityMainBinding
+import com.example.soundtoshare.fragments.home.HomeFragment
+import com.example.soundtoshare.fragments.map.MapFragment
+import com.example.soundtoshare.fragments.settings.SettingsFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.spotify.sdk.android.auth.AuthorizationClient
 
 class MainActivity : AppCompatActivity() {
@@ -30,57 +32,29 @@ class MainActivity : AppCompatActivity() {
 
         //binding = ActivityMainBinding.inflate(layoutInflater)
         //setContentView(binding.root)
+    //private lateinit var token: String
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK)
+            if (result.resultCode == Activity.RESULT_OK) {
                 token = AuthorizationClient.getResponse(result.resultCode, result.data).accessToken
-        }
-
-
-
-        /*binding.spotifyLoginBtn.setOnClickListener {
-            launcher.launch(AuthorizationClient.createLoginActivityIntent(this, SpotifyAPI.getAuthenticationRequest()))
-        }
-
-        binding.spotifyLogoutBtn.setOnClickListener {
-            AuthorizationClient.clearCookies(applicationContext)
-            token = null
-        }
-
-        binding.spotifyMusicBtn.setOnClickListener(){
-            SpotifyAPI.fetchSpotifyMusic(token)
-        }*/
-    }
-
-    private fun setUpTabBar()
-    {
-        val adapter = TabPageAdapter(this, tabLayout.tabCount)
-        viewPager.adapter = adapter
-
-        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback()
-        {
-            override fun onPageSelected(position: Int) {
-                tabLayout.selectTab(tabLayout.getTabAt(position))
+                Log.d("token", token)
             }
-        })
+        }
 
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener
-        {
-            override fun onTabSelected(tab: TabLayout.Tab)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val navView: BottomNavigationView = binding.navView
+        navView.setOnItemSelectedListener(){
+            when (it.itemId)
             {
-                viewPager.currentItem = tab.position
+                R.id.home -> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
+                R.id.map -> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, MapFragment()).commit()
+                R.id.settings-> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, SettingsFragment()).commit()
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+            return@setOnItemSelectedListener true
+        }
+        navView.selectedItemId = R.id.home
     }
 }
-//class MainActivity : AppCompatActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//    }
-//}

@@ -3,7 +3,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -27,7 +26,7 @@
             android:layout_marginTop="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="You like musik? Lets go hear!"
+            android:text="Do you like music? Lets go!"
             android:fontFamily="@font/abril_fatface"
             android:textColor="@color/black"
             android:gravity="center_vertical|center_horizontal"
