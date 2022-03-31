@@ -12,6 +12,7 @@ import com.example.soundtoshare.databinding.FragmentSignInBinding
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
+    //private var launcherGoogle = GoogleAuth.SignInLauncher.newInstance(this)
     //2
     companion object {
 
@@ -25,15 +26,26 @@ class HomeFragment : Fragment() {
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = FragmentSignInBinding.inflate(inflater)
+
+        val activity = requireActivity() as MainActivity
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.spotify.setOnClickListener{
-            val activity = requireActivity() as MainActivity
-            viewModel.signInSpotify(activity,activity.launcher)
-        }
+//        val activity = requireActivity() as MainActivity
+//        binding.spotify.setOnClickListener{
+//
+//            viewModel.signInSpotify(activity,activity.launcher)
+//        }
+//        binding.google.setOnClickListener(){
+//            GoogleAuth.signIn(activity, launcherGoogle)
+//        }
+
+//        binding.spotify.setOnClickListener(){
+//            GoogleAuth.signOut(activity, )
+//        }
     }
 
 }
