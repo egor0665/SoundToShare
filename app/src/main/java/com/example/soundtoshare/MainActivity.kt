@@ -18,8 +18,9 @@ import com.spotify.sdk.android.auth.AuthorizationClient
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var launcher: ActivityResultLauncher<Intent>
-    private var token : String? = null
+    lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var token: String
+    //private var token : String? = null
     var firebaseData: FirebaseData = FirebaseData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         firebaseData.initializeDbRef()
 
         setContentView(R.layout.activity_main)
-        setUpTabBar()
+        //setUpTabBar()
 
         //binding = ActivityMainBinding.inflate(layoutInflater)
         //setContentView(binding.root)
