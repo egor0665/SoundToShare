@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import com.example.soundtoshare.databases.FirebaseData
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.fragments.home.HomeFragment
 import com.example.soundtoshare.fragments.map.MapFragment
@@ -17,11 +18,21 @@ import com.spotify.sdk.android.auth.AuthorizationClient
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var token: String
-    internal lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var launcher: ActivityResultLauncher<Intent>
+    private var token : String? = null
+    var firebaseData: FirebaseData = FirebaseData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        firebaseData.initializeDbRef()
+
+        setContentView(R.layout.activity_main)
+        setUpTabBar()
+
+        //binding = ActivityMainBinding.inflate(layoutInflater)
+        //setContentView(binding.root)
+    //private lateinit var token: String
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result: ActivityResult ->
