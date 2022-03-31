@@ -9,11 +9,17 @@ import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
+
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.soundtoshare.apis.GoogleAuth
+import com.example.soundtoshare.databases.FirebaseData
 import com.example.soundtoshare.databinding.ActivityMainBinding
+import com.example.soundtoshare.fragments.home.HomeFragment
+import com.example.soundtoshare.fragments.map.MapFragment
+import com.example.soundtoshare.fragments.settings.SettingsFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.databinding.FragmentSignInBinding
 import com.example.soundtoshare.fragments.sign_in.SignInFragment
@@ -33,47 +39,32 @@ import kotlinx.android.synthetic.main.fragment_sign_in.*
 import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: FragmentSignInBinding
-    private lateinit var launcher: ActivityResultLauncher<Intent>
-    private var launcherGoogle = GoogleAuth.SignInLauncher.newInstance(this)
-    /*
-    private lateinit var googleSingInClient: GoogleSignInClient
-    private lateinit var firebaseAuth: FirebaseAuth
-
-    private companion object {
-        private const val RS_SIGN_IN = 100
-        private const val TAG = "GOOGLE_SIGN_IN_TAG"
-    }
-*/
-    private lateinit var oneTapClient: SignInClient
-    private lateinit var signInRequest: BeginSignInRequest
-
-
-    private var token : String? = null
+    private lateinit var binding: ActivityMainBinding
+    lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var token: String
+    //private var token : String? = null
+    var firebaseData: FirebaseData = FirebaseData()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-       binding = FragmentSignInBinding.inflate(layoutInflater)
-       setContentView(binding.root)
+        firebaseData.initializeDbRef()
 
-        //setContentView(R.layout.activity_main)
-       // setUpTabBar()
+        setContentView(R.layout.activity_main)
+        //setUpTabBar()
 
         //binding = ActivityMainBinding.inflate(layoutInflater)
         //setContentView(binding.root)
+    //private lateinit var token: String
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK)
+            if (result.resultCode == Activity.RESULT_OK) {
                 token = AuthorizationClient.getResponse(result.resultCode, result.data).accessToken
+                Log.d("token", token)
+            }
         }
-
-        /*binding.spotifyLoginBtn.setOnClickListener {
-            launcher.launch(AuthorizationClient.createLoginActivityIntent(this, SpotifyAPI.getAuthenticationRequest()))
-        }
-
+            /*
         binding.spotifyLogoutBtn.setOnClickListener {
             AuthorizationClient.clearCookies(applicationContext)
             token = null
@@ -92,29 +83,20 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun setUpTabBar()
-    {
-        val adapter = TabPageAdapter(this, tabLayout.tabCount)
-        viewPager.adapter = adapter
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        viewPager.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback()
-        {
-            override fun onPageSelected(position: Int) {
-                tabLayout.selectTab(tabLayout.getTabAt(position))
-            }
-        })
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener
-        {
-            override fun onTabSelected(tab: TabLayout.Tab)
+        val navView: BottomNavigationView = binding.navView
+        navView.setOnItemSelectedListener(){
+            when (it.itemId)
             {
-                viewPager.currentItem = tab.position
+                R.id.home -> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
+                R.id.map -> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, MapFragment()).commit()
+                R.id.settings-> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, SettingsFragment()).commit()
             }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {}
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {}
-        })
+            return@setOnItemSelectedListener true
+        }
+        navView.selectedItemId = R.id.home
     }
 
     private fun checkUser() {

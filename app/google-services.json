@@ -2,7 +2,8 @@
   "project_info": {
     "project_number": "945814714923",
     "project_id": "soundtoshare",
-    "storage_bucket": "soundtoshare.appspot.com"
+    "storage_bucket": "soundtoshare.appspot.com",
+    "firebase_url": "https://soundtoshare-default-rtdb.europe-west1.firebasedatabase.app/"
   },
   "client": [
     {
