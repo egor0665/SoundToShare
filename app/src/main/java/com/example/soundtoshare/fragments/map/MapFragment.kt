@@ -20,7 +20,10 @@ import androidx.fragment.app.Fragment
 import com.example.soundtoshare.MainActivity
 import com.example.soundtoshare.R
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 
@@ -69,18 +72,22 @@ class MapFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                locationResult ?: return
+//                locationResult
                 for (location in locationResult.locations){
-                    Log.d("Location", "Location changed $location")
-                    (activity as MainActivity).firebaseData.updateUserLocation(location.altitude, location.latitude, "kek")
+                    if (location != null ){
+                        Log.d("Location", "Location changed $location")
+                        Log.d("Location", "Location changed "+location.latitude + location.longitude)
+                        (requireActivity() as MainActivity).fireStoreDatabase.updateUserLocation(location.latitude , location.longitude, "kek")
+                    }
+
                 }
             }
         }
         locationRequest = LocationRequest.create().apply {
-            interval = 100
-            fastestInterval = 50
+            interval = 10000
+            fastestInterval = 10000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            maxWaitTime= 100
+            maxWaitTime= 10000
         }
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
@@ -192,6 +199,15 @@ class MapFragment : Fragment() {
         else {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        //Anything you wish to do
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        //Anything you wish to do
     }
 
 }
