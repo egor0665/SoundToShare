@@ -11,17 +11,18 @@ import java.util.concurrent.TimeUnit
 
 class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
     override fun doWork(): Result {
-        try {
-            val status = VkAPI.fetchVkMusic()
-            if (status != null)
-                Log.d("music:", status)
-        } catch (ex: Exception) {
-            return Result.failure()
-        }
+
+        val status = VkAPI.fetchVkMusic()
+        if (status != null)
+            Log.d("music:", status)
+        WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
         WorkManager.getInstance(applicationContext)
-            .enqueue( OneTimeWorkRequest.Builder(VkWorker::class.java)
-                .setInitialDelay(10, TimeUnit.SECONDS)
-                .build())
-        return Result.success()
+            .enqueue(
+                OneTimeWorkRequest.Builder(VkWorker::class.java)
+                    .addTag("VKMusic")
+                    .setInitialDelay(10, TimeUnit.SECONDS)
+                    .build()
+            )
+        return Result.failure()
     }
 }

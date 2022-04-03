@@ -77,7 +77,7 @@ class MapFragment : Fragment() {
                     if (location != null ){
                         Log.d("Location", "Location changed $location")
                         Log.d("Location", "Location changed "+location.latitude + location.longitude)
-                        (requireActivity() as MainActivity).firestoreDatabase.updateUserLocation(location.latitude , location.longitude, "kek")
+                        (requireActivity() as MainActivity).fireStoreDatabase.updateUserLocation(location.latitude , location.longitude, "kek")
                     }
 
                 }

@@ -16,6 +16,7 @@ class Navigator(supportFragmentManager : FragmentManager, binding : ActivityMain
         navView.setOnItemSelectedListener(){
             Log.d("ScreenNavigator", it.itemId.toString())
             val currentFragment = supportFragmentManager.fragments.firstOrNull{ it.isVisible }
+            Log.d("ScreenNavigator", currentFragment.toString())
             val newFragment = supportFragmentManager.findFragmentByTag(it.itemId.toString())
             val fragmentTransaction = supportFragmentManager.beginTransaction()
             if (currentFragment != null){
@@ -35,10 +36,10 @@ class Navigator(supportFragmentManager : FragmentManager, binding : ActivityMain
                 }
             }
             else{
-                fragmentTransaction.add(R.id.nav_host_fragment_activity_main, HomeFragment(), R.id.home.toString())
+                fragmentTransaction.replace(R.id.nav_host_fragment_activity_main, HomeFragment(), R.id.home.toString())
             }
             fragmentTransaction.commit()
-            // Log.d("ScreenNavigator", supportFragmentManager.fragments.toString())
+            Log.d("ScreenNavigator", supportFragmentManager.fragments.toString())
             return@setOnItemSelectedListener true
         }
         navView.selectedItemId = R.id.home
