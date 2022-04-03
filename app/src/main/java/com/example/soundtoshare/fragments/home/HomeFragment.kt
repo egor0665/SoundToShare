@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.soundtoshare.MainActivity
 import com.example.soundtoshare.databinding.FragmentSignInBinding
+import com.vk.api.sdk.auth.VKScope
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
@@ -32,7 +33,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.spotify.setOnClickListener{
             val activity = requireActivity() as MainActivity
-            viewModel.signInSpotify(activity,activity.launcher)
+            viewModel.signInVK(activity.authVkLauncher, arrayListOf(VKScope.WALL, VKScope.PHOTOS, VKScope.STATUS))
         }
     }
 
