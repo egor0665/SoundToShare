@@ -15,13 +15,13 @@ import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
 object SpotifyAPI {
-    public fun getAuthenticationRequest(): AuthorizationRequest {
+    fun getAuthenticationRequest(): AuthorizationRequest {
         return AuthorizationRequest.Builder(BuildConfig.KEY, AuthorizationResponse.Type.TOKEN, BuildConfig.URI)
             .setScopes(arrayOf("user-read-currently-playing"))
             .build()
     }
 
-    public fun fetchSpotifyMusic(token: String?) {
+    fun fetchSpotifyMusic(token: String?) {
         if (token != null) {
             GlobalScope.launch(Dispatchers.Default) {
                 val httpsURLConnection =
