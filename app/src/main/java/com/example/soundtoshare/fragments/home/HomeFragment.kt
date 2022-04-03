@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.spotify.setOnClickListener{
             val activity = requireActivity() as MainActivity
-            viewModel.signInVK(activity.authVkLauncher, arrayListOf(VKScope.WALL, VKScope.PHOTOS, VKScope.STATUS))
+            viewModel.signInVK(activity.authVkLauncher, arrayListOf(VKScope.STATUS))
         }
     }
 

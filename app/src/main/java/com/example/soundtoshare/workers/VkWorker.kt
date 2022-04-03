@@ -15,6 +15,8 @@ class VkWorker(context: Context, params: WorkerParameters) : Worker(context, par
         val status = VkAPI.fetchVkMusic()
         if (status != null)
             Log.d("music:", status)
+        else
+            Log.d("music:", "no info")
         WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
         WorkManager.getInstance(applicationContext)
             .enqueue(
