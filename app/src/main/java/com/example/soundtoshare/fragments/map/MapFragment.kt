@@ -72,22 +72,22 @@ class MapFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                locationResult
+//                locationResult
                 for (location in locationResult.locations){
                     if (location != null ){
                         Log.d("Location", "Location changed $location")
-                        Log.d("Location", "Location changed "+location.altitude + location.latitude)
-                        (requireActivity() as MainActivity).firebaseData.updateUserLocation(location.altitude , location.latitude, "kek")
+                        Log.d("Location", "Location changed "+location.latitude + location.longitude)
+                        (requireActivity() as MainActivity).firestoreDatabase.updateUserLocation(location.latitude , location.longitude, "kek")
                     }
 
                 }
             }
         }
         locationRequest = LocationRequest.create().apply {
-            interval = 1000
-            fastestInterval = 1000
+            interval = 10000
+            fastestInterval = 10000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            maxWaitTime= 1000
+            maxWaitTime= 10000
         }
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
