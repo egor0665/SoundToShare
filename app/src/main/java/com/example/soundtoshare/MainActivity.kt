@@ -10,38 +10,35 @@ import com.example.soundtoshare.databases.FirestoreDatabase
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
+import com.vk.api.sdk.VKApiConfig
 import com.vk.api.sdk.auth.VKAuthenticationResult
 import com.vk.api.sdk.auth.VKScope
 import java.util.concurrent.TimeUnit
 
-
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
-
-    private lateinit var token: String
     private lateinit var navigator: Navigator
+
 
     // FireStore example
     var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+
+        VK.setConfig(VKApiConfig(applicationContext,BuildConfig.vk_id.toInt()))
 
         authVkLauncher = VK.login(this) { result: VKAuthenticationResult ->
             when (result) {
                 is VKAuthenticationResult.Success -> {
-                    Log.d("auth", VK.getUserId().toString())
-                    Log.d("auth", result.token.accessToken)
+                    Log.d("VK_auth", VK.getUserId().toString())
                 }
                 is VKAuthenticationResult.Failed -> {
-                    // User didn't pass authorization
+                    Log.d("VK_auth", "FAILURE")
                 }
             }
         }
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

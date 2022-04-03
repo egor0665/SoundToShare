@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">SoundToShare</string>
-    <integer name="com_vk_sdk_AppId">8121553</integer>
 </resources>
