@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     lateinit var launcher: ActivityResultLauncher<Intent>
     private lateinit var token: String
+    private lateinit var navigator : Navigator
     //private var token : String? = null
     var firebaseData: FirebaseData = FirebaseData()
 
@@ -29,33 +30,19 @@ class MainActivity : AppCompatActivity() {
         firebaseData.initializeDbRef()
 
         setContentView(R.layout.activity_main)
-        //setUpTabBar()
-
-        //binding = ActivityMainBinding.inflate(layoutInflater)
-        //setContentView(binding.root)
-    //private lateinit var token: String
-
-        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                result: ActivityResult ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                token = AuthorizationClient.getResponse(result.resultCode, result.data).accessToken
-                Log.d("token", token)
-            }
-        }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+        navigator = Navigator(supportFragmentManager, binding)
+        navigator.setupListener()
         setContentView(binding.root)
 
-        val navView: BottomNavigationView = binding.navView
-        navView.setOnItemSelectedListener(){
-            when (it.itemId)
-            {
-                R.id.home -> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, HomeFragment()).commit()
-                R.id.map -> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, MapFragment()).commit()
-                R.id.settings-> supportFragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main, SettingsFragment()).commit()
+        launcher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    token =
+                        AuthorizationClient.getResponse(result.resultCode, result.data).accessToken
+                    Log.d("token", token)
+                }
             }
-            return@setOnItemSelectedListener true
-        }
-        navView.selectedItemId = R.id.home
     }
 }
