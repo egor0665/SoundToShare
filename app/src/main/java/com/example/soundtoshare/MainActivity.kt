@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigator: Navigator
 
     // FireStore example
-    var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
+//    var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
         // FireStore example
-        fireStoreDatabase.getClosest(37.4219983, -122.084)
+//        fireStoreDatabase.getClosest(37.4219983, -122.084)
 
         WorkManager.getInstance(applicationContext)
             .enqueue(
