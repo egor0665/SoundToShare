@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.soundtoshare.MainActivity
+import com.example.soundtoshare.databinding.FragmentSidnInVkBinding
 import com.example.soundtoshare.databinding.FragmentSignInBinding
 import com.vk.api.sdk.auth.VKScope
 
 class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentSignInBinding
+    private lateinit var binding: FragmentSidnInVkBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
     //2
     companion object {
@@ -25,13 +26,13 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        binding = FragmentSignInBinding.inflate(inflater)
+        binding = FragmentSidnInVkBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.spotify.setOnClickListener{
+        binding.buttonSignIn.setOnClickListener{
             val activity = requireActivity() as MainActivity
             viewModel.signInVK(activity.authVkLauncher, arrayListOf(VKScope.STATUS))
         }
