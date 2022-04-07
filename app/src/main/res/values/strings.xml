@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">SoundToShare</string>
-    <integer name="com_vk_sdk_AppId">8121553</integer>
+    <string name="home_sign_in">To use this app please sign in via VK</string>
 </resources>

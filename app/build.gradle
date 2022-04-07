@@ -16,22 +16,6 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        def api_key
-        def api_uri
-        if (rootProject.file("local.properties").exists()) {
-            def localProperties = new Properties()
-            rootProject.file("local.properties").withInputStream {
-                localProperties.load(it)
-            }
-            api_key = localProperties.getProperty("api_key")
-            api_uri = localProperties.getProperty("api_uri")
-        } else {
-            api_key = System.getenv('KEY')
-            api_uri = System.getenv('URI')
-        }
-        buildConfigField("String", "KEY", api_key)
-        buildConfigField("String", "URI", api_uri)
     }
 
     buildTypes {
@@ -57,9 +41,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:23.0.2'
     implementation 'com.vk:android-sdk-core:3.5.2'
     implementation 'com.vk:android-sdk-api:3.5.2'
-    implementation 'com.spotify.android:auth:1.2.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
-
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.work:work-runtime-ktx:$work_version"
@@ -82,8 +64,6 @@ dependencies {
     // gms
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
     implementation 'com.google.android.gms:play-services-location:19.0.1'
-    // Spotify
-    implementation 'com.spotify.android:auth:1.2.6'
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
     // Navigation
