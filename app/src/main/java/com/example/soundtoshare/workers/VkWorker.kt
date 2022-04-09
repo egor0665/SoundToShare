@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit
 class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
     override fun doWork(): Result {
 
-        val status = VkAPI.fetchVkMusic()
-        if (status != null)
-            Log.d("music:", status)
+        val audio = VkAPI.fetchVkMusic()
+        if (audio != null)
+            Log.d("music:", audio.title)
         else
             Log.d("music:", "no info")
         WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
