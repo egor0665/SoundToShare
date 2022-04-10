@@ -70,7 +70,7 @@
             android:layout_marginTop="30sp"
             android:paddingStart="15sp"/>
 
-    <View
+    <ImageView
             android:id="@+id/questionView"
             tools:ignore="MissingConstraints"
             android:layout_height="0dp"
