@@ -11,7 +11,7 @@ import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.concurrent.TimeUnit
 
 class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
-    private var audio : AudioAudio? = null
+    private var audio: AudioAudio? = null
 
     override fun doWork(): Result {
         VkAPI.fetchVkMusic {
@@ -19,8 +19,7 @@ class VkWorker(context: Context, params: WorkerParameters) : Worker(context, par
             if (audio != null) {
                 Log.d("musicTitle", audio!!.title)
                 Log.d("musicURI", "https://vk.com/audio" + audio!!.ownerId + "_" + audio!!.id)
-            }
-            else
+            } else
                 Log.d("music:", "no info")
             WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
             WorkManager.getInstance(applicationContext)

@@ -13,9 +13,11 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
     }
@@ -23,11 +25,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //viewModel.initViewModel()
+        viewModel.initViewModel()
 
-//        viewModel.bitmapAvatar.observe(activity as LifecycleOwner) {
-////            binding.questionView.setImageBitmap(it)
-//        }
+        viewModel.bitmapAvatar.observe(activity as LifecycleOwner) {
+            // binding.questionView.setImageBitmap(it)
+        }
     }
     companion object {
 
