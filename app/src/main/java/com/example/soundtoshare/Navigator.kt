@@ -14,19 +14,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class Navigator(private val supportFragmentManager: FragmentManager, binding: ActivityMainBinding) {
     private val navView: BottomNavigationView = binding.navView
     fun setFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(
-            R.id.nav_host_fragment_activity_main,
-            fragment,
-            R.id.sign_in.toString()
-        ).commit()
-        if (fragment is SignInFragment) toggleNavBar(View.GONE)
+        if (fragment is SignInFragment) {
+            toggleNavBar(View.GONE)
+            supportFragmentManager.beginTransaction().replace(
+                R.id.nav_host_fragment_activity_main,
+                fragment,
+                R.id.sign_in.toString(),
+            ).commit()
+        }
         if (fragment is HomeFragment) {
             toggleNavBar(View.VISIBLE)
+            supportFragmentManager.beginTransaction().replace(
+                R.id.nav_host_fragment_activity_main,
+                fragment,
+                R.id.home.toString(),
+            ).commit()
             navView.selectedItemId = R.id.home
         }
     }
 
-    fun toggleNavBar(status: Int){
+    private fun toggleNavBar(status: Int) {
         navView.visibility = status
     }
 
@@ -47,17 +54,17 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
                             R.id.home -> fragmentTransaction.add(
                                 R.id.nav_host_fragment_activity_main,
                                 HomeFragment(),
-                                menuItem.itemId.toString()
+                                R.id.home.toString()
                             )
                             R.id.map -> fragmentTransaction.add(
                                 R.id.nav_host_fragment_activity_main,
                                 MapFragment(),
-                                menuItem.itemId.toString()
+                                R.id.map.toString()
                             )
                             R.id.settings -> fragmentTransaction.add(
                                 R.id.nav_host_fragment_activity_main,
                                 SettingsFragment(),
-                                menuItem.itemId.toString()
+                                R.id.settings.toString()
                             )
                         }
                     }
@@ -73,6 +80,6 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
             Log.d("ScreenNavigator", supportFragmentManager.fragments.toString())
             return@setOnItemSelectedListener true
         }
-        navView.selectedItemId = R.id.home
+        // navView.selectedItemId = R.id.home
     }
 }

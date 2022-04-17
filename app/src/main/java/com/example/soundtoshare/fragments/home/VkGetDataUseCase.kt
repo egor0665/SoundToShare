@@ -7,16 +7,16 @@ import com.example.soundtoshare.apis.VkAPI
 class VkGetDataUseCase {
     private val vkApi = VkAPI
     private val network = Network()
-    fun getUserInfo(getUserInfoCallback : Bitmap.() -> Unit) {
+    fun getUserInfo(getUserInfoCallback: Bitmap.() -> Unit) {
         vkApi.getUserInfoRepository {
-            loadAvatar (this){
+            loadAvatar(this) {
                 getUserInfoCallback(this)
             }
         }
     }
 
-    private fun loadAvatar(iUrl : String, loadAvatarCallback: Bitmap.() -> Unit){
-        network.loadAvatar(iUrl){
+    private fun loadAvatar(iUrl: String, loadAvatarCallback: Bitmap.() -> Unit) {
+        network.loadAvatar(iUrl) {
             loadAvatarCallback(this)
         }
     }

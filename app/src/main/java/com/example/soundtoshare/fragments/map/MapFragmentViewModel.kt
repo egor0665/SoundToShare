@@ -11,8 +11,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MapStyleOptions
 
-
-class MapFragmentViewModel(application: Application) : AndroidViewModel(application), OnMapReadyCallback{
+class MapFragmentViewModel(application: Application) :
+    AndroidViewModel(application),
+    OnMapReadyCallback {
     @SuppressLint("StaticFieldLeak")
     private var context = getApplication<Application>().applicationContext
     private var map: GoogleMap? = null
@@ -22,8 +23,7 @@ class MapFragmentViewModel(application: Application) : AndroidViewModel(applicat
 
     fun getLocationData() = locationData
 
-    fun initMap(mapFragment: SupportMapFragment?)
-    {
+    fun initMap(mapFragment: SupportMapFragment?) {
         mapFragment?.getMapAsync(this)
     }
 
@@ -37,8 +37,7 @@ class MapFragmentViewModel(application: Application) : AndroidViewModel(applicat
         moveCameraUseCase = MoveCameraUseCase(map)
     }
 
-    fun moveCamera(lastKnownLocation: LocationModel)
-    {
+    fun moveCamera(lastKnownLocation: LocationModel) {
         moveCameraUseCase.moveAtDeviceCenter(lastKnownLocation)
     }
 
@@ -52,5 +51,4 @@ class MapFragmentViewModel(application: Application) : AndroidViewModel(applicat
             map?.uiSettings?.isMyLocationButtonEnabled = false
         }
     }
-
 }

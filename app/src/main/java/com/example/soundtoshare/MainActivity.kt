@@ -2,13 +2,10 @@ package com.example.soundtoshare
 
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.example.soundtoshare.apis.VkAPI
-import com.example.soundtoshare.databases.FirestoreDatabase
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.fragments.home.HomeFragment
 import com.example.soundtoshare.fragments.home.SignInFragment
@@ -23,6 +20,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navigator: Navigator
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
+    var incognito = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,10 +41,11 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        binding.navView.setBackgroundColor(Color.BLACK)
         // Navigator
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
-
 
         if (VK.isLoggedIn()) navigator.setFragment(HomeFragment())
         else navigator.setFragment(SignInFragment())
@@ -58,10 +58,10 @@ class MainActivity : AppCompatActivity() {
                     .build()
             )
     }
-    fun vk_signout(){
+
+    fun vkSignOut() {
         VK.logout()
         VK.clearAccessToken(this)
         navigator.setFragment(SignInFragment())
     }
 }
-

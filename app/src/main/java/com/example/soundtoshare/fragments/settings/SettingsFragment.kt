@@ -1,37 +1,41 @@
 package com.example.soundtoshare.fragments.settings
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.service.autofill.Validators.not
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.soundtoshare.MainActivity
 import com.example.soundtoshare.R
-import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.databinding.FragmentSettingsBinding
-import com.example.soundtoshare.fragments.home.HomeFragment
-import com.example.soundtoshare.fragments.home.HomeFragmentViewModel
-import com.example.soundtoshare.fragments.map.MapFragment
-import com.vk.api.sdk.VK
-import com.vk.api.sdk.auth.VKScope
 
-class SettingsFragment: Fragment(){
+class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentSettingsBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.buttonSignOut.setOnClickListener{
-            (this.activity as MainActivity).vk_signout()
+        binding.buttonSignOut.setOnClickListener {
+            (this.activity as MainActivity).vkSignOut()
+        }
+        binding.buttonIncognito.setOnClickListener {
+            (this.activity as MainActivity).incognito = !(this.activity as MainActivity).incognito
+
+            Toast.makeText(this.activity, "TODO", Toast.LENGTH_SHORT).show()
         }
     }
+
     companion object {
 
         fun newInstance(): SettingsFragment {
