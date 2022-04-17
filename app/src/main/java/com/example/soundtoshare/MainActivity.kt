@@ -2,6 +2,7 @@ package com.example.soundtoshare
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
@@ -9,6 +10,8 @@ import androidx.work.WorkManager
 import com.example.soundtoshare.apis.VkAPI
 import com.example.soundtoshare.databases.FirestoreDatabase
 import com.example.soundtoshare.databinding.ActivityMainBinding
+import com.example.soundtoshare.fragments.home.HomeFragment
+import com.example.soundtoshare.fragments.home.SignInFragment
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiConfig
@@ -18,21 +21,18 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
     private lateinit var navigator: Navigator
-
-    // FireStore example
-//    var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
-
+    internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        VK.setConfig(VKApiConfig(applicationContext,BuildConfig.vk_id.toInt()))
+        VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
 
         authVkLauncher = VK.login(this) { result: VKAuthenticationResult ->
             when (result) {
                 is VKAuthenticationResult.Success -> {
                     Log.d("VK_auth", VK.getUserId().toString())
+                    navigator.setFragment(HomeFragment())
                 }
                 is VKAuthenticationResult.Failed -> {
                     Log.d("VK_auth", "FAILURE")
@@ -45,8 +45,10 @@ class MainActivity : AppCompatActivity() {
         // Navigator
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
-        // FireStore example
-//        fireStoreDatabase.getClosest(37.4219983, -122.084)
+
+
+        if (VK.isLoggedIn()) navigator.setFragment(HomeFragment())
+        else navigator.setFragment(SignInFragment())
 
         WorkManager.getInstance(applicationContext)
             .enqueue(
@@ -55,6 +57,11 @@ class MainActivity : AppCompatActivity() {
                     .setInitialDelay(10, TimeUnit.SECONDS)
                     .build()
             )
+    }
+    fun vk_signout(){
+        VK.logout()
+        VK.clearAccessToken(this)
+        navigator.setFragment(SignInFragment())
     }
 }
 
