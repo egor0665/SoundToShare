@@ -6,28 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
-import com.example.soundtoshare.databinding.FragmentHomeBinding
+import com.example.soundtoshare.MainActivity
+import com.example.soundtoshare.databinding.FragmentSignInBinding
+import com.vk.api.sdk.auth.VKScope
 
-class HomeFragment : Fragment() {
-    private lateinit var binding: FragmentHomeBinding
+class SignInFragment: Fragment() {
+    private lateinit var binding: FragmentSignInBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        binding = FragmentHomeBinding.inflate(inflater)
+        binding = FragmentSignInBinding.inflate(inflater)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //viewModel.initViewModel()
-
-//        viewModel.bitmapAvatar.observe(activity as LifecycleOwner) {
-////            binding.questionView.setImageBitmap(it)
-//        }
+7
+        viewModel.initViewModel()
+//        VK.setConfig(VKApiConfig((this.activity as MainActivity).applicationContext, BuildConfig.vk_id.toInt()))
+        binding.buttonSignIn.setOnClickListener{
+            viewModel.signInVK((this.activity as MainActivity).authVkLauncher, arrayListOf(VKScope.STATUS))
+        }
     }
     companion object {
 
@@ -35,4 +37,5 @@ class HomeFragment : Fragment() {
             return HomeFragment()
         }
     }
+
 }

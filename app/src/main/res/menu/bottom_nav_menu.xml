@@ -15,5 +15,9 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic__settings"
             android:title="Settings" />
+    <item
+            android:id="@+id/sign_in"
+            android:title="Sign in"
+            android:visible="false"/>
 
 </menu>

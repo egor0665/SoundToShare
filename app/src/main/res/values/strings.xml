@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">SoundToShare</string>
     <string name="home_sign_in">To use this app please sign in via VK</string>
+    <string name="sign_in">Sign In</string>
 </resources>
