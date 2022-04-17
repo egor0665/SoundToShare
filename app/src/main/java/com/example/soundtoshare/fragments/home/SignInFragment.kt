@@ -24,9 +24,7 @@ class SignInFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-7
-        viewModel.initViewModel()
-//        VK.setConfig(VKApiConfig((this.activity as MainActivity).applicationContext, BuildConfig.vk_id.toInt()))
+
         binding.buttonSignIn.setOnClickListener{
             viewModel.signInVK((this.activity as MainActivity).authVkLauncher, arrayListOf(VKScope.STATUS))
         }

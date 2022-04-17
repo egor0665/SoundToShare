@@ -5,12 +5,15 @@
       <map>
         <entry key="..\:/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="..\:/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.13269927536231885" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_map.xml" value="0.13269927536231885" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_settings.xml" value="0.13269927536231885" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_sidn_in_vk.xml" value="0.13269927536231885" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.11" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/menu/bottom_nav_menu.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/drawable/oval_button.xml" value="0.196" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/drawable/rounded_avatar.xml" value="0.196" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/drawable/rounded_button.xml" value="0.196" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/layout/fragment_map.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/layout/fragment_settings.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/layout/fragment_sidn_in_vk.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/dvm10/Desktop/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>
