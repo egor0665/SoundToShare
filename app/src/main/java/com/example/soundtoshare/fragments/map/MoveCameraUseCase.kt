@@ -17,7 +17,8 @@ class MoveCameraUseCase(map: GoogleMap?) {
                 LatLng(
                     deviceLocation.latitude,
                     deviceLocation.longitude
-                ), DEFAULT_ZOOM.toFloat()
+                ),
+                DEFAULT_ZOOM.toFloat()
             )
         )
     }

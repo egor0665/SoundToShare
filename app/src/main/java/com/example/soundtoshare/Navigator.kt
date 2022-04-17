@@ -14,7 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class Navigator(private val supportFragmentManager: FragmentManager, binding: ActivityMainBinding) {
     private val navView: BottomNavigationView = binding.navView
     fun setFragment(fragment: Fragment) {
-        if (fragment is SignInFragment){
+        if (fragment is SignInFragment) {
             toggleNavBar(View.GONE)
             supportFragmentManager.beginTransaction().replace(
                 R.id.nav_host_fragment_activity_main,
@@ -33,7 +33,7 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
         }
     }
 
-    private fun toggleNavBar(status: Int){
+    private fun toggleNavBar(status: Int) {
         navView.visibility = status
     }
 
@@ -69,17 +69,10 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
                         }
                     }
                 }
-            } else {
-// fragmentTransaction.replace(
-// R.id.nav_host_fragment_activity_main,
-// HomeFragment(),
-// R.id.home.toString()
-// )
-            }
+            } 
             fragmentTransaction.commit()
             Log.d("ScreenNavigator", supportFragmentManager.fragments.toString())
             return@setOnItemSelectedListener true
         }
-//navView.selectedItemId = R.id.home
     }
 }

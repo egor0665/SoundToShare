@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
-class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
+class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>() {
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private var locationRepository = LocationRepository()
 
@@ -68,4 +67,3 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
         )
     }
 }
-

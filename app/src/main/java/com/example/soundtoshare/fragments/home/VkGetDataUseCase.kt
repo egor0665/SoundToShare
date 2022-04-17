@@ -16,11 +16,10 @@ class VkGetDataUseCase {
         }
     }
 
-    private fun loadAvatar(iUrl : String, loadAvatarCallback: Bitmap.() -> Unit){
-        network.loadAvatar(iUrl){
+    private fun loadAvatar(iUrl: String, loadAvatarCallback: Bitmap.() -> Unit) {
+        network.loadAvatar(iUrl) {
             loadAvatarCallback(this)
         }
     }
 }
-
 data class UserInfo(val avatar : Bitmap, val lastName : String, val firstName : String)

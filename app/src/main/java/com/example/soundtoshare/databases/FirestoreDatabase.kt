@@ -16,14 +16,14 @@ class FirestoreDatabase {
     private val database = Firebase.firestore
     var users = mutableListOf<User>()
 
-    fun updateUserLocation(latitude: Double, longitude: Double, VKAccount: String) {
+    fun updateUserLocation(latitude: Double, longitude: Double, vkAccount: String) {
         val user = hashMapOf(
-            "VKAccount" to VKAccount,
-            "geoPoint" to GeoPoint(latitude,longitude),
+            "VKAccount" to vkAccount,
+            "geoPoint" to GeoPoint(latitude, longitude),
             "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude))
         )
 
-        database.collection("Users").document(VKAccount)
+        database.collection("Users").document(vkAccount)
             .set(user)
             .addOnSuccessListener {
                 Log.d("Firestore", "DocumentSnapshot added  ")
@@ -31,9 +31,9 @@ class FirestoreDatabase {
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error adding document", e)
             }
-
     }
-    fun getClosest(latitude: Double, longitude: Double){
+
+    fun getClosest(latitude: Double, longitude: Double) {
 
         val center = GeoLocation(latitude, longitude)
         // Радиус поиска в метрах
@@ -43,40 +43,50 @@ class FirestoreDatabase {
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
         for (b in bounds) {
             val q = database.collection("Users")
-                    .orderBy("geoHash")
-                    .startAt(b.startHash)
-                    .endAt(b.endHash)
+                .orderBy("geoHash")
+                .startAt(b.startHash)
+                .endAt(b.endHash)
             tasks.add(q.get())
         }
 
         // Collect all the query results together into a single list
         Tasks.whenAllComplete(tasks)
-                .addOnCompleteListener {
-                    val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
-                    for (task in tasks) {
-                        val snap = task.result
-                        for (doc in snap!!.documents) {
-                            val geoPoint = doc.getGeoPoint("geoPoint")!!
-                            val lat = geoPoint.latitude
-                            val lng = geoPoint.longitude
+            .addOnCompleteListener {
+                val matchingDocs: MutableList<DocumentSnapshot> = ArrayList()
+                for (task in tasks) {
+                    val snap = task.result
+                    for (doc in snap!!.documents) {
+                        val geoPoint = doc.getGeoPoint("geoPoint")!!
+                        val lat = geoPoint.latitude
+                        val lng = geoPoint.longitude
 
-                            // We have to filter out a few false positives due to GeoHash
-                            // accuracy, but most will match
-                            val docLocation = GeoLocation(lat, lng)
-                            val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
-                            if (distanceInM <= radiusInM) {
-                                matchingDocs.add(doc)
-                            }
+                        // We have to filter out a few false positives due to GeoHash
+                        // accuracy, but most will match
+                        val docLocation = GeoLocation(lat, lng)
+                        val distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center)
+                        if (distanceInM <= radiusInM) {
+                            matchingDocs.add(doc)
                         }
                     }
-
-                    // matchingDocs contains the results
-
-                    matchingDocs.forEach { users.add(User(it.getField<GeoPoint>("geoPoint")!!,it.getField<String>("VKAccount").toString()))
-                    Log.d("Firestore" ,it.getField<GeoPoint>("geoPoint")!!.toString() + it.getField<String>("VKAccount").toString())}
-                    // ...
                 }
-    }
 
+                // matchingDocs contains the results
+
+                matchingDocs.forEach {
+                    users.add(
+                        User(
+                            it.getField<GeoPoint>("geoPoint")!!,
+                            it.getField<String>("VKAccount").toString()
+                        )
+                    )
+                    Log.d(
+                        "Firestore",
+                        it.getField<GeoPoint>("geoPoint")!!
+                            .toString() + it.getField<String>("VKAccount").toString()
+                    )
+                }
+            }
+    }
 }
-data class User( val geoPoint: GeoPoint, val VKAccount: String){}
+
+data class User(val geoPoint: GeoPoint, val VKAccount: String)

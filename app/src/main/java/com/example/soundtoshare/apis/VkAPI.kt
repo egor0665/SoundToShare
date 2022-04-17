@@ -11,16 +11,18 @@ import com.vk.sdk.api.users.dto.UsersFields
 import com.vk.sdk.api.users.dto.UsersUserFull
 
 object VkAPI {
-    fun fetchVkMusic(fetchVkMusicCallback : AudioAudio?.() -> Unit) {
-        VK.execute(StatusService().statusGet(VK.getUserId()), object : VKApiCallback<StatusStatus> {
-            override fun success(result: StatusStatus) {
-                fetchVkMusicCallback(result.audio)
+    fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
+        VK.execute(
+            StatusService().statusGet(VK.getUserId()),
+            object : VKApiCallback<StatusStatus> {
+                override fun success(result: StatusStatus) {
+                    fetchVkMusicCallback(result.audio)
+                }
+                override fun fail(error: Exception) {
+                    Log.e("error", error.toString())
+                }
             }
-
-            override fun fail(error: Exception) {
-                Log.e("error", error.toString())
-            }
-        })
+        )
     }
 
     fun getUserInfoRepository(getUserInfoRepositoryCallBack: ArrayList<String>.() -> Unit) {
@@ -28,10 +30,10 @@ object VkAPI {
             override fun success(result: List<UsersUserFull>) {
                 getUserInfoRepositoryCallBack(arrayListOf(result[0].photo200.toString(),result[0].lastName.toString(), result[0].firstName.toString()))
             }
-
-            override fun fail(error: Exception) {
-                Log.e("error", error.toString())
+                override fun fail(error: Exception) {
+                    Log.e("error", error.toString())
+                }
             }
-        })
+        )
     }
 }

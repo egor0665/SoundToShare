@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.soundtoshare.R
-import com.example.soundtoshare.fragments.settings.SettingsFragment
 import com.google.android.gms.maps.SupportMapFragment
 
 class MapFragment : Fragment() {
@@ -35,9 +34,11 @@ class MapFragment : Fragment() {
         getLocationPermission()
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -48,20 +49,21 @@ class MapFragment : Fragment() {
         if (isGranted) {
             vmBinding.updateLocationUI()
             startLocationUpdate()
-        }
-        else {
+        } else {
             startDeniedPermissionAlert()
         }
     }
 
     private fun getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             vmBinding.locationPermissionGranted = true
             startLocationUpdate()
-        }
-        else {
+        } else {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
     }
@@ -77,23 +79,24 @@ class MapFragment : Fragment() {
 
         alertDialogBuilder.setTitle("Permission needed")
         alertDialogBuilder.setMessage("Location permission needed for accessing app")
-        alertDialogBuilder.setPositiveButton("Open Setting"
+        alertDialogBuilder.setPositiveButton(
+            "Open Setting"
         ) { _, _ ->
             val intent = Intent()
             intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
             val uri: Uri = Uri.fromParts(
-                "package", requireActivity().packageName,
+                "package",
+                requireActivity().packageName,
                 null
             )
             intent.data = uri
             requireActivity().startActivity(intent)
         }
         alertDialogBuilder.setNegativeButton("Cancel") { _, _ ->
-            //TODO Cancel action
+            // TODO Cancel action
         }
 
         val dialog: AlertDialog = alertDialogBuilder.create()
         dialog.show()
     }
-
 }

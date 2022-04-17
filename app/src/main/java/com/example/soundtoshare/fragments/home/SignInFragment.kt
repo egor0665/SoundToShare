@@ -10,13 +10,15 @@ import com.example.soundtoshare.MainActivity
 import com.example.soundtoshare.databinding.FragmentSignInBinding
 import com.vk.api.sdk.auth.VKScope
 
-class SignInFragment: Fragment() {
+class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private val viewModel: HomeFragmentViewModel by activityViewModels()
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentSignInBinding.inflate(inflater)
 
         return binding.root
@@ -25,15 +27,18 @@ class SignInFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSignIn.setOnClickListener{
-            viewModel.signInVK((this.activity as MainActivity).authVkLauncher, arrayListOf(VKScope.STATUS))
+        binding.buttonSignIn.setOnClickListener {
+            viewModel.signInVK(
+                (this.activity as MainActivity).authVkLauncher,
+                arrayListOf(VKScope.STATUS)
+            )
         }
     }
+
     companion object {
 
         fun newInstance(): HomeFragment {
             return HomeFragment()
         }
     }
-
 }
