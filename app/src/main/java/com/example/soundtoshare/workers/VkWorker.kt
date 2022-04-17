@@ -2,6 +2,7 @@ package com.example.soundtoshare.workers
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
@@ -11,15 +12,16 @@ import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.concurrent.TimeUnit
 
 class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
-    private var audio: AudioAudio? = null
+    val audio: MutableLiveData<AudioAudio> by lazy {
+        MutableLiveData<AudioAudio>()
+    }
 
     override fun doWork(): Result {
         VkAPI.fetchVkMusic {
-            audio = this
-            if (audio != null) {
-                Log.d("musicTitle", audio!!.title)
-                Log.d("musicURI", "https://vk.com/audio" + audio!!.ownerId + "_" + audio!!.id)
-            } else
+            audio.value = this
+            if (audio.value != null)
+                audio.value?.title?.let { Log.d("musicTitle", it) }
+            else
                 Log.d("music:", "no info")
             WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
             WorkManager.getInstance(applicationContext)

@@ -69,17 +69,10 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
                         }
                     }
                 }
-            } else {
-//                fragmentTransaction.replace(
-//                    R.id.nav_host_fragment_activity_main,
-//                    HomeFragment(),
-//                    R.id.home.toString()
-//                )
-            }
+            } 
             fragmentTransaction.commit()
             Log.d("ScreenNavigator", supportFragmentManager.fragments.toString())
             return@setOnItemSelectedListener true
         }
-        // navView.selectedItemId = R.id.home
     }
 }
