@@ -17,13 +17,42 @@ import com.vk.api.sdk.auth.VKScope
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
+
+//    //thema
+//    private var xyz: Switch? = null
+//    internal lateinit var sharedpref: SharedPref
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var navigator: Navigator
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
     var incognito = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+//        //thema
+//        sharedpref = SharedPref(this)
+//        if (sharedpref.loadNightModeState()==true) {
+//            setTheme(R.style.DarkThema)
+//        } else
+//            setTheme(R.style.AppThema)
+
         super.onCreate(savedInstanceState)
+
+//        //thema
+//        xyz = findViewById<View>(R.id.enableDark) as Switch?
+//        if (sharedpref.loadNightModeState() == true) {
+//            xyz!!.isChecked=true
+//        }
+//        xyz!!.setOnCheckedChangeListener{ buttonView, isChecked ->
+//            if (isChecked) {
+//                sharedpref.setNightModeState(true)
+//                restartApp()
+//            } else {
+//                sharedpref.setNightModeState(false)
+//                restartApp()
+//            }
+//
+//
+//        }
 
         VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
 
@@ -64,4 +93,11 @@ class MainActivity : AppCompatActivity() {
         VK.clearAccessToken(this)
         navigator.setFragment(SignInFragment())
     }
+
+//    //thema
+//    fun restartApp() {
+//        val i = Intent (getApplicationContext(), MainActivity::class.java)
+//        startActivity(i)
+//        finish()
+//    }
 }
