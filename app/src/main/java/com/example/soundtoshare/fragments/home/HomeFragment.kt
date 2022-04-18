@@ -42,8 +42,8 @@ class HomeFragment : Fragment() {
             paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
             canvas.drawBitmap(avatar, rect, rect, paint)
             binding.avatar.setImageBitmap(output)
-            binding.firstName.text = it.firstName
-            binding.lastName.text = it.lastName
+            val fullName = it.firstName + " " + it.lastName
+            binding.fullName.text = fullName
         }
     }
     companion object {
