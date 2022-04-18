@@ -1,15 +1,12 @@
 package com.example.soundtoshare.fragments.settings
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.service.autofill.Validators.not
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.soundtoshare.MainActivity
-import com.example.soundtoshare.R
+import com.example.soundtoshare.main.MainActivity
 import com.example.soundtoshare.databinding.FragmentSettingsBinding
 
 class SettingsFragment : Fragment() {
@@ -21,6 +18,11 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater)
+
+        val currentMode = (this.activity as MainActivity).incognito
+        if (currentMode) binding.buttonIncognito.text = "Incognito Mode: ON"
+        else binding.buttonIncognito.text = "Incognito Mode: OFF"
+
         return binding.root
     }
 
@@ -30,8 +32,11 @@ class SettingsFragment : Fragment() {
             (this.activity as MainActivity).vkSignOut()
         }
         binding.buttonIncognito.setOnClickListener {
-            (this.activity as MainActivity).incognito = !(this.activity as MainActivity).incognito
-
+            val currentMode = (this.activity as MainActivity).incognito
+            (this.activity as MainActivity).incognito = !currentMode
+            (this.activity as MainActivity).setIncognitoMode(!currentMode)
+            if (currentMode) binding.buttonIncognito.text = "Incognito Mode: OFF"
+            else binding.buttonIncognito.text = "Incognito Mode: ON"
             Toast.makeText(this.activity, "TODO", Toast.LENGTH_SHORT).show()
         }
     }

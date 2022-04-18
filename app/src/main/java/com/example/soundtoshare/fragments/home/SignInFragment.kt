@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.soundtoshare.MainActivity
+import com.example.soundtoshare.main.MainActivity
 import com.example.soundtoshare.databinding.FragmentSignInBinding
 import com.vk.api.sdk.auth.VKScope
 
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
-    private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val viewModel : HomeFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

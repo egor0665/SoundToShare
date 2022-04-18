@@ -13,7 +13,7 @@ import com.example.soundtoshare.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val viewModel : HomeFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,

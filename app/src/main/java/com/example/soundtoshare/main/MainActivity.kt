@@ -1,13 +1,16 @@
-package com.example.soundtoshare
+package com.example.soundtoshare.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.example.soundtoshare.BuildConfig
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.fragments.home.HomeFragment
+import com.example.soundtoshare.fragments.home.HomeFragmentViewModel
 import com.example.soundtoshare.fragments.home.SignInFragment
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
@@ -20,10 +23,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navigator: Navigator
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
+    private lateinit var viewModel : MainActivityViewModel
+
     var incognito = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = MainActivityViewModel(this)
+        incognito = viewModel.getIncognitoMode()
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
 
@@ -39,10 +50,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-//        binding.navView.setBackgroundColor(Color.BLACK)
         // Navigator
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
@@ -63,5 +70,8 @@ class MainActivity : AppCompatActivity() {
         VK.logout()
         VK.clearAccessToken(this)
         navigator.setFragment(SignInFragment())
+    }
+    fun setIncognitoMode(mode: Boolean){
+        viewModel.setIncognitoMode(mode)
     }
 }

@@ -1,9 +1,10 @@
-package com.example.soundtoshare
+package com.example.soundtoshare.main
 
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.fragments.home.HomeFragment
 import com.example.soundtoshare.fragments.home.SignInFragment
