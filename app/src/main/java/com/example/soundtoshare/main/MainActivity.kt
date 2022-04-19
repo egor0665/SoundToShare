@@ -1,13 +1,16 @@
-package com.example.soundtoshare
+package com.example.soundtoshare.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.example.soundtoshare.BuildConfig
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.fragments.home.HomeFragment
+import com.example.soundtoshare.fragments.home.HomeFragmentViewModel
 import com.example.soundtoshare.fragments.home.SignInFragment
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
@@ -17,42 +20,21 @@ import com.vk.api.sdk.auth.VKScope
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-
-//    //thema
-//    private var xyz: Switch? = null
-//    internal lateinit var sharedpref: SharedPref
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var navigator: Navigator
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
+    private lateinit var viewModel : MainActivityViewModel
+
     var incognito = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        //thema
-//        sharedpref = SharedPref(this)
-//        if (sharedpref.loadNightModeState()==true) {
-//            setTheme(R.style.DarkThema)
-//        } else
-//            setTheme(R.style.AppThema)
-
         super.onCreate(savedInstanceState)
 
-//        //thema
-//        xyz = findViewById<View>(R.id.enableDark) as Switch?
-//        if (sharedpref.loadNightModeState() == true) {
-//            xyz!!.isChecked=true
-//        }
-//        xyz!!.setOnCheckedChangeListener{ buttonView, isChecked ->
-//            if (isChecked) {
-//                sharedpref.setNightModeState(true)
-//                restartApp()
-//            } else {
-//                sharedpref.setNightModeState(false)
-//                restartApp()
-//            }
-//
-//
-//        }
+        viewModel = MainActivityViewModel(this)
+        incognito = viewModel.getIncognitoMode()
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
 
@@ -68,10 +50,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-//        binding.navView.setBackgroundColor(Color.BLACK)
         // Navigator
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
@@ -93,11 +71,7 @@ class MainActivity : AppCompatActivity() {
         VK.clearAccessToken(this)
         navigator.setFragment(SignInFragment())
     }
-
-//    //thema
-//    fun restartApp() {
-//        val i = Intent (getApplicationContext(), MainActivity::class.java)
-//        startActivity(i)
-//        finish()
-//    }
+    fun setIncognitoMode(mode: Boolean){
+        viewModel.setIncognitoMode(mode)
+    }
 }

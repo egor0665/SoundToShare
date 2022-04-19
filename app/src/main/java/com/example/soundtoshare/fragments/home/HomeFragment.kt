@@ -13,7 +13,7 @@ import com.example.soundtoshare.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val viewModel : HomeFragmentViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,8 +42,8 @@ class HomeFragment : Fragment() {
             paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
             canvas.drawBitmap(avatar, rect, rect, paint)
             binding.avatar.setImageBitmap(output)
-            binding.firstName.text = it.firstName
-            binding.lastName.text = it.lastName
+            val fullName = it.firstName + " " + it.lastName
+            binding.fullName.text = fullName
         }
     }
     companion object {

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.soundtoshare.R
+import com.example.soundtoshare.main.MainActivity
 import com.google.android.gms.maps.SupportMapFragment
 
 class MapFragment : Fragment() {
@@ -74,6 +75,7 @@ class MapFragment : Fragment() {
         }
     }
 
+
     private fun startDeniedPermissionAlert() {
         val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
 
@@ -99,4 +101,5 @@ class MapFragment : Fragment() {
         val dialog: AlertDialog = alertDialogBuilder.create()
         dialog.show()
     }
+
 }
