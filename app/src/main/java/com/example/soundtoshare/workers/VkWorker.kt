@@ -7,7 +7,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.soundtoshare.apis.VkAPI
+import com.example.soundtoshare.external.VkAPI
 import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.concurrent.TimeUnit
 

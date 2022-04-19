@@ -1,4 +1,4 @@
-package com.example.soundtoshare.apis
+package com.example.soundtoshare.external
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

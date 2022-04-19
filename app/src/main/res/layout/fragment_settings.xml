@@ -76,4 +76,46 @@
             android:layout_marginTop="15sp"
             android:paddingStart="15sp" />
 
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonCheckStatus"
+            android:text="@string/check_song_visibility"
+            android:layout_width="match_parent"
+            android:layout_height="75sp"
+            android:textSize="20sp"
+            android:textAlignment="textStart"
+            android:fontFamily="@font/gotham_bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_below="@+id/buttonSignOut"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/textColor"
+
+            android:drawableStart="@drawable/ic_check"
+
+            tools:ignore="MissingConstraints"
+            android:drawablePadding="15sp"
+            app:layout_constraintTop_toBottomOf="@id/buttonIncognito"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="20dp"
+
+            android:layout_marginTop="15sp"
+            android:paddingStart="15sp" />
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"
+            android:text="For this app to work properly you need to enable song translation into status"
+            android:fontFamily="@font/gotham_medium"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/textColor"
+            android:layout_marginBottom="30dp"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

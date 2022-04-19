@@ -3,17 +3,17 @@
 
     <item
             android:id="@+id/home"
-            android:icon="@drawable/ic__home"
+            android:icon="@drawable/ic_home"
             android:title="Home" />
 
     <item
             android:id="@+id/map"
-            android:icon="@drawable/ic__map"
+            android:icon="@drawable/ic_map"
             android:title="Map" />
 
     <item
             android:id="@+id/settings"
-            android:icon="@drawable/ic__settings"
+            android:icon="@drawable/ic_settings"
             android:title="Settings" />
     <item
             android:id="@+id/sign_in"

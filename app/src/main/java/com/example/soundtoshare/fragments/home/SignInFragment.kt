@@ -20,7 +20,6 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignInBinding.inflate(inflater)
-
         return binding.root
     }
 

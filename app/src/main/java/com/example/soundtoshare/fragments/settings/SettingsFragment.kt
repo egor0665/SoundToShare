@@ -1,16 +1,20 @@
 package com.example.soundtoshare.fragments.settings
 
+import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.soundtoshare.main.MainActivity
 import com.example.soundtoshare.databinding.FragmentSettingsBinding
+import com.example.soundtoshare.main.MainActivity
+
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
+    private lateinit var viewModel: SettingsFragmentViewModel
+    private var incognitoMode = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,10 +22,9 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater)
+        viewModel = SettingsFragmentViewModel(this.requireContext())
 
-        val currentMode = (this.activity as MainActivity).incognito
-        if (currentMode) binding.buttonIncognito.text = "Incognito Mode: ON"
-        else binding.buttonIncognito.text = "Incognito Mode: OFF"
+        initIncognitoModeButton()
 
         return binding.root
     }
@@ -32,17 +35,33 @@ class SettingsFragment : Fragment() {
             (this.activity as MainActivity).vkSignOut()
         }
         binding.buttonIncognito.setOnClickListener {
-            val currentMode = (this.activity as MainActivity).incognito
-            (this.activity as MainActivity).incognito = !currentMode
-            (this.activity as MainActivity).setIncognitoMode(!currentMode)
-            if (currentMode) binding.buttonIncognito.text = "Incognito Mode: OFF"
-            else binding.buttonIncognito.text = "Incognito Mode: ON"
-            Toast.makeText(this.activity, "TODO", Toast.LENGTH_SHORT).show()
+            toggleIncognitoMode()
+        }
+        binding.buttonCheckStatus.setOnClickListener{
+            val toast = Toast.makeText(
+                this.requireContext(),
+                "TODO",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
-    companion object {
+    private fun toggleIncognitoMode() {
+        incognitoMode = !incognitoMode
+        viewModel.setIncognitoMode(incognitoMode)
+        if (incognitoMode) binding.buttonIncognito.text = incognitoOn
+        else binding.buttonIncognito.text = incognitoOff
+    }
 
+    private fun initIncognitoModeButton(){
+        incognitoMode = viewModel.getIncognitoMode()
+        if (incognitoMode) binding.buttonIncognito.text = incognitoOn
+        else binding.buttonIncognito.text = incognitoOff
+    }
+
+    companion object {
+        const val incognitoOff = "Incognito Mode: OFF"
+        const val incognitoOn = "Incognito Mode: ON"
         fun newInstance(): SettingsFragment {
             return SettingsFragment()
         }
