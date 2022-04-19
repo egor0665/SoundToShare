@@ -8,10 +8,17 @@ class SharedPreferenceUseCase(context: Context) {
     private var incognitoModeLoaded: Boolean = false
     private val sharedPreferences = SharedPreferences(context)
 
-    fun getIncognitoModeUseCase(): Boolean {
+    fun getIncognitoModeUseCase(getIncognitoModeUseCaseCallback : Boolean.() -> Unit) {
         if (!incognitoModeLoaded)
-            incognitoMode = sharedPreferences.getIncognitoMode()
-        return incognitoMode
+            sharedPreferences.getIncognitoMode {
+                incognitoMode = this
+                incognitoModeLoaded = true
+                getIncognitoModeUseCaseCallback(this)
+            }
+        else
+        {
+            getIncognitoModeUseCaseCallback(incognitoMode)
+        }
     }
 
     fun setIncognitoModeUseCase(mode: Boolean) {

@@ -2,6 +2,7 @@ package com.example.soundtoshare.fragments.home
 
 import android.graphics.Bitmap
 import com.example.soundtoshare.external.Network
+import com.example.soundtoshare.external.UserInfo
 import com.example.soundtoshare.external.VkAPI
 
 class VkGetDataUseCase {
@@ -22,4 +23,4 @@ class VkGetDataUseCase {
         }
     }
 }
-data class UserInfo(val avatar : Bitmap, val lastName : String, val firstName : String)
+

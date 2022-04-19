@@ -12,11 +12,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
+import com.example.soundtoshare.external.FullUserData
 
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private lateinit var viewModel: HomeFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,17 +25,18 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
+        viewModel = HomeFragmentViewModel()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.initViewModel()
+//        viewModel.initViewModel()
         startUserInfoObserving()
     }
 
     private fun startUserInfoObserving() {
-        viewModel.userInfo.observe(activity as LifecycleOwner) {
+        FullUserData.userInfo.observe(activity as LifecycleOwner) {
             val avatar = it.avatar
             val output = Bitmap.createBitmap(avatar.width, avatar.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(output)
