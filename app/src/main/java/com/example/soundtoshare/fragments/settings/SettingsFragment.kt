@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.example.soundtoshare.databinding.FragmentSettingsBinding
-import com.example.soundtoshare.external.FullUserData
+import com.example.soundtoshare.external.ObservableUserSongInfo
 import com.example.soundtoshare.main.MainActivity
 
 
@@ -55,7 +55,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun initIncognitoModeButton(){
-        FullUserData.incognitoMode.observe(activity as LifecycleOwner) {
+        ObservableUserSongInfo.incognitoMode.observe(activity as LifecycleOwner) {
             incognitoMode = it
             if (incognitoMode) binding.buttonIncognito.text = incognitoOn
             else binding.buttonIncognito.text = incognitoOff

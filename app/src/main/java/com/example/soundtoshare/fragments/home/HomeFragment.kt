@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleOwner
-import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
-import com.example.soundtoshare.external.FullUserData
+import com.example.soundtoshare.external.ObservableUserSongInfo
 
 
 class HomeFragment : Fragment() {
@@ -36,7 +32,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun startUserInfoObserving() {
-        FullUserData.userInfo.observe(activity as LifecycleOwner) {
+        ObservableUserSongInfo.userInfo.observe(activity as LifecycleOwner) {
             val avatar = it.avatar
             val output = Bitmap.createBitmap(avatar.width, avatar.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(output)
