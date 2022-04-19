@@ -12,13 +12,13 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
-class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>() {
+class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private var locationRepository = LocationRepository()
 
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
-            interval = 1000
+            interval = 10000
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             maxWaitTime = 10000
@@ -70,3 +70,6 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>() {
         )
     }
 }
+
+data class LocationModel(val longitude: Double, val latitude: Double)
+
