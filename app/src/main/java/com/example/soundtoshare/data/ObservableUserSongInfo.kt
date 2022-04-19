@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.vk.sdk.api.audio.dto.AudioAudio
 
-object FullUserData {
+object ObservableUserSongInfo {
     val userInfo: MutableLiveData<UserInfo> by lazy {
         MutableLiveData<UserInfo>()
     }

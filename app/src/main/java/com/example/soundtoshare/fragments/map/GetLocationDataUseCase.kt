@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.soundtoshare.external.ObservableUserSongInfo
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -16,7 +18,7 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>() {
 
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
-            interval = 10000
+            interval = 1000
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             maxWaitTime = 10000
@@ -25,9 +27,10 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>() {
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            locationResult
+            Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
-                if (location != null) {
+
+                if (location != null && ObservableUserSongInfo.incognitoMode.value == false) {
                     locationRepository.storeCurrentDeviceLocation(location)
                 }
             }

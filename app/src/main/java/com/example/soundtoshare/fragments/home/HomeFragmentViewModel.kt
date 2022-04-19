@@ -1,10 +1,8 @@
 package com.example.soundtoshare.fragments.home
 
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.soundtoshare.external.FullUserData
+import com.example.soundtoshare.external.ObservableUserSongInfo
 import com.vk.api.sdk.auth.VKScope
 
 class HomeFragmentViewModel : ViewModel() {
@@ -20,7 +18,7 @@ class HomeFragmentViewModel : ViewModel() {
 
     init {
         vkGetDataUseCase.getUserInfo {
-            FullUserData.userInfo.postValue(this)
+            ObservableUserSongInfo.userInfo.postValue(this)
         }
     }
 
