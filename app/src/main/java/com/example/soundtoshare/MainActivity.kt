@@ -6,7 +6,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import com.example.soundtoshare.databases.FirestoreDatabase
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
@@ -19,10 +18,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
     private lateinit var navigator: Navigator
-
-
-    // FireStore example
-//    var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +40,6 @@ class MainActivity : AppCompatActivity() {
         // Navigator
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
-        // FireStore example
-//        fireStoreDatabase.getClosest(37.4219983, -122.084)
 
         WorkManager.getInstance(applicationContext)
             .enqueue(

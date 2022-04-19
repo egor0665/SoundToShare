@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -26,7 +25,6 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            locationResult
             for (location in locationResult.locations) {
                 if (location != null) {
                     locationRepository.storeCurrentDeviceLocation(location)
@@ -68,4 +66,6 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
         )
     }
 }
+
+data class LocationModel(val longitude: Double, val latitude: Double)
 

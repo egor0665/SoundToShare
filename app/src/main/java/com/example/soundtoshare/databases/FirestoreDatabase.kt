@@ -1,8 +1,12 @@
 package com.example.soundtoshare.databases
 
+import android.location.Location
 import android.util.Log
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
@@ -33,11 +37,19 @@ class FirestoreDatabase {
             }
 
     }
-    fun getClosest(latitude: Double, longitude: Double){
+    fun getClosest(latitude: Double, longitude: Double, map: GoogleMap) {
+        users.clear()
 
         val center = GeoLocation(latitude, longitude)
+        val results = FloatArray(1)
+        Location.distanceBetween(
+            latitude, longitude,
+            map.projection.visibleRegion.latLngBounds.northeast.latitude, map.projection.visibleRegion.latLngBounds.northeast.longitude, results
+        )
         // Радиус поиска в метрах
-        val radiusInM = 100 * 1000.0
+        val radiusInM = results[0].toDouble()
+//        map.projection.visibleRegion.latLngBounds.
+        Log.d("Scale params", results[0].toString())
 
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -72,11 +84,33 @@ class FirestoreDatabase {
 
                     // matchingDocs contains the results
 
-                    matchingDocs.forEach { users.add(User(it.getField<GeoPoint>("geoPoint")!!,it.getField<String>("VKAccount").toString()))
-                    Log.d("Firestore" ,it.getField<GeoPoint>("geoPoint")!!.toString() + it.getField<String>("VKAccount").toString())}
-                    // ...
+                    matchingDocs.forEach {
+                        users.add(
+                            User(
+                                it.getField<GeoPoint>("geoPoint")!!,
+                                it.getField<String>("VKAccount").toString()
+                            )
+                        )
+                        Log.d(
+                            "Firestore",
+                            it.getField<GeoPoint>("geoPoint")!!
+                                .toString() + it.getField<String>("VKAccount").toString()
+                        )
+                    }
+
+                    val myVkAccount= "kek"
+                    users.forEach() { user ->
+                        if (user.VKAccount != myVkAccount) {
+                            val userIndicator = MarkerOptions()
+                                .position(LatLng(user.geoPoint.latitude, user.geoPoint.longitude))
+                                .title(user.VKAccount)
+                                .snippet("lat:" + user.geoPoint.latitude + ", lng:" + user.geoPoint.longitude)
+                            map.addMarker(userIndicator)
+                            Log.d("Placed user", user.VKAccount)
+                        }
+
+                    }
                 }
     }
-
 }
-data class User( val geoPoint: GeoPoint, val VKAccount: String){}
+data class User( val geoPoint: GeoPoint, val VKAccount: String)
