@@ -8,10 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.BuildConfig
+import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.example.soundtoshare.fragments.home.HomeFragment
 import com.example.soundtoshare.fragments.home.HomeFragmentViewModel
 import com.example.soundtoshare.fragments.home.SignInFragment
+import com.example.soundtoshare.fragments.map.MapFragment
+import com.example.soundtoshare.fragments.settings.SettingsFragment
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiConfig
@@ -23,21 +26,20 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navigator: Navigator
     internal lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
-    private lateinit var viewModel : MainActivityViewModel
-
-    var incognito = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = MainActivityViewModel(this)
-        incognito = viewModel.getIncognitoMode()
-
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        initVK()
+        initNavigator()
+        initOthers()
+
         setContentView(binding.root)
+    }
 
+    private fun initVK() {
         VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
-
         authVkLauncher = VK.login(this) { result: VKAuthenticationResult ->
             when (result) {
                 is VKAuthenticationResult.Success -> {
@@ -49,14 +51,16 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-        // Navigator
+    private fun initNavigator() {
         navigator = Navigator(supportFragmentManager, binding)
         navigator.setupListener()
-
         if (VK.isLoggedIn()) navigator.setFragment(HomeFragment())
         else navigator.setFragment(SignInFragment())
+    }
 
+    private fun initOthers() {
         WorkManager.getInstance(applicationContext)
             .enqueue(
                 OneTimeWorkRequest.Builder(VkWorker::class.java)
@@ -70,8 +74,5 @@ class MainActivity : AppCompatActivity() {
         VK.logout()
         VK.clearAccessToken(this)
         navigator.setFragment(SignInFragment())
-    }
-    fun setIncognitoMode(mode: Boolean){
-        viewModel.setIncognitoMode(mode)
     }
 }

@@ -34,10 +34,6 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
         }
     }
 
-    private fun toggleNavBar(status: Int) {
-        navView.visibility = status
-    }
-
     fun setupListener() {
         navView.setOnItemSelectedListener { menuItem ->
             Log.d("ScreenNavigator", menuItem.itemId.toString())
@@ -70,10 +66,14 @@ class Navigator(private val supportFragmentManager: FragmentManager, binding: Ac
                         }
                     }
                 }
-            } 
+            }
             fragmentTransaction.commit()
             Log.d("ScreenNavigator", supportFragmentManager.fragments.toString())
             return@setOnItemSelectedListener true
         }
+    }
+
+    private fun toggleNavBar(status: Int) {
+        navView.visibility = status
     }
 }

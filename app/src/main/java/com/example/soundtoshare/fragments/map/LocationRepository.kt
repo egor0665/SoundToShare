@@ -10,7 +10,7 @@ class LocationRepository {
     fun storeCurrentDeviceLocation(deviceLocation: Location) {
         Log.d("Location", "Location changed $deviceLocation")
         Log.d("Location", "Location changed " + deviceLocation.latitude + deviceLocation.longitude)
-        fireStoreDatabase.updateUserLocation(
+        fireStoreDatabase.updateUserInformation(
             deviceLocation.latitude,
             deviceLocation.longitude,
             "kek"

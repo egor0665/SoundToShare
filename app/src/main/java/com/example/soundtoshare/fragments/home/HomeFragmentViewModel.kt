@@ -1,15 +1,15 @@
 package com.example.soundtoshare.fragments.home
 
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.soundtoshare.external.FullUserData
 import com.vk.api.sdk.auth.VKScope
 
 class HomeFragmentViewModel : ViewModel() {
     private val vkGetDataUseCase = VkGetDataUseCase()
-    val userInfo: MutableLiveData<UserInfo> by lazy {
-        MutableLiveData<UserInfo>()
-    }
+
 
     fun signInVK(
         authLauncher: ActivityResultLauncher<Collection<VKScope>>,
@@ -18,9 +18,10 @@ class HomeFragmentViewModel : ViewModel() {
         authLauncher.launch(arrayList)
     }
 
-    fun initViewModel() {
+    init {
         vkGetDataUseCase.getUserInfo {
-            userInfo.postValue(this)
+            FullUserData.userInfo.postValue(this)
         }
     }
+
 }

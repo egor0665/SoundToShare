@@ -7,20 +7,18 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.soundtoshare.apis.VkAPI
+import com.example.soundtoshare.external.FullUserData
+import com.example.soundtoshare.external.VkAPI
 import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.concurrent.TimeUnit
 
 class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
-    val audio: MutableLiveData<AudioAudio> by lazy {
-        MutableLiveData<AudioAudio>()
-    }
 
     override fun doWork(): Result {
         VkAPI.fetchVkMusic {
-            audio.value = this
-            if (audio.value != null)
-                audio.value?.title?.let { Log.d("musicTitle", it) }
+            FullUserData.songData.postValue(this)
+            if (FullUserData.songData.value != null)
+                FullUserData.songData.value?.title?.let { Log.d("musicTitle", it) }
             else
                 Log.d("music:", "no info")
             WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")

@@ -16,11 +16,14 @@ class FirestoreDatabase {
     private val database = Firebase.firestore
     var users = mutableListOf<User>()
 
-    fun updateUserLocation(latitude: Double, longitude: Double, vkAccount: String) {
+    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String) {
+//        , song: String, artist: String
         val user = hashMapOf(
             "VKAccount" to vkAccount,
             "geoPoint" to GeoPoint(latitude, longitude),
-            "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude))
+            "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude)),
+//            "currentSong" to song,
+//            "currentArtist" to artist
         )
 
         database.collection("Users").document(vkAccount)

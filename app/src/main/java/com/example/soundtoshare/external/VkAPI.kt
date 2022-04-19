@@ -1,4 +1,4 @@
-package com.example.soundtoshare.apis
+package com.example.soundtoshare.external
 
 import android.util.Log
 import com.vk.api.sdk.VK
