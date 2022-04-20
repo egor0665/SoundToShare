@@ -1,8 +1,12 @@
-package com.example.soundtoshare.databases
+package com.example.soundtoshare.external
 
+import android.location.Location
 import android.util.Log
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
@@ -36,11 +40,19 @@ class FirestoreDatabase {
             }
     }
 
-    fun getClosest(latitude: Double, longitude: Double) {
+    fun getClosest(map: GoogleMap) {
+        users.clear()
+        val center = GeoLocation(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude)
 
-        val center = GeoLocation(latitude, longitude)
+        val results = FloatArray(1)
+        Location.distanceBetween(
+            map.cameraPosition.target.latitude,
+            map.cameraPosition.target.longitude,
+            map.projection.visibleRegion.latLngBounds.northeast.latitude,
+            map.projection.visibleRegion.latLngBounds.northeast.longitude, results
+        )
         // Радиус поиска в метрах
-        val radiusInM = 100 * 1000.0
+        val radiusInM = results[0].toDouble()
 
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -88,6 +100,19 @@ class FirestoreDatabase {
                             .toString() + it.getField<String>("VKAccount").toString()
                     )
                 }
+
+                val myVkAccount= "kek"
+                users.forEach() { user ->
+                    if (user.VKAccount != myVkAccount) {
+                        val userIndicator = MarkerOptions()
+                            .position(LatLng(user.geoPoint.latitude, user.geoPoint.longitude))
+                            .title(user.VKAccount)
+                            .snippet("lat:" + user.geoPoint.latitude + ", lng:" + user.geoPoint.longitude)
+                        map.addMarker(userIndicator)
+                        Log.d("Placed user", user.VKAccount)
+                    }
+                }
+
             }
     }
 }

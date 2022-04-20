@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.soundtoshare.R
 import com.example.soundtoshare.main.MainActivity
@@ -20,6 +21,7 @@ import com.google.android.gms.maps.SupportMapFragment
 
 class MapFragment : Fragment() {
     private lateinit var vmBinding: MapFragmentViewModel
+    private lateinit var customInfoWindowAdapter: CustomInfoWindowAdapter
 
     companion object {
         fun newInstance(): MapFragment {
@@ -31,7 +33,8 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         vmBinding = ViewModelProvider(this).get(MapFragmentViewModel::class.java)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        vmBinding.initMap(mapFragment)
+        customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity())
+        vmBinding.initMap(mapFragment, customInfoWindowAdapter)
         getLocationPermission()
     }
 
@@ -73,6 +76,14 @@ class MapFragment : Fragment() {
         vmBinding.getLocationData().observe(viewLifecycleOwner) {
             vmBinding.moveCamera(it)
         }
+        // Create the observer which updates the UI.
+        val browserIntentObserver = Observer<Intent> { newIntent ->
+            // Update the UI, in this case, a TextView.
+            requireActivity().startActivity(newIntent)
+        }
+
+        // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
+        vmBinding.browserIntent.observe(viewLifecycleOwner, browserIntentObserver)
     }
 
 
