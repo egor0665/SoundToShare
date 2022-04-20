@@ -2,14 +2,17 @@ package com.example.soundtoshare.fragments.map
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.util.Log
-import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.R
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -18,17 +21,25 @@ import com.google.android.gms.maps.model.Marker
 
 class MapFragmentViewModel(application: Application) : AndroidViewModel(application), OnMapReadyCallback,
     GoogleMap.OnCameraIdleListener,
-    GoogleMap.OnCameraMoveListener {
+    GoogleMap.OnCameraMoveListener,
+    GoogleMap.OnInfoWindowClickListener {
+
     private var map: GoogleMap? = null
     var locationPermissionGranted = false
+    private lateinit var customInfoWindowAdapter: CustomInfoWindowAdapter
     private val locationData = GetLocationDataUseCase(application)
     private lateinit var moveCameraUseCase: MoveCameraUseCase
     private lateinit var placeUsersUseCase: PlaceUsersUseCase
 
+    val browserIntent: MutableLiveData<Intent> by lazy {
+        MutableLiveData<Intent>()
+    }
+
     fun getLocationData() = locationData
 
-    fun initMap(mapFragment: SupportMapFragment?) {
+    fun initMap(mapFragment: SupportMapFragment?, customWindowAdapter: CustomInfoWindowAdapter) {
         mapFragment?.getMapAsync(this)
+        customInfoWindowAdapter = customWindowAdapter
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -42,15 +53,8 @@ class MapFragmentViewModel(application: Application) : AndroidViewModel(applicat
         updateLocationUI()
         moveCameraUseCase = MoveCameraUseCase(map)
         placeUsersUseCase = PlaceUsersUseCase(map)
-//        googleMap.setInfoWindowAdapter(object : InfoWindowAdapter {
-//            override fun getInfoWindow(marker: Marker): View? {
-//                return null
-//            }
-//
-//            override fun getInfoContents(marker: Marker): View? {
-//                return null
-//            }
-//        })
+        map?.setInfoWindowAdapter(customInfoWindowAdapter)
+        map?.setOnInfoWindowClickListener(this)
     }
 
     fun moveCamera(lastKnownLocation: LocationModel) {
@@ -76,5 +80,10 @@ class MapFragmentViewModel(application: Application) : AndroidViewModel(applicat
     override fun onCameraMove() {
         map?.clear()
         //placeUsersUseCase.getClosest(map!!.cameraPosition.target.latitude, map!!.cameraPosition.target.longitude)
+    }
+
+    override fun onInfoWindowClick(marker: Marker) {
+        Log.d("InfoWindowClick", "Clicked")
+        browserIntent.value = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
     }
 }

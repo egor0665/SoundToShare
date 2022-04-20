@@ -1,6 +1,6 @@
 package com.example.soundtoshare.fragments.map
 
-import com.example.soundtoshare.databases.FirestoreDatabase
+import com.example.soundtoshare.external.FirestoreDatabase
 import com.google.android.gms.maps.GoogleMap
 
 
@@ -9,7 +9,7 @@ class PlaceUsersUseCase(map: GoogleMap?) {
     private var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
 
     fun placeUsers() {
-        fireStoreDatabase.getClosest(googleMap!!.cameraPosition.target.latitude, googleMap.cameraPosition.target.longitude, googleMap)
+        fireStoreDatabase.getClosest(googleMap!!)
 //        if(fireStoreDatabase.users.isNotEmpty())
 //        {
 //            fireStoreDatabase.users.forEach() { user ->

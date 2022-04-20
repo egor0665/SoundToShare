@@ -2,7 +2,7 @@ package com.example.soundtoshare.fragments.map
 
 import android.location.Location
 import android.util.Log
-import com.example.soundtoshare.databases.FirestoreDatabase
+import com.example.soundtoshare.external.FirestoreDatabase
 
 class LocationRepository {
     var fireStoreDatabase: FirestoreDatabase = FirestoreDatabase()
