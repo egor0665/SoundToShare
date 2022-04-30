@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel by viewModel<HomeViewModel>()
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,7 +22,7 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
-//        viewModel = HomeViewModel()
+        viewModel.getUserInfo()
         return binding.root
     }
 

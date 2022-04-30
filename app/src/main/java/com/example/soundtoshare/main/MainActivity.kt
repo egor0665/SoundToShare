@@ -8,13 +8,12 @@ import androidx.work.WorkManager
 import com.example.soundtoshare.BuildConfig
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
-import com.example.soundtoshare.dependency_injection.domainDI
-import com.example.soundtoshare.dependency_injection.fragmentDI
+//import com.example.soundtoshare.dependency_injection.domainDI
+//import com.example.soundtoshare.dependency_injection.fragmentDI
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiConfig
-import org.koin.core.context.startKoin
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +28,6 @@ class MainActivity : AppCompatActivity() {
         initVK()
         initNavigator()
         initWorkers()
-        startKoin{modules(domainDI, fragmentDI)}
         setContentView(binding.root)
     }
 

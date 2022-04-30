@@ -5,8 +5,8 @@ import com.example.soundtoshare.repositories.VkAPIRepository
 import org.koin.core.scope.get
 import org.koin.dsl.module
 
-val domainDI = module {
-    single<VkGetDataUseCase> {
+val domainModule = module {
+    factory<VkGetDataUseCase> {
         VkGetDataUseCase(vkApiRepository = get())
     }
 }
