@@ -13,45 +13,41 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.soundtoshare.R
-import com.example.soundtoshare.main.MainActivity
+import com.example.soundtoshare.databinding.FragmentMapBinding
 import com.google.android.gms.maps.SupportMapFragment
 
 class MapFragment : Fragment() {
-    private lateinit var vmBinding: MapFragmentViewModel
+    private val viewModel by viewModels <MapFragmentViewModel> ()
     private lateinit var customInfoWindowAdapter: CustomInfoWindowAdapter
-
-    companion object {
-        fun newInstance(): MapFragment {
-            return MapFragment()
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        vmBinding = ViewModelProvider(this).get(MapFragmentViewModel::class.java)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity())
-        vmBinding.initMap(mapFragment, customInfoWindowAdapter)
-        getLocationPermission()
-    }
+    private lateinit var binding: FragmentMapBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        binding = FragmentMapBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //viewModel = ViewModelProvider(this).get(MapFragmentViewModel::class.java)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity())
+        viewModel.initMap(mapFragment, customInfoWindowAdapter)
+        getLocationPermission()
     }
 
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
-        vmBinding.locationPermissionGranted = isGranted
+        viewModel.locationPermissionGranted = isGranted
         if (isGranted) {
-            vmBinding.updateLocationUI()
+            viewModel.updateLocationUI()
             startLocationUpdate()
         } else {
             startDeniedPermissionAlert()
@@ -65,7 +61,7 @@ class MapFragment : Fragment() {
                 )
             == PackageManager.PERMISSION_GRANTED
         ) {
-            vmBinding.locationPermissionGranted = true
+            viewModel.locationPermissionGranted = true
             startLocationUpdate()
         } else {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -73,8 +69,8 @@ class MapFragment : Fragment() {
     }
 
     private fun startLocationUpdate() {
-        vmBinding.getLocationData().observe(viewLifecycleOwner) {
-            vmBinding.moveCamera(it)
+        viewModel.getLocationData().observe(viewLifecycleOwner) {
+            viewModel.cameraSetUp(it)
         }
         // Create the observer which updates the UI.
         val browserIntentObserver = Observer<Intent> { newIntent ->
@@ -83,7 +79,7 @@ class MapFragment : Fragment() {
         }
 
         // Observe the LiveData, passing in this activity as the LifecycleOwner and the observer.
-        vmBinding.browserIntent.observe(viewLifecycleOwner, browserIntentObserver)
+        viewModel.browserIntent.observe(viewLifecycleOwner, browserIntentObserver)
     }
 
 
@@ -113,4 +109,9 @@ class MapFragment : Fragment() {
         dialog.show()
     }
 
+    companion object {
+        fun newInstance(): MapFragment {
+            return MapFragment()
+        }
+    }
 }

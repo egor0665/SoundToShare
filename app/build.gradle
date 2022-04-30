@@ -38,6 +38,7 @@ android {
 
 dependencies {
     def work_version = "2.7.1"
+    def koin_version = "3.1.2"
     implementation 'com.google.firebase:firebase-firestore-ktx:23.0.2'
     implementation 'com.vk:android-sdk-core:3.5.2'
     implementation 'com.vk:android-sdk-api:3.5.2'
@@ -70,4 +71,8 @@ dependencies {
     // Firestore
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
+
+//    implementation "io.insert-koin:koin-android:$koin_version"
 }

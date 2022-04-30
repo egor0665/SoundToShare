@@ -57,7 +57,7 @@ class MapFragmentViewModel(application: Application) : AndroidViewModel(applicat
         map?.setOnInfoWindowClickListener(this)
     }
 
-    fun moveCamera(lastKnownLocation: LocationModel) {
+    fun cameraSetUp(lastKnownLocation: LocationModel) {
         moveCameraUseCase.moveAtDeviceCenter(lastKnownLocation)
     }
 

@@ -7,6 +7,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -30,9 +31,9 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
             Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
 
-                if (location != null && ObservableUserSongInfo.incognitoMode.value == false) {
-                    locationRepository.storeCurrentDeviceLocation(location)
-                }
+//                if (location != null && !SharedPreferencesRepository.getIncognitoMode()) {
+//                    locationRepository.storeCurrentDeviceLocation(location)
+//                }
             }
         }
     }

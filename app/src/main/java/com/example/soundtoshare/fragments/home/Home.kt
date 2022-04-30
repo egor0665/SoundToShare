@@ -9,11 +9,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.external.ObservableUserSongInfo
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class HomeFragment : Fragment() {
+class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: HomeFragmentViewModel
+    private val viewModel by viewModel<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,18 +22,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
-        viewModel = HomeFragmentViewModel()
+//        viewModel = HomeViewModel()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.initViewModel()
         startUserInfoObserving()
     }
 
     private fun startUserInfoObserving() {
-        ObservableUserSongInfo.userInfo.observe(activity as LifecycleOwner) {
+        ObservableUserSongInfo.getUserInfoLiveData().observe(activity as LifecycleOwner) {
             val avatar = it.avatar
             val output = Bitmap.createBitmap(avatar.width, avatar.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(output)
@@ -68,8 +68,8 @@ class HomeFragment : Fragment() {
 
     companion object {
 
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
+        fun newInstance(): Home {
+            return Home()
         }
     }
 }

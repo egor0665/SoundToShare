@@ -4,10 +4,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.ViewModel
 import com.example.soundtoshare.external.ObservableUserSongInfo
 import com.vk.api.sdk.auth.VKScope
-
-class HomeFragmentViewModel : ViewModel() {
-    private val vkGetDataUseCase = VkGetDataUseCase()
-
+class HomeViewModel(private val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
+//    private val vkGetDataUseCase = VkGetDataUseCase()
 
     fun signInVK(
         authLauncher: ActivityResultLauncher<Collection<VKScope>>,
@@ -18,8 +16,9 @@ class HomeFragmentViewModel : ViewModel() {
 
     init {
         vkGetDataUseCase.getUserInfo {
-            ObservableUserSongInfo.userInfo.postValue(this)
+            ObservableUserSongInfo.setUserInfo(this)
         }
     }
+
 
 }
