@@ -51,7 +51,7 @@ class FirestoreDatabase {
             map.projection.visibleRegion.latLngBounds.northeast.latitude,
             map.projection.visibleRegion.latLngBounds.northeast.longitude, results
         )
-        // Радиус поиска в метрах
+
         val radiusInM = results[0].toDouble()
 
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)

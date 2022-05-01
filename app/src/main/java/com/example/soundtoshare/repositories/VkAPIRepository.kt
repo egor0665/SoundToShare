@@ -1,6 +1,8 @@
-package com.example.soundtoshare.external
+package com.example.soundtoshare.repositories
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.example.soundtoshare.external.UserInfo
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiCallback
 import com.vk.sdk.api.audio.dto.AudioAudio
@@ -10,7 +12,16 @@ import com.vk.sdk.api.users.UsersService
 import com.vk.sdk.api.users.dto.UsersFields
 import com.vk.sdk.api.users.dto.UsersUserFull
 
-object VkAPI {
+class VkAPIRepository {
+
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
+    }
+
+    private val songData: MutableLiveData<AudioAudio> by lazy {
+        MutableLiveData<AudioAudio>()
+    }
+
     fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
         VK.execute(
             StatusService().statusGet(VK.getUserId()),
@@ -35,5 +46,25 @@ object VkAPI {
                 }
             }
         )
+    }
+
+    fun setUserInfo(_userInfo: UserInfo?) {
+        userInfo.postValue(_userInfo)
+    }
+
+    fun setSongData(_songData: AudioAudio?) {
+        songData.postValue(_songData)
+    }
+
+    fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
+        return userInfo
+    }
+
+    fun getSongDataLiveData(): MutableLiveData<AudioAudio> {
+        return songData
+    }
+
+    fun getUserInfo(): UserInfo? {
+        return userInfo.value
     }
 }

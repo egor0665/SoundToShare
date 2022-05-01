@@ -7,14 +7,14 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
-class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
+class GetLocationDataUseCase(context: Context, var locationRepository: LocationRepository, val sharedPreferencesRepository: SharedPreferencesRepository) : LiveData<LocationModel>()  {
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    private var locationRepository = LocationRepository()
 
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
@@ -30,7 +30,7 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
             Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
 
-                if (location != null && ObservableUserSongInfo.incognitoMode.value == false) {
+                if (location != null && !sharedPreferencesRepository.getIncognitoMode()) {
                     locationRepository.storeCurrentDeviceLocation(location)
                 }
             }

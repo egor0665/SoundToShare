@@ -7,13 +7,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.workers.VkWorker
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 
-class HomeFragment : Fragment() {
+class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: HomeFragmentViewModel
+    private val viewModel: HomeViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,18 +26,27 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
-        viewModel = HomeFragmentViewModel()
+        viewModel.getUserInfo()
+        initWorkers()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.initViewModel()
         startUserInfoObserving()
     }
 
+    private fun initWorkers() {
+        WorkManager.getInstance(requireContext())
+            .enqueue(
+                OneTimeWorkRequest.Builder(VkWorker::class.java)
+                    .addTag("VKMusic")
+                    .setInitialDelay(10, TimeUnit.SECONDS)
+                    .build()
+            )
+    }
     private fun startUserInfoObserving() {
-        ObservableUserSongInfo.userInfo.observe(activity as LifecycleOwner) {
+        ObservableUserSongInfo.getUserInfoLiveData().observe(activity as LifecycleOwner) {
             val avatar = it.avatar
             val output = Bitmap.createBitmap(avatar.width, avatar.height, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(output)
@@ -68,8 +82,8 @@ class HomeFragment : Fragment() {
 
     companion object {
 
-        fun newInstance(): HomeFragment {
-            return HomeFragment()
+        fun newInstance(): Home {
+            return Home()
         }
     }
 }
