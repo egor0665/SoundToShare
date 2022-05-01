@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.soundtoshare.R
-import com.example.soundtoshare.external.ObservableUserSongInfo
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.model.Marker
 
@@ -19,10 +18,10 @@ class CustomInfoWindowAdapter(private val context: Activity) : InfoWindowAdapter
         val tvSnippet = view.findViewById<TextView>(R.id.snippet)
         val tvAvatar = view.findViewById<ImageView>(R.id.infoWindowAvatar)
 
-        tvTitle.text = ObservableUserSongInfo.getUserInfo()?.lastName
-        tvSnippet.text = marker.snippet
-        tvAvatar.setImageBitmap(ObservableUserSongInfo.getUserInfo()?.avatar)
-        view.findViewById<TextView>(R.id.song_name).text = "Kanye East"//ObservableUserSongInfo.songData.value?.title
+//        tvTitle.text = ObservableUserSongInfo.getUserInfo()?.lastName
+//        tvSnippet.text = marker.snippet
+//        tvAvatar.setImageBitmap(ObservableUserSongInfo.getUserInfo()?.avatar)
+//        view.findViewById<TextView>(R.id.song_name).text = "Kanye East"//ObservableUserSongInfo.songData.value?.title
     }
 
     override fun getInfoContents(marker: Marker): View {

@@ -13,7 +13,7 @@ val domainModule = module {
     }
 
     factory<GetLocationDataUseCase> {
-        GetLocationDataUseCase(get(),get(), get())
+        GetLocationDataUseCase(get(),get(), get(), get())
     }
 
     factory<SharedPreferenceUseCase> {

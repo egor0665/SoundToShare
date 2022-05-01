@@ -10,11 +10,9 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.databinding.FragmentHomeBinding
-import com.example.soundtoshare.external.ObservableUserSongInfo
 import com.example.soundtoshare.workers.VkWorker
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
-
 
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -26,7 +24,7 @@ class Home : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
-        viewModel.getUserInfo()
+        viewModel.loadUserInfo()
         initWorkers()
         return binding.root
     }
@@ -46,26 +44,9 @@ class Home : Fragment() {
             )
     }
     private fun startUserInfoObserving() {
-        ObservableUserSongInfo.getUserInfoLiveData().observe(activity as LifecycleOwner) {
-            val avatar = it.avatar
-            val output = Bitmap.createBitmap(avatar.width, avatar.height, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(output)
-            val paint = Paint()
-            val rect = Rect(0, 0, avatar.width, avatar.height)
-            val rectF = RectF(Rect(0, 0, avatar.width, avatar.height))
-            paint.isAntiAlias = true
-            canvas.drawARGB(0, 0, 0, 0)
-            paint.color = -0xbdbdbe
-            canvas.drawRoundRect(
-                rectF,
-                binding.avatar.height.toFloat(),
-                binding.avatar.height.toFloat(),
-                paint
-            )
-            paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-            canvas.drawBitmap(avatar, rect, rect, paint)
-            binding.avatar.setImageBitmap(output)
 
+        viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
+            binding.avatar.setImageBitmap(it.avatar)
             val fullName = it.firstName + " " + it.lastName
             binding.fullName.text = fullName
             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE

@@ -1,8 +1,8 @@
 package com.example.soundtoshare.repositories
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.example.soundtoshare.external.UserInfo
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiCallback
 import com.vk.sdk.api.audio.dto.AudioAudio
@@ -27,9 +27,11 @@ class VkAPIRepository {
             StatusService().statusGet(VK.getUserId()),
             object : VKApiCallback<StatusStatus> {
                 override fun success(result: StatusStatus) {
+                    songData.postValue(result.audio)
                     fetchVkMusicCallback(result.audio)
                 }
                 override fun fail(error: Exception) {
+                    songData.postValue(null)
                     Log.e("error", error.toString())
                 }
             }
@@ -67,4 +69,9 @@ class VkAPIRepository {
     fun getUserInfo(): UserInfo? {
         return userInfo.value
     }
+
+    fun getSongData(): AudioAudio? {
+        return songData.value
+    }
+
 }
