@@ -13,13 +13,15 @@ import com.google.android.gms.maps.model.Marker
 class CustomInfoWindowAdapter(private val context: Activity) : InfoWindowAdapter {
     private var mWindow: View = context.layoutInflater.inflate(R.layout.custom_info_window, null)
 
-    private fun renderWindowText(marker: Marker, view: View){
+    private fun renderWindowText(marker: Marker, view: View) {
 
-        val tvTitle = view.findViewById<TextView>(R.id.title)
+        val tvFirstName = view.findViewById<TextView>(R.id.firstName)
+        val tvLastName = view.findViewById<TextView>(R.id.lastName)
         val tvSnippet = view.findViewById<TextView>(R.id.snippet)
         val tvAvatar = view.findViewById<ImageView>(R.id.infoWindowAvatar)
 
-        tvTitle.text = ObservableUserSongInfo.getUserInfo()?.lastName
+        tvFirstName.text = ObservableUserSongInfo.getUserInfo()?.firstName
+        tvLastName.text = ObservableUserSongInfo.getUserInfo()?.lastName
         tvSnippet.text = marker.snippet
         tvAvatar.setImageBitmap(ObservableUserSongInfo.getUserInfo()?.avatar)
         view.findViewById<TextView>(R.id.song_name).text = "Kanye East"//ObservableUserSongInfo.songData.value?.title
