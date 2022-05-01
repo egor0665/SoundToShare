@@ -6,14 +6,15 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.repositories.LocationRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
+import com.example.soundtoshare.repositories.VkAPIRepository
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
-class GetLocationDataUseCase(context: Context, var locationRepository: LocationRepository, val sharedPreferencesRepository: SharedPreferencesRepository) : LiveData<LocationModel>()  {
+class GetLocationDataUseCase(context: Context, var locationRepository: LocationRepository, val sharedPreferencesRepository: SharedPreferencesRepository, vkAPIRepository: VkAPIRepository) : LiveData<LocationModel>()  {
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     companion object {
@@ -30,8 +31,11 @@ class GetLocationDataUseCase(context: Context, var locationRepository: LocationR
             Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
 
-                if (location != null && !sharedPreferencesRepository.getIncognitoMode()) {
-                    locationRepository.storeCurrentDeviceLocation(location)
+                if (location != null && !sharedPreferencesRepository.getIncognitoMode() && vkAPIRepository.getSongData()!= null && vkAPIRepository.getSongData()!!.title.isNotEmpty()) {
+                    val fullName = vkAPIRepository.getUserInfo()!!.firstName + " " + vkAPIRepository.getUserInfo()!!.lastName
+                    val song = vkAPIRepository.getSongData()!!.title
+                    val artist = vkAPIRepository.getSongData()!!.artist
+                    locationRepository.storeCurrentDeviceLocation(location, fullName, song, artist)
                 }
             }
         }

@@ -15,19 +15,19 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
+import com.vk.sdk.api.audio.dto.AudioAudio
 
 class FirestoreDatabase {
     private val database = Firebase.firestore
     var users = mutableListOf<User>()
 
-    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String) {
-//        , song: String, artist: String
+    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String) {
         val user = hashMapOf(
             "VKAccount" to vkAccount,
             "geoPoint" to GeoPoint(latitude, longitude),
             "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude)),
-//            "currentSong" to song,
-//            "currentArtist" to artist
+            "currentSong" to song,
+            "currentArtist" to artist
         )
 
         database.collection("Users").document(vkAccount)
