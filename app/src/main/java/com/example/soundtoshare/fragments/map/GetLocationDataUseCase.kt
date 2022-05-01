@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.soundtoshare.repositories.LocationModel
 import com.example.soundtoshare.repositories.LocationRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
@@ -75,5 +76,5 @@ class GetLocationDataUseCase(context: Context, var locationRepository: LocationR
     }
 }
 
-data class LocationModel(val longitude: Double, val latitude: Double)
+
 

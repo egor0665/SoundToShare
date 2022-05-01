@@ -2,6 +2,7 @@ package com.example.soundtoshare.external
 
 import android.location.Location
 import android.util.Log
+import com.example.soundtoshare.repositories.User
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.GoogleMap
@@ -117,4 +118,4 @@ class FirestoreDatabase {
     }
 }
 
-data class User(val geoPoint: GeoPoint, val VKAccount: String)
+
