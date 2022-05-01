@@ -38,7 +38,6 @@ open class Navigator(
         }
         transaction.commitNow()
     }
-
 }
 
 sealed class Screen {

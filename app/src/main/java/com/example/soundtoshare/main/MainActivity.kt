@@ -2,6 +2,7 @@ package com.example.soundtoshare.main
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
@@ -17,7 +18,7 @@ import com.vk.api.sdk.VKApiConfig
 import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var navigator: HomeNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                 if (VK.isLoggedIn()) {
                     navigator.setScreen(Screen.Home)
                 } else {
+                    binding.navView.visibility = View.INVISIBLE
                     navigator.setScreen(Screen.SignIn)
                 }
             }
