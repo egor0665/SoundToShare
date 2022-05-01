@@ -7,28 +7,33 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.fragments.home.HomeViewModel
 import com.example.soundtoshare.repositories.VkAPIRepository
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.concurrent.TimeUnit
 
-class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
-
+class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params),
+    KoinComponent {
+    private val viewModel: HomeViewModel by inject()
     override fun doWork(): Result {
-//        VkAPIRepository.fetchVkMusic {
-//            ObservableUserSongInfo.setSongData(this)
-//            if (ObservableUserSongInfo.getSongData() != null) {
-////                    ObservableUserSongInfo.songData.value?.title?.let { Log.d("musicTitle", it) }
-//            }
-//            else
-//                Log.d("music:", "no info")
-//            WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
-//            WorkManager.getInstance(applicationContext)
-//                .enqueue(
-//                    OneTimeWorkRequest.Builder(VkWorker::class.java)
-//                        .addTag("VKMusic")
-//                        .setInitialDelay(20, TimeUnit.SECONDS)
-//                        .build()
-//                )
-//        }
+        viewModel.fetchVkMusicViewModel {
+            ObservableUserSongInfo.setSongData(this)
+            if (ObservableUserSongInfo.getSongData() != null) {
+//                    ObservableUserSongInfo.songData.value?.title?.let { Log.d("musicTitle", it) }
+            }
+            else
+                Log.d("music:", "no info")
+            WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
+            WorkManager.getInstance(applicationContext)
+                .enqueue(
+                    OneTimeWorkRequest.Builder(VkWorker::class.java)
+                        .addTag("VKMusic")
+                        .setInitialDelay(20, TimeUnit.SECONDS)
+                        .build()
+                )
+        }
         return Result.success()
     }
 }

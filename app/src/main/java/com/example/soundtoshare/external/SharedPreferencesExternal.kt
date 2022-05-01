@@ -7,12 +7,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SharedPreferencesExternal {
-    private lateinit var preferences: SharedPreferences
-
-    fun initialize(context: Context) {
-        preferences = context.getSharedPreferences(sharedPreferenceName, Context.MODE_PRIVATE)!!
-    }
+class SharedPreferencesExternal(context: Context) {
+    private val preferences = context.getSharedPreferences(sharedPreferenceName, Context.MODE_PRIVATE)!!
 
     fun getIncognitoMode( getIncognitoModeCallback: Boolean.() -> Unit){
         CoroutineScope(Dispatchers.IO).launch {

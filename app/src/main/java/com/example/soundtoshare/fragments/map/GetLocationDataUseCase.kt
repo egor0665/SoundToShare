@@ -13,9 +13,8 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
-class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
+class GetLocationDataUseCase(context: Context, var locationRepository: LocationRepository, val sharedPreferencesRepository: SharedPreferencesRepository) : LiveData<LocationModel>()  {
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    private var locationRepository = LocationRepository()
 
     companion object {
         val locationRequest: LocationRequest = LocationRequest.create().apply {
@@ -31,9 +30,9 @@ class GetLocationDataUseCase(context: Context) : LiveData<LocationModel>()  {
             Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
 
-//                if (location != null && !SharedPreferencesRepository.getIncognitoMode()) {
-//                    locationRepository.storeCurrentDeviceLocation(location)
-//                }
+                if (location != null && !sharedPreferencesRepository.getIncognitoMode()) {
+                    locationRepository.storeCurrentDeviceLocation(location)
+                }
             }
         }
     }

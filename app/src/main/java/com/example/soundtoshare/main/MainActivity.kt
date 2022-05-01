@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         initRepos()
         initVK()
         initNavigator()
-        initWorkers()
+//        initWorkers()
         setContentView(binding.root)
     }
 
@@ -66,16 +66,6 @@ class MainActivity : AppCompatActivity() {
                     navigator.setScreen(Screen.SignIn)
                 }
             }
-        }
-
-        private fun initWorkers() {
-            WorkManager.getInstance(applicationContext)
-                .enqueue(
-                    OneTimeWorkRequest.Builder(VkWorker::class.java)
-                        .addTag("VKMusic")
-                        .setInitialDelay(10, TimeUnit.SECONDS)
-                        .build()
-                )
         }
 
         fun vkSignOut() {

@@ -18,9 +18,10 @@ import androidx.lifecycle.Observer
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentMapBinding
 import com.google.android.gms.maps.SupportMapFragment
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : Fragment() {
-    private val viewModel by viewModels <MapFragmentViewModel> ()
+    private val viewModel: MapFragmentViewModel by viewModel()
     private lateinit var customInfoWindowAdapter: CustomInfoWindowAdapter
     private lateinit var binding: FragmentMapBinding
 
@@ -69,7 +70,7 @@ class MapFragment : Fragment() {
     }
 
     private fun startLocationUpdate() {
-        viewModel.getLocationData().observe(viewLifecycleOwner) {
+        viewModel.getLocationDataViewModel().observe(viewLifecycleOwner) {
             viewModel.cameraSetUp(it)
         }
         // Create the observer which updates the UI.

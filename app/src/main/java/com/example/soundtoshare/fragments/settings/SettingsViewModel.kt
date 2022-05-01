@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 
-class SettingsViewModel(context: Context) : ViewModel() {
-    private val sharedPreferenceUseCase = SharedPreferenceUseCase(context)
+class SettingsViewModel(context: Context, val sharedPreferenceUseCase: SharedPreferenceUseCase) : ViewModel() {
 
     fun setIncognitoMode(mode: Boolean) {
         sharedPreferenceUseCase.setIncognitoModeUseCase(mode)

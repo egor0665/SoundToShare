@@ -5,15 +5,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.external.SharedPreferencesExternal
 
-class SharedPreferencesRepository{
-    private val sharedPreferences = SharedPreferencesExternal()
+class SharedPreferencesRepository(context: Context, val sharedPreferences: SharedPreferencesExternal){
     private val incognitoMode: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
-    fun initialize(context: Context) {
-        Log.d("SharedPreference","PreferencesInitialised1")
-        sharedPreferences.initialize(context)
+    init{
         sharedPreferences.getIncognitoMode {
             incognitoMode.postValue(this)
             Log.d("SharedPreference","PreferencesInitialised2")

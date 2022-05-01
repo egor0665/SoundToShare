@@ -10,11 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.example.soundtoshare.databinding.FragmentSettingsBinding
 import com.example.soundtoshare.main.MainActivity
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Settings : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,7 +22,6 @@ class Settings : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingsBinding.inflate(inflater)
-        viewModel = SettingsViewModel(this.requireContext())
 
         initIncognitoModeButton()
 

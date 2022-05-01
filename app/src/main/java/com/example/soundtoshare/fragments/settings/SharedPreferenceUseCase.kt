@@ -6,11 +6,9 @@ import com.example.soundtoshare.external.SharedPreferencesExternal
 import com.example.soundtoshare.main.MainActivity
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 
-class SharedPreferenceUseCase(context: Context) {
-    private val sharedPreferencesRepository = SharedPreferencesRepository()
-
+class SharedPreferenceUseCase(context: Context,val sharedPreferencesRepository: SharedPreferencesRepository ) {
     init {
-        sharedPreferencesRepository.initialize(context)
+//        sharedPreferencesRepository.initialize(context)
     }
 
     fun setIncognitoModeUseCase(mode: Boolean) {

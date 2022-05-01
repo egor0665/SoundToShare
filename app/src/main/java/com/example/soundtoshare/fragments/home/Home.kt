@@ -7,9 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.workers.VkWorker
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.concurrent.TimeUnit
 
 
 class Home : Fragment() {
@@ -23,6 +27,7 @@ class Home : Fragment() {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater)
         viewModel.getUserInfo()
+        initWorkers()
         return binding.root
     }
 
@@ -31,6 +36,15 @@ class Home : Fragment() {
         startUserInfoObserving()
     }
 
+    private fun initWorkers() {
+        WorkManager.getInstance(requireContext())
+            .enqueue(
+                OneTimeWorkRequest.Builder(VkWorker::class.java)
+                    .addTag("VKMusic")
+                    .setInitialDelay(10, TimeUnit.SECONDS)
+                    .build()
+            )
+    }
     private fun startUserInfoObserving() {
         ObservableUserSongInfo.getUserInfoLiveData().observe(activity as LifecycleOwner) {
             val avatar = it.avatar
