@@ -22,13 +22,13 @@ class VkAPIRepository {
         MutableLiveData<AudioAudio>()
     }
 
-    fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
+    fun fetchVkMusic(fetchVkMusicCallback: () -> Unit) {
         VK.execute(
             StatusService().statusGet(VK.getUserId()),
             object : VKApiCallback<StatusStatus> {
                 override fun success(result: StatusStatus) {
                     songData.postValue(result.audio)
-                    fetchVkMusicCallback(result.audio)
+                    fetchVkMusicCallback()
                 }
                 override fun fail(error: Exception) {
                     songData.postValue(null)

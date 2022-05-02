@@ -26,9 +26,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         vkGetDataUseCase.loadUserInfo()
     }
 
-    fun fetchVkMusicViewModel(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
+    fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
         vkGetDataUseCase.fetchVkMusicUseCase{
-            fetchVkMusicCallback(this)
+            fetchVkMusicCallback()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.soundtoshare.fragments.map
 
+import com.example.soundtoshare.repositories.LocationModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
