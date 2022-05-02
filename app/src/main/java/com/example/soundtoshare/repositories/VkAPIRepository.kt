@@ -1,6 +1,5 @@
 package com.example.soundtoshare.repositories
 
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.vk.api.sdk.VK
@@ -38,10 +37,10 @@ class VkAPIRepository {
         )
     }
 
-    fun getUserInfoRepository(getUserInfoRepositoryCallBack: ArrayList<String>.() -> Unit) {
+    fun getUserInfoRepository() {
         VK.execute(UsersService().usersGet(arrayListOf(VK.getUserId()) ,arrayListOf(UsersFields.PHOTO_200)), object : VKApiCallback<List<UsersUserFull>> {
             override fun success(result: List<UsersUserFull>) {
-                getUserInfoRepositoryCallBack(arrayListOf(result[0].photo200.toString(),result[0].lastName.toString(), result[0].firstName.toString()))
+                setUserInfo(UserInfo(result[0].photo200.toString(),result[0].lastName.toString(), result[0].firstName.toString()))
             }
                 override fun fail(error: Exception) {
                     Log.e("error", error.toString())
