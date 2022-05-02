@@ -26,7 +26,9 @@ class VkAPIRepository {
             StatusService().statusGet(VK.getUserId()),
             object : VKApiCallback<StatusStatus> {
                 override fun success(result: StatusStatus) {
+                    // ЗАПРОС ДЛЯ ПОИСКА МУЗЫКИ: https://m.vk.com/audio?q=МАЛИНОВАЯ%20ЛАДА
                     songData.postValue(result.audio)
+                    Log.d("Music", result.audio?.title.toString())
                     fetchVkMusicCallback()
                 }
                 override fun fail(error: Exception) {
