@@ -10,7 +10,7 @@ import com.vk.sdk.api.audio.dto.AudioAudio
 
 class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 //    private val vkGetDataUseCase = VkGetDataUseCase()
-
+    private val firebaseGetDataUseCase: FireBaseGetDataUseCase()
     init{
         Log.d("ViewModel", "Created ViewModel")
     }
@@ -23,7 +23,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 
     fun loadUserInfo() {
         Log.d("test","KoinViewModel")
-        vkGetDataUseCase.loadUserInfo()
+        vkGetDataUseCase.loadUserInfo(){
+            firebaseGetDataUseCase.getReactions(this)
+        }
     }
 
     fun fetchVkMusicViewModel(fetchVkMusicCallback: AudioAudio?.() -> Unit) {

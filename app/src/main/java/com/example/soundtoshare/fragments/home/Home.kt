@@ -26,6 +26,11 @@ class Home : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         viewModel.loadUserInfo()
         initWorkers()
+
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = CustomRecyclerAdapter(fillList())
+
         return binding.root
     }
 
@@ -43,6 +48,7 @@ class Home : Fragment() {
                     .build()
             )
     }
+
     private fun startUserInfoObserving() {
 
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
@@ -53,6 +59,13 @@ class Home : Fragment() {
 //            startOnLoadAnimation()
         }
     }
+
+    private fun fillList(): List<String> {
+        val data = mutableListOf<String>()
+        (0..30).forEach { i -> data.add("$i element") }
+        return data
+    }
+
 
 //    private fun startOnLoadAnimation() {
 //        val animation: Animation =

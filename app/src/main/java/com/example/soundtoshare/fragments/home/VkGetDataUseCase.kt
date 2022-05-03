@@ -2,6 +2,7 @@ package com.example.soundtoshare.fragments.home
 
 import android.graphics.*
 import androidx.lifecycle.MutableLiveData
+import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.external.Network
 import com.example.soundtoshare.repositories.UserInfo
 import com.example.soundtoshare.repositories.VkAPIRepository
@@ -10,9 +11,13 @@ import com.vk.sdk.api.audio.dto.AudioAudio
 class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
 //    private val vkApi = VkAPIRepository
     private val network = Network()
-    fun loadUserInfo() {
+    private val firestoreDatabase = FirestoreDatabase()
+    fun loadUserInfo(loadUserInfoCallback: String.() -> Unit) {
         vkApiRepository.getUserInfoRepository {
             val listUserInfo = this
+            // move to FirebaseUseCase
+            firestoreDatabase.setUserInfo(listUserInfo[1] + " " + listUserInfo[2], listUserInfo[3])
+            loadUserInfoCallback(listUserInfo[3])
             loadAvatar (listUserInfo[0]){
                 val avatar = this
                 val output = Bitmap.createBitmap(avatar.width, avatar.height, Bitmap.Config.ARGB_8888)
@@ -31,7 +36,7 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
                 )
                 paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
                 canvas.drawBitmap(avatar, rect, rect, paint)
-               vkApiRepository.setUserInfo(UserInfo(output,listUserInfo[1],listUserInfo[2]))
+               vkApiRepository.setUserInfo(UserInfo(output,listUserInfo[1],listUserInfo[2],listUserInfo[3]))
             }
         }
     }
