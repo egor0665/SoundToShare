@@ -39,7 +39,7 @@ class Settings : Fragment() {
         binding.buttonCheckStatus.setOnClickListener{
             Toast.makeText(
                 this.requireContext(),
-                "TODO",
+                "biiiiiiiiiiiiiiiiiiiiiig text",
                 Toast.LENGTH_SHORT
             ).show()
         }

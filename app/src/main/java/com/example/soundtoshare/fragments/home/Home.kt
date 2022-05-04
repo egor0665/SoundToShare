@@ -1,14 +1,20 @@
 package com.example.soundtoshare.fragments.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.databinding.FragmentHomeBinding
+import com.example.soundtoshare.recycler_view.CustomRecyclerAdapter
+import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.workers.VkWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -30,6 +36,12 @@ class Home : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         viewModel.loadUserInfo()
         initWorkers()
+
+        val recyclerView: RecyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
+                recyclerView.adapter = CustomRecyclerAdapter(it)
+        }
         return binding.root
     }
 
@@ -47,6 +59,7 @@ class Home : Fragment() {
                     .build()
             )
     }
+
     private fun startUserInfoObserving() {
 
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
@@ -60,6 +73,13 @@ class Home : Fragment() {
 //            startOnLoadAnimation()
         }
     }
+
+//    private fun fillList(): List<String> {
+//        val data = mutableListOf<String>()
+//        (0..30).forEach { i -> data.add("$i element") }
+//        return data
+//    }
+
 
 //    private fun startOnLoadAnimation() {
 //        val animation: Animation =
