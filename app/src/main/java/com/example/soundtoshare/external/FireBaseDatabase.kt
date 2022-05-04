@@ -1,74 +1,52 @@
 package com.example.soundtoshare.external
 
 import android.util.Log
+import com.example.soundtoshare.repositories.Reaction
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import org.json.JSONObject
+import org.json.JSONTokener
 
 class FireBaseDatabase {
     private var database = Firebase.database.reference
-    val childEventListener = object : ChildEventListener {
-        override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("firebase", "onChildAdded:" + dataSnapshot.key!!)
+
+    fun startListening(vkId: String, listeningCallback: DataSnapshot.() -> Unit ){
+        val childEventListener = object : ChildEventListener {
+            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                Log.d("firebase", "onChildAdded:" + dataSnapshot.key!!)
+                listeningCallback(dataSnapshot)
+            }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                Log.d("firebase", "onChildChanged: ${dataSnapshot.key}")
+            }
+
+            override fun onChildRemoved(dataSnapshot: DataSnapshot) {
+                Log.d("firebase", "onChildRemoved:" + dataSnapshot.key!!)
+            }
+
+            override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                Log.d("firebase", "onChildMoved:" + dataSnapshot.key!!)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("firebase", "postComments:onCancelled", databaseError.toException())
+            }
         }
-
-        override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("firebase", "onChildChanged: ${dataSnapshot.key}")
-
-            // A comment has changed, use the key to determine if we are displaying this
-            // comment and if so displayed the changed comment.
-//            val newComment = dataSnapshot.getValue<Comment>()
-//            val commentKey = dataSnapshot.key
-
-            // ...
-        }
-
-        override fun onChildRemoved(dataSnapshot: DataSnapshot) {
-            Log.d("firebase", "onChildRemoved:" + dataSnapshot.key!!)
-
-            // A comment has changed, use the key to determine if we are displaying this
-            // comment and if so remove it.
-//            val commentKey = dataSnapshot.key
-
-            // ...
-        }
-
-        override fun onChildMoved(dataSnapshot: DataSnapshot, previousChildName: String?) {
-            Log.d("firebase", "onChildMoved:" + dataSnapshot.key!!)
-
-            // A comment has changed position, use the key to determine if we are
-            // displaying this comment and if so move it.
-//            val movedComment = dataSnapshot.getValue<Comment>()
-//            val commentKey = dataSnapshot.key
-
-            // ...
-        }
-
-        override fun onCancelled(databaseError: DatabaseError) {
-            Log.d("firebase", "postComments:onCancelled", databaseError.toException())
-//            Toast.makeText(
-//                context, "Failed to load comments.",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
-            // ...
-        }
+        database.child("reaction").child(vkId).addChildEventListener(childEventListener)
     }
 
-    fun startListening(vkId: String){
-        database.child(vkId).addChildEventListener(childEventListener)
-    }
-
-    fun getReactions(vkId: String, getReactionsCallback: Any.() -> Unit) {
+    fun getReactions(vkId: String, getReactionsCallback: DataSnapshot.() -> Unit) {
+        Log.d("firebase", "vk id:"+vkId)
         database.child("reaction")
-            .equalTo(vkId)
+            .child(vkId)
             .get()
             .addOnSuccessListener {
-                getReactionsCallback(it.value!!)
-                it.
+                getReactionsCallback(it)
                 Log.d("firebase", "Got value ${it.value}")
             }.addOnFailureListener {
                 Log.d("firebase", "Error getting data", it)

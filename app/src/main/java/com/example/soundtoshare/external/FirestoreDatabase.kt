@@ -23,6 +23,7 @@ class FirestoreDatabase {
     var users = mutableListOf<User>()
 
     fun setUserInfo(vkAccount: String, vkId: String){
+        Log.d("Firebase", vkAccount+ " " +vkId)
         val userInfo = hashMapOf(
             "VKAccount" to vkAccount,
             "vkId" to vkId
@@ -33,7 +34,7 @@ class FirestoreDatabase {
                 Log.d("Firestore", "DocumentSnapshot added  ")
             }
             .addOnFailureListener { e ->
-                Log.w("Firestore", "Error adding document", e)
+                Log.w("Firestore", "Error adding document UserInfo", e)
             }
     }
     fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String) {
