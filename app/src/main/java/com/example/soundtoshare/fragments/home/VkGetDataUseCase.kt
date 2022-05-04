@@ -2,7 +2,6 @@ package com.example.soundtoshare.fragments.home
 
 import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.external.FirestoreDatabase
-import com.example.soundtoshare.external.Network
 import com.example.soundtoshare.repositories.UserInfo
 import com.example.soundtoshare.repositories.VkAPIRepository
 import com.vk.sdk.api.audio.dto.AudioAudio
