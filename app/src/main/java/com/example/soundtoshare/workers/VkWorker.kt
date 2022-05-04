@@ -9,6 +9,7 @@ import androidx.work.WorkerParameters
 import com.example.soundtoshare.fragments.home.HomeViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params),
@@ -16,7 +17,7 @@ class VkWorker(context: Context, params: WorkerParameters) : Worker(context, par
     private val viewModel: HomeViewModel by inject()
     override fun doWork(): Result {
         viewModel.fetchVkMusicViewModel {
-            Log.d("VKmusic", this?.title ?: "no songs?")
+            Log.d("Worker", "Worker stop at:" + Calendar.getInstance().time.toString())
             WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
             WorkManager.getInstance(applicationContext)
                 .enqueue(

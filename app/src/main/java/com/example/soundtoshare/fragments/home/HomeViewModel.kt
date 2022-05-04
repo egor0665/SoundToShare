@@ -42,9 +42,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         return reactions
     }
 
-    fun fetchVkMusicViewModel(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
+    fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
         vkGetDataUseCase.fetchVkMusicUseCase{
-            fetchVkMusicCallback(this)
+            fetchVkMusicCallback()
         }
     }
 

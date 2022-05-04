@@ -72,6 +72,8 @@ dependencies {
     // KOIN
     implementation "io.insert-koin:koin-core:$koin_version"
     implementation "io.insert-koin:koin-android:$koin_version"
+    // ImageLoader
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     // Recycler view
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 //    implementation "io.insert-koin:koin-android:$koin_version"

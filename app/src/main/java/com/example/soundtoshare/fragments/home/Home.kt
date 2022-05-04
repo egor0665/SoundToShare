@@ -1,6 +1,5 @@
 package com.example.soundtoshare.fragments.home
 
-import android.graphics.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +16,13 @@ import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.recycler_view.CustomRecyclerAdapter
 import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.workers.VkWorker
+import com.nostra13.universalimageloader.core.DisplayImageOptions
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
+
 
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -59,7 +63,10 @@ class Home : Fragment() {
     private fun startUserInfoObserving() {
 
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
-            binding.avatar.setImageBitmap(it.avatar)
+            val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer (360)).build()
+            val imageLoader = ImageLoader.getInstance()
+            imageLoader.init(ImageLoaderConfiguration.createDefault(activity))
+            imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
             val fullName = it.firstName + " " + it.lastName
             binding.fullName.text = fullName
             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
