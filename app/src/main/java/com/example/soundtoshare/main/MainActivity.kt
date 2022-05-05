@@ -4,22 +4,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.example.soundtoshare.BuildConfig
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
-//import com.example.soundtoshare.dependency_injection.domainDI
-//import com.example.soundtoshare.dependency_injection.fragmentDI
-import com.example.soundtoshare.repositories.SharedPreferencesRepository
-import com.example.soundtoshare.workers.VkWorker
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiConfig
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var navigator: HomeNavigator
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +21,14 @@ class MainActivity : AppCompatActivity() {
 
         initRepos()
         initVK()
-        initNavigator()
+        initNavigator(savedInstanceState?.getInt("id"))
 //        initWorkers()
         setContentView(binding.root)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
     private fun initRepos() {
@@ -44,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
     }
 
-    private fun initNavigator() {
+    private fun initNavigator(selectedId: Int?) {
         navigator = HomeNavigator(supportFragmentManager, R.id.nav_host_fragment_activity_main)
         binding.navView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
@@ -58,7 +57,9 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener true
         }
-            navigator.apply {
+            if (selectedId != null) {
+                binding.navView.selectedItemId = selectedId
+            } else {
                 if (VK.isLoggedIn()) {
                     navigator.setScreen(Screen.Home)
                 } else {
@@ -73,4 +74,13 @@ class MainActivity : AppCompatActivity() {
             VK.clearAccessToken(this)
             navigator.setScreen(Screen.SignIn)
         }
+
+        override fun onSaveInstanceState(outState: Bundle) {
+            super.onSaveInstanceState(outState)
+            outState.putInt("id", binding.navView.selectedItemId)
+        }
+
     }
+
+
+
