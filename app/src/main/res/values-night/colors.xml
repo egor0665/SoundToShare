@@ -20,4 +20,7 @@
     <color name="imageVkColorIn">#FFFFFFFF</color>
     <color name="backgroundTheme">#212121</color>
     <color name="backgroundThemeNavigation">#2d2d2d</color>
+
+    <color name="shimmer_color">#FFFFFFFF</color>
+
 </resources>

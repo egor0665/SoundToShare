@@ -75,11 +75,6 @@ class MainActivity : AppCompatActivity() {
             navigator.setScreen(Screen.SignIn)
         }
 
-        override fun onSaveInstanceState(outState: Bundle) {
-            super.onSaveInstanceState(outState)
-            outState.putInt("id", binding.navView.selectedItemId)
-        }
-
     }
 
 
