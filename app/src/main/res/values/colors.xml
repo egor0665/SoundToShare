@@ -21,5 +21,7 @@
     <color name="backgroundTheme">#FFFFFFFF</color>
     <color name="backgroundThemeNavigation">@color/primary_green</color>
 
-    <color name="shimmer_color">#707070</color>
+    <color name="shimmer_color">#C8C8C8</color>
+    <color name="backgroundThemeNavigationShimmer">#FFFFFFFF</color>
+
 </resources>
