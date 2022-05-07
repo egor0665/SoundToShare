@@ -1,12 +1,8 @@
 package com.example.soundtoshare.dependency_injection
 
-import androidx.work.Worker
 import com.example.soundtoshare.fragments.home.HomeViewModel
-import com.example.soundtoshare.fragments.map.MapFragmentViewModel
+import com.example.soundtoshare.fragments.map.MapViewModel
 import com.example.soundtoshare.fragments.settings.SettingsViewModel
-import com.example.soundtoshare.fragments.settings.SharedPreferenceUseCase
-import com.example.soundtoshare.workers.VkWorker
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -24,8 +20,8 @@ val appModule = module {
             sharedPreferenceUseCase = get()
         )
     }
-    viewModel<MapFragmentViewModel>{
-        MapFragmentViewModel(
+    viewModel<MapViewModel>{
+        MapViewModel(
             application = get(),
             locationData = get()
         )

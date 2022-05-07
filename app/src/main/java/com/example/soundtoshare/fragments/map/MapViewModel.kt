@@ -1,18 +1,18 @@
 package com.example.soundtoshare.fragments.map
 
+import android.R
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.soundtoshare.R
+import com.example.soundtoshare.repositories.LocationModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -20,14 +20,12 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 
 
-class MapFragmentViewModel(val application: Application, val locationData: GetLocationDataUseCase) : ViewModel(), OnMapReadyCallback,
+class MapViewModel(val application: Application, val locationData: GetLocationDataUseCase) : ViewModel(),
     GoogleMap.OnCameraIdleListener,
     GoogleMap.OnCameraMoveListener,
     GoogleMap.OnInfoWindowClickListener {
 
     private var map: GoogleMap? = null
-    var locationPermissionGranted = false
-    private lateinit var customInfoWindowAdapter: CustomInfoWindowAdapter
     private lateinit var moveCameraUseCase: MoveCameraUseCase
     private lateinit var placeUsersUseCase: PlaceUsersUseCase
 
@@ -37,39 +35,23 @@ class MapFragmentViewModel(val application: Application, val locationData: GetLo
 
     fun getLocationDataViewModel() = locationData
 
-    fun initMap(mapFragment: SupportMapFragment?, customWindowAdapter: CustomInfoWindowAdapter) {
-        mapFragment?.getMapAsync(this)
-        customInfoWindowAdapter = customWindowAdapter
+    private fun getPixelsFromDp(dp: Float): Int {
+        val scale: Float = application.resources.displayMetrics.density
+        return (dp * scale + 0.5f).toInt()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        map?.setMapStyle(
-            MapStyleOptions.loadRawResourceStyle(application, R.raw.map_without_labels_style)
-        )
-        map?.setOnCameraIdleListener(this);
-        map?.setOnCameraMoveListener(this)
-        updateLocationUI()
-        moveCameraUseCase = MoveCameraUseCase(map)
-        placeUsersUseCase = PlaceUsersUseCase(map)
-        map?.setInfoWindowAdapter(customInfoWindowAdapter)
-        map?.setOnInfoWindowClickListener(this)
-    }
+//    @RequiresApi(Build.VERSION_CODES.M)
+//    override fun onMapReady(googleMap: GoogleMap) {
+//        map = googleMap
+//        map?.setOnCameraIdleListener(this);
+//        map?.setOnCameraMoveListener(this)
+//        moveCameraUseCase = MoveCameraUseCase(map)
+//        placeUsersUseCase = PlaceUsersUseCase(map)
+//
+//    }
 
     fun cameraSetUp(lastKnownLocation: LocationModel) {
         moveCameraUseCase.moveAtDeviceCenter(lastKnownLocation)
-    }
-
-    @SuppressLint("MissingPermission")
-    fun updateLocationUI() {
-        if (locationPermissionGranted) {
-            map?.isMyLocationEnabled = true
-            map?.uiSettings?.isMyLocationButtonEnabled = true
-        } else {
-            map?.isMyLocationEnabled = false
-            map?.uiSettings?.isMyLocationButtonEnabled = false
-        }
     }
 
     override fun onCameraIdle() {

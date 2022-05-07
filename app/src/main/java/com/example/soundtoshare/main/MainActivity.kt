@@ -1,21 +1,34 @@
 package com.example.soundtoshare.main
 
+//import com.example.soundtoshare.dependency_injection.domainDI
+//import com.example.soundtoshare.dependency_injection.fragmentDI
+
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
+import androidx.core.content.ContextCompat
 import com.example.soundtoshare.BuildConfig
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
-//import com.example.soundtoshare.dependency_injection.domainDI
-//import com.example.soundtoshare.dependency_injection.fragmentDI
-import com.example.soundtoshare.repositories.SharedPreferencesRepository
-import com.example.soundtoshare.workers.VkWorker
+import com.example.soundtoshare.fragments.map.MapWrapperLayout
+import com.example.soundtoshare.fragments.map.OnInfoWindowElemTouchListener
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiConfig
-import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -30,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         initNavigator()
 //        initWorkers()
         setContentView(binding.root)
+
     }
 
     private fun initRepos() {
@@ -73,4 +87,5 @@ class MainActivity : AppCompatActivity() {
             VK.clearAccessToken(this)
             navigator.setScreen(Screen.SignIn)
         }
-    }
+
+}
