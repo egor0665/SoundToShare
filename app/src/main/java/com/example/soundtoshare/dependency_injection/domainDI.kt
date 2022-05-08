@@ -1,10 +1,9 @@
 package com.example.soundtoshare.dependency_injection
 
 import com.example.soundtoshare.fragments.home.VkGetDataUseCase
-import com.example.soundtoshare.fragments.map.GetLocationDataUseCase
+import com.example.soundtoshare.fragments.map.LocationUpdateUseCase
+import com.example.soundtoshare.fragments.map.UpdateMarkersUseCase
 import com.example.soundtoshare.fragments.settings.SharedPreferenceUseCase
-import com.example.soundtoshare.repositories.VkAPIRepository
-import org.koin.core.scope.get
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -12,11 +11,16 @@ val domainModule = module {
         VkGetDataUseCase(vkApiRepository = get())
     }
 
-    factory<GetLocationDataUseCase> {
-        GetLocationDataUseCase(get(),get(), get(), get())
+    factory<LocationUpdateUseCase> {
+        LocationUpdateUseCase(get(),get(), get(), get())
     }
 
     factory<SharedPreferenceUseCase> {
         SharedPreferenceUseCase(get(), get())
     }
+
+    factory<UpdateMarkersUseCase> {
+        UpdateMarkersUseCase(get(), get())
+    }
+
 }

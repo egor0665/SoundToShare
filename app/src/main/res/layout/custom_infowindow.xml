@@ -15,15 +15,25 @@
             android:paddingBottom="5dip">
 
 
-        <LinearLayout
+        <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="2dip"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#000"
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
-
-        </LinearLayout>
+        <TextView
+                android:id="@+id/snippet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="10"
+                android:textColor="#000"
+                android:textSize="14sp" />
 
     </LinearLayout>
     <LinearLayout

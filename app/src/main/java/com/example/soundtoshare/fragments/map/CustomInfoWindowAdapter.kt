@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.soundtoshare.R
+import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.model.Marker
@@ -19,10 +20,8 @@ import com.google.android.gms.maps.model.Marker
 @SuppressLint("ClickableViewAccessibility")
 class CustomInfoWindowAdapter(private val context: Activity, private val infoWindow: ViewGroup,
                               googleMap: GoogleMap?) : InfoWindowAdapter {
-    private val infoTitle: TextView? = null
-    private val infoSnippet: TextView? = null
     private val mapWrapperLayout: MapWrapperLayout = context.findViewById(R.id.map_relative_layout)
-    private lateinit var infoButtonListener: OnInfoWindowElemTouchListener
+    private var infoButtonListener: OnInfoWindowElemTouchListener
     private var infoButtonListener2: OnInfoWindowElemTouchListener
 
     init {
@@ -32,13 +31,14 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
 
         // Setting custom OnTouchListener which deals with the pressed state
         // so it shows up
-        val infoButtonListener = object : OnInfoWindowElemTouchListener(
+        infoButtonListener = object : OnInfoWindowElemTouchListener(
             infoButton1,
             ContextCompat.getDrawable(context, android.R.drawable.btn_default),
             ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 // Here we can perform some action triggered after clicking the button
+                //TODO: Реализовать кнопки
                 Toast.makeText(context, "click on button 1", Toast.LENGTH_SHORT).show()
             }
         }
@@ -50,6 +50,7 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
             ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
+                //TODO: Реализовать кнопки
                 Toast.makeText(context, "click on button 2", Toast.LENGTH_LONG).show()
             }
         }
@@ -57,9 +58,16 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
     }
 
     override fun getInfoContents(marker: Marker): View {
+        val infoTitle = infoWindow.findViewById<TextView>(R.id.title)
+        val infoSnippet = infoWindow.findViewById<TextView>(R.id.snippet)
         // Setting up the infoWindow with current's marker info
         infoSnippet?.text = marker.title
         infoTitle?.text = marker.snippet
+        //ИЛИ (в тэге содержится объект User)
+        val user: User = marker.tag as User
+        infoSnippet?.text = user.VKAccount
+
+
         infoButtonListener.setMarker(marker)
         infoButtonListener2.setMarker(marker)
         // We must call this to set the current marker and infoWindow references

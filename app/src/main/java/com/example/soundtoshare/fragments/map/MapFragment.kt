@@ -29,6 +29,22 @@ class MapFragment : Fragment() {
     var locationPermissionGranted = false
     private var map: GoogleMap? = null
 
+    @SuppressLint("InflateParams")
+    private val callback = OnMapReadyCallback{ googleMap ->
+        map = googleMap
+        updateLocationUI()
+        val infoWindow = layoutInflater.inflate(R.layout.custom_infowindow, null) as ViewGroup
+        val customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity(), infoWindow, map)
+
+        map?.apply {
+            setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_without_labels_style))
+            setInfoWindowAdapter(customInfoWindowAdapter)
+            setOnCameraIdleListener(viewModel)
+        }
+        viewModel.moveCameraUseCase = MoveCameraUseCase(map)
+        viewModel.updateMarkersUseCase.initUseCase(map!!)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,7 +74,7 @@ class MapFragment : Fragment() {
         }
         if (locationPermissionGranted) {
             updateLocationUI()
-            startLocationUpdate()
+            onStartLocationUpdate()
         } else {
             startDeniedPermissionAlert()
         }
@@ -73,7 +89,7 @@ class MapFragment : Fragment() {
             == PackageManager.PERMISSION_GRANTED
         ) {
             locationPermissionGranted = true
-            startLocationUpdate()
+            onStartLocationUpdate()
         } else {
             requestMultiplePermissions.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION,
                                                       Manifest.permission.ACCESS_FINE_LOCATION))
@@ -91,10 +107,10 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun startLocationUpdate() {
-//        viewModel.getLocationDataViewModel().observe(viewLifecycleOwner) {
-//            viewModel.cameraSetUp(it)
-//        }
+    private fun onStartLocationUpdate() {
+        viewModel.startLocationUpdate().observe(viewLifecycleOwner) {
+            viewModel.cameraSetUp(it)
+        }
 //        // Create the observer which updates the UI.
 //        val browserIntentObserver = Observer<Intent> { newIntent ->
 //            // Update the UI, in this case, a TextView.
@@ -106,39 +122,27 @@ class MapFragment : Fragment() {
     }
 
     private fun startDeniedPermissionAlert() {
-        val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle("Permission needed")
-        alertDialogBuilder.setMessage("Location permission needed for accessing app")
-        alertDialogBuilder.setPositiveButton("Open Setting") { _, _ ->
-            val uri: Uri = Uri.fromParts("package", requireActivity().packageName, null)
-            val intent = Intent().apply {
-                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                data = uri
+        val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext()).apply {
+            setTitle("Permission needed")
+            setMessage("Location permission needed for accessing app")
+            setPositiveButton("Open Setting") { _, _ ->
+                val uri: Uri = Uri.fromParts("package", requireActivity().packageName, null)
+                val intent = Intent().apply {
+                    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                    data = uri
+                }
+                requireActivity().startActivity(intent)
             }
-            requireActivity().startActivity(intent)
-        }
-        alertDialogBuilder.setNegativeButton("Cancel") { _, _ ->
-            //TODO: Действие при отмене запроса перехода в настройки
+            setNegativeButton("Cancel") { _, _ ->
+                //TODO: Действие при отмене запроса перехода в настройки
 //            val navigator = HomeNavigator(requireActivity().supportFragmentManager,
 //                                            R.id.nav_host_fragment_activity_main)
 //            navigator.setScreen(Screen.Home)
+            }
         }
+
         val dialog: AlertDialog = alertDialogBuilder.create()
         dialog.show()
-    }
-
-    @SuppressLint("InflateParams")
-    private val callback = OnMapReadyCallback{ googleMap ->
-        map = googleMap
-        map?.setMapStyle(
-            MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_without_labels_style)
-        )
-        updateLocationUI()
-        val infoWindow = layoutInflater.inflate(R.layout.custom_infowindow, null) as ViewGroup
-        val customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity(), infoWindow, map)
-
-        map?.setInfoWindowAdapter(customInfoWindowAdapter)
-
     }
 
     companion object {

@@ -1,9 +1,9 @@
 package com.example.soundtoshare.fragments.map
 
-import com.example.soundtoshare.repositories.LocationModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
 
 class MoveCameraUseCase(map: GoogleMap?) {
     private val googleMap = map
@@ -12,7 +12,7 @@ class MoveCameraUseCase(map: GoogleMap?) {
         private const val DEFAULT_ZOOM = 15
     }
 
-    fun moveAtDeviceCenter(deviceLocation: LocationModel) {
+    fun moveAtDeviceCenter(deviceLocation: GeoPoint) {
         googleMap?.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(
