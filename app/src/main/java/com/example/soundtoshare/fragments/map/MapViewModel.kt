@@ -23,7 +23,6 @@ class MapViewModel(val locationUpdate: LocationUpdateUseCase, val updateMarkersU
         moveCameraUseCase?.moveAtDeviceCenter(lastKnownLocation)
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCameraIdle() {
         updateMarkersUseCase.removeInvisibleMarkers()
         updateMarkersUseCase.getClosest()

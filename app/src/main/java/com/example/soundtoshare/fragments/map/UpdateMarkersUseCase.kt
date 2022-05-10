@@ -1,13 +1,11 @@
 package com.example.soundtoshare.fragments.map
 
 import android.location.Location
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.view.animation.BounceInterpolator
 import android.view.animation.Interpolator
-import androidx.annotation.RequiresApi
 import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.repositories.User
 import com.example.soundtoshare.repositories.VkAPIRepository
@@ -21,14 +19,14 @@ import kotlin.math.max
 class UpdateMarkersUseCase(vkAPIRepository: VkAPIRepository, private val fireStoreDatabase: FirestoreDatabase) {
     private lateinit var map: GoogleMap
     private var myVkAccount: String = vkAPIRepository.getUserInfo()!!.firstName + " " + vkAPIRepository.getUserInfo()!!.lastName
-    private val markers = mutableListOf<Marker>()
+    private val markersMap = mutableMapOf<String, Marker>()
 
     fun initUseCase(googleMap: GoogleMap) {
         map = googleMap
         fireStoreDatabase.notify.observeForever(){
             fireStoreDatabase.users.forEach() { user ->
                 if (user.VKAccount != myVkAccount && user.VKAccount != "null") {
-                    processMarker(user)
+                    addOrUpdateMarker(user)
                 }
             }
         }
@@ -45,11 +43,8 @@ class UpdateMarkersUseCase(vkAPIRepository: VkAPIRepository, private val fireSto
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble())
     }
 
-    private fun processMarker(newUser: User) {
-        val oldMarker = markers.find {
-            val user: User = it.tag as User
-            user.VKAccount == newUser.VKAccount
-        }
+    private fun addOrUpdateMarker(newUser: User) {
+        val oldMarker = markersMap[newUser.VKAccount]
         if (oldMarker != null) {
             oldMarker.position = LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude)
         }
@@ -61,7 +56,7 @@ class UpdateMarkersUseCase(vkAPIRepository: VkAPIRepository, private val fireSto
             val newMarker = map.addMarker(userIndicator)
             dropPinEffect(newMarker!!)
             newMarker.tag = newUser
-            markers.add(newMarker)
+            markersMap[newUser.VKAccount] = newMarker
         }
     }
 
@@ -83,25 +78,20 @@ class UpdateMarkersUseCase(vkAPIRepository: VkAPIRepository, private val fireSto
                 if (t > 0.0) {
                     // Post again 15ms later.
                     handler.postDelayed(this, 15)
-                } else {
-                    marker.showInfoWindow()
                 }
             }
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun removeInvisibleMarkers() {
         val bounds = map.projection.visibleRegion.latLngBounds
-        markers.forEach() {
-            if (it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
-                it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude) {
-                it.remove()
-            }
-        }
-        markers.removeIf {
+        val invisibleMarkers = markersMap.filterValues {
             it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
             it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude
+        }
+        invisibleMarkers.forEach() {
+            it.value.remove()
+            markersMap.remove(it.key)
         }
     }
 }
