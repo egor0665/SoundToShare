@@ -33,7 +33,7 @@ class MapFragment : Fragment() {
     private val callback = OnMapReadyCallback{ googleMap ->
         map = googleMap
         updateLocationUI()
-        val infoWindow = layoutInflater.inflate(R.layout.custom_infowindow, null) as ViewGroup
+        val infoWindow = layoutInflater.inflate(R.layout.custom_info_window, null) as ViewGroup
         val customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity(), infoWindow, map)
 
         map?.apply {
