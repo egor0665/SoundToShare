@@ -17,7 +17,8 @@ val appModule = module {
     viewModel<SettingsViewModel>{
         SettingsViewModel(
             context = get(),
-            sharedPreferenceUseCase = get()
+            sharedPreferenceUseCase = get(),
+            vkGetDataUseCase = get()
         )
     }
     viewModel<MapViewModel>{
