@@ -59,7 +59,7 @@
                 android:ellipsize="end"
                 android:maxLines="10"
                 android:textColor="@color/name_black"
-                android:textSize="14sp"
+                android:textSize="14sp"/>
 
     </LinearLayout>
     <LinearLayout
