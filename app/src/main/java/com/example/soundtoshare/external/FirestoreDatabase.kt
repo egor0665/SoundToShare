@@ -8,6 +8,7 @@ import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.QuerySnapshot
@@ -47,7 +48,8 @@ class FirestoreDatabase {
             "geoPoint" to GeoPoint(latitude, longitude),
             "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude)),
             "currentSong" to song,
-            "currentArtist" to artist
+            "currentArtist" to artist,
+            "lastUpdate" to Timestamp.now()
         )
 
         database.collection("Users").document(vkAccount)
@@ -102,7 +104,8 @@ class FirestoreDatabase {
                     _users.add(
                         User(
                             it.getField<GeoPoint>("geoPoint")!!,
-                            it.getField<String>("VKAccount").toString()
+                            it.getField<String>("VKAccount").toString(),
+                            it.getField<Timestamp>("lastUpdate")!!
                         )
                     )
                     Log.d(

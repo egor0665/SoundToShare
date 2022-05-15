@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.Timestamp
 import kotlin.math.max
 
 
@@ -25,7 +26,7 @@ class UpdateMarkersUseCase(vkAPIRepository: VkAPIRepository, private val fireSto
         map = googleMap
         fireStoreDatabase.notify.observeForever(){
             fireStoreDatabase.users.forEach() { user ->
-                if (user.VKAccount != myVkAccount && user.VKAccount != "null") {
+                if (user.VKAccount != myVkAccount && user.VKAccount != "null" && user.lastUpdate.toDate().time - Timestamp.now().toDate().time < 60000) {
                     addOrUpdateMarker(user)
                 }
             }
