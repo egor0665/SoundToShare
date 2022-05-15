@@ -1,13 +1,11 @@
 package com.example.soundtoshare.external
 
-import android.location.Location
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.repositories.User
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
@@ -16,11 +14,17 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
-import com.vk.sdk.api.audio.dto.AudioAudio
 
 class FirestoreDatabase {
     private val database = Firebase.firestore
-    var users = mutableListOf<User>()
+    private val _users = mutableListOf<User>()
+    val users: List<User>
+        get() = _users
+
+    // Костыль, мб есть варианты получше
+    val notify: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
     fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String) {
         val user = hashMapOf(
@@ -41,19 +45,10 @@ class FirestoreDatabase {
             }
     }
 
-    fun getClosest(map: GoogleMap) {
-        users.clear()
-        val center = GeoLocation(map.cameraPosition.target.latitude, map.cameraPosition.target.longitude)
-
-        val results = FloatArray(1)
-        Location.distanceBetween(
-            map.cameraPosition.target.latitude,
-            map.cameraPosition.target.longitude,
-            map.projection.visibleRegion.latLngBounds.northeast.latitude,
-            map.projection.visibleRegion.latLngBounds.northeast.longitude, results
-        )
-
-        val radiusInM = results[0].toDouble()
+    fun fetchClosest(targetDevice: LatLng, radiusInM: Double) {
+        //TODO: Возможно заменить полную очистку на гибрид замены, очистки и добавления + добавить больше фильтрации
+        _users.clear()
+        val center = GeoLocation(targetDevice.latitude, targetDevice.longitude)
 
         val bounds = GeoFireUtils.getGeoHashQueryBounds(center, radiusInM)
         val tasks: MutableList<Task<QuerySnapshot>> = ArrayList()
@@ -89,7 +84,7 @@ class FirestoreDatabase {
                 // matchingDocs contains the results
 
                 matchingDocs.forEach {
-                    users.add(
+                    _users.add(
                         User(
                             it.getField<GeoPoint>("geoPoint")!!,
                             it.getField<String>("VKAccount").toString()
@@ -101,19 +96,7 @@ class FirestoreDatabase {
                             .toString() + it.getField<String>("VKAccount").toString()
                     )
                 }
-
-                val myVkAccount= "kek"
-                users.forEach() { user ->
-                    if (user.VKAccount != myVkAccount) {
-                        val userIndicator = MarkerOptions()
-                            .position(LatLng(user.geoPoint.latitude, user.geoPoint.longitude))
-                            .title(user.VKAccount)
-                            .snippet("lat:" + user.geoPoint.latitude + ", lng:" + user.geoPoint.longitude)
-                        map.addMarker(userIndicator)
-                        Log.d("Placed user", user.VKAccount)
-                    }
-                }
-
+                notify.value = true
             }
     }
 }

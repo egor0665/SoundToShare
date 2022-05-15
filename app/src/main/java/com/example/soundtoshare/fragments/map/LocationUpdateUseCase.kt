@@ -6,16 +6,17 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.soundtoshare.repositories.LocationModel
-import com.example.soundtoshare.repositories.LocationRepository
+import com.example.soundtoshare.repositories.UserInfoRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.firestore.GeoPoint
 
-class GetLocationDataUseCase(context: Context, var locationRepository: LocationRepository, val sharedPreferencesRepository: SharedPreferencesRepository, vkAPIRepository: VkAPIRepository) : LiveData<LocationModel>()  {
+class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val sharedPreferencesRepository: SharedPreferencesRepository, vkAPIRepository: VkAPIRepository) : LiveData<GeoPoint>()  {
+
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
     companion object {
@@ -32,11 +33,14 @@ class GetLocationDataUseCase(context: Context, var locationRepository: LocationR
             Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
 
-                if (location != null && !sharedPreferencesRepository.getIncognitoMode() && vkAPIRepository.getSongData()!= null && vkAPIRepository.getSongData()!!.title.isNotEmpty()) {
+                if (location != null && !sharedPreferencesRepository.getIncognitoMode() && vkAPIRepository.getSongData()!= null
+                    && vkAPIRepository.getSongData()!!.title.isNotEmpty()) {
+
                     val fullName = vkAPIRepository.getUserInfo()!!.firstName + " " + vkAPIRepository.getUserInfo()!!.lastName
                     val song = vkAPIRepository.getSongData()!!.title
                     val artist = vkAPIRepository.getSongData()!!.artist
-                    locationRepository.storeCurrentDeviceLocation(location, fullName, song, artist)
+                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist)
+                    //TODO: Решить, что мы будем сохранять и сделать из этого сущность
                 }
             }
         }
@@ -60,10 +64,8 @@ class GetLocationDataUseCase(context: Context, var locationRepository: LocationR
     }
 
     private fun setLocationData(location: Location) {
-        value = LocationModel(
-            longitude = location.longitude,
-            latitude = location.latitude
-        )
+         value = GeoPoint(location.latitude,
+                          location.longitude)
     }
 
     @SuppressLint("MissingPermission")
