@@ -12,9 +12,9 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
         vkApiRepository.getUserInfoRepository()
     }
 
-    fun fetchVkMusicUseCase(fetchVkMusicCallback: () -> Unit) {
+    fun fetchVkMusicUseCase(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
        vkApiRepository.fetchVkMusic{
-           fetchVkMusicCallback()
+           fetchVkMusicCallback(this)
        }
     }
 
