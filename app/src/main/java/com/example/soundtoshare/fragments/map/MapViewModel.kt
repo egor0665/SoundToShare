@@ -7,13 +7,9 @@ import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.soundtoshare.R
-import com.example.soundtoshare.repositories.LocationModel
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -21,7 +17,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 
 
-class MapFragmentViewModel(val application: Application, val locationData: GetLocationDataUseCase) : ViewModel(), OnMapReadyCallback,
+class MapViewModel(val application: Application, val locationUpdate: LocationUpdateUseCase) : ViewModel(), OnMapReadyCallback,
     GoogleMap.OnCameraIdleListener,
     GoogleMap.OnCameraMoveListener,
     GoogleMap.OnInfoWindowClickListener {
@@ -36,7 +32,7 @@ class MapFragmentViewModel(val application: Application, val locationData: GetLo
         MutableLiveData<Intent>()
     }
 
-    fun getLocationDataViewModel() = locationData
+    fun getLocationDataViewModel() = locationUpdate
 
     fun initMap(mapFragment: SupportMapFragment?, customWindowAdapter: CustomInfoWindowAdapter) {
         mapFragment?.getMapAsync(this)
