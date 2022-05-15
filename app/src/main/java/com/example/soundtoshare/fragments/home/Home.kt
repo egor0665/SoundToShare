@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -13,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.databinding.FragmentHomeBinding
+import com.example.soundtoshare.databinding.ShimmerLayoutBinding
+import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.workers.VkWorker
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.example.soundtoshare.recycler_view.CustomRecyclerAdapter
 import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.workers.VkWorker
@@ -33,7 +38,9 @@ class Home : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         binding = FragmentHomeBinding.inflate(inflater)
+        binding.shimmer.startShimmer()
         viewModel.loadUserInfo()
         initWorkers()
 
@@ -69,8 +76,13 @@ class Home : Fragment() {
             imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
             val fullName = it.firstName + " " + it.lastName
             binding.fullName.text = fullName
+
+            binding.shimmer.stopShimmer()
+            binding.shimmer.visibility = View.GONE
             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
 //            startOnLoadAnimation()
+
+
         }
     }
 
