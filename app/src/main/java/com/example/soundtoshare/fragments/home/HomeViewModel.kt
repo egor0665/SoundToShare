@@ -2,8 +2,9 @@ package com.example.soundtoshare.fragments.home
 
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.soundtoshare.external.ObservableUserSongInfo
+import com.example.soundtoshare.repositories.UserInfo
 import com.vk.api.sdk.auth.VKScope
 import com.vk.sdk.api.audio.dto.AudioAudio
 
@@ -20,11 +21,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         authLauncher.launch(arrayList)
     }
 
-    fun getUserInfo() {
+    fun loadUserInfo() {
         Log.d("test","KoinViewModel")
-        vkGetDataUseCase.getUserInfo {
-            ObservableUserSongInfo.setUserInfo(this)
-        }
+        vkGetDataUseCase.loadUserInfo()
     }
 
     fun fetchVkMusicViewModel(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
@@ -33,5 +32,24 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         }
     }
 
+    fun setUserInfo(_userInfo: UserInfo?) {
+        vkGetDataUseCase.setUserInfo(_userInfo)
+    }
+
+    fun setSongData(_songData: AudioAudio?) {
+        vkGetDataUseCase.setSongData(_songData)
+    }
+
+    fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
+        return vkGetDataUseCase.getUserInfoLiveData()
+    }
+
+    fun getSongDataLiveData(): MutableLiveData<AudioAudio> {
+        return vkGetDataUseCase.getSongDataLiveData()
+    }
+
+    fun getUserInfo(): UserInfo? {
+        return vkGetDataUseCase.getUserInfo()
+    }
 
 }
