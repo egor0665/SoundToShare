@@ -26,13 +26,32 @@
             android:paddingEnd="25dp"
             app:drawableStartCompat="@drawable/ic_tmplogo" />
 
+    <com.facebook.shimmer.ShimmerFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/logo"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp"
+            android:id="@+id/shimmer"
+            >
+
+        <include
+                layout="@layout/shimmer_layout"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+
+                />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+
             android:id="@+id/fullNameAndAvatarHolder"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             app:layout_constraintTop_toBottomOf="@id/logo"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:visibility="gone">
 
         <ImageView
                 android:id="@+id/avatar"
@@ -54,7 +73,6 @@
                 android:textColor="@color/textColor"
                 android:fontFamily="@font/gotham_medium"
                 android:gravity="center_vertical"
-                tools:ignore="MissingConstraints"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -73,5 +91,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fullNameAndAvatarHolder" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
