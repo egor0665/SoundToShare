@@ -72,6 +72,7 @@ class Home : Fragment() {
             binding.shimmer.stopShimmer()
             binding.shimmer.visibility = View.GONE
             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.VISIBLE
 //            startOnLoadAnimation()
 
 
