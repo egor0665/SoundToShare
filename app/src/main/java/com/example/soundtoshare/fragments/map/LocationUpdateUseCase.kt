@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
+import com.example.soundtoshare.fragments.home.VkGetDataUseCase
 import com.example.soundtoshare.repositories.UserInfoRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
@@ -15,7 +16,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.GeoPoint
 
-class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val sharedPreferencesRepository: SharedPreferencesRepository, vkAPIRepository: VkAPIRepository) : LiveData<GeoPoint>()  {
+class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val sharedPreferencesRepository: SharedPreferencesRepository, vkGetDataUseCase: VkGetDataUseCase) : LiveData<GeoPoint>()  {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -33,12 +34,12 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
             Log.d("Location", "Location changed")
             for (location in locationResult.locations) {
 
-                if (location != null && !sharedPreferencesRepository.getIncognitoMode() && vkAPIRepository.getSongData()!= null
-                    && vkAPIRepository.getSongData()!!.title.isNotEmpty()) {
+                if (location != null && !sharedPreferencesRepository.getIncognitoMode() && vkGetDataUseCase.getSongData()!= null
+                    && vkGetDataUseCase.getSongData()!!.title.isNotEmpty()) {
 
-                    val fullName = vkAPIRepository.getUserInfo()!!.firstName + " " + vkAPIRepository.getUserInfo()!!.lastName
-                    val song = vkAPIRepository.getSongData()!!.title
-                    val artist = vkAPIRepository.getSongData()!!.artist
+                    val fullName = vkGetDataUseCase.getUserInfo()!!.firstName + " " + vkGetDataUseCase.getUserInfo()!!.lastName
+                    val song = vkGetDataUseCase.getSongData()!!.title
+                    val artist = vkGetDataUseCase.getSongData()!!.artist
                     userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist)
                     //TODO: Решить, что мы будем сохранять и сделать из этого сущность
                 }

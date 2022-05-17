@@ -7,7 +7,7 @@ import com.example.soundtoshare.fragments.settings.SharedPreferenceUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    factory<VkGetDataUseCase> {
+    single<VkGetDataUseCase> {
         VkGetDataUseCase(vkApiRepository = get())
     }
 
@@ -16,7 +16,7 @@ val domainModule = module {
     }
 
     factory<SharedPreferenceUseCase> {
-        SharedPreferenceUseCase(get(), get())
+        SharedPreferenceUseCase(get())
     }
 
     factory<UpdateMarkersUseCase> {

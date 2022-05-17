@@ -12,11 +12,9 @@ val appModule = module {
         HomeViewModel(
             vkGetDataUseCase = get()
         )
-
     }
     viewModel<SettingsViewModel>{
         SettingsViewModel(
-            context = get(),
             sharedPreferenceUseCase = get(),
             vkGetDataUseCase = get()
         )
@@ -27,8 +25,4 @@ val appModule = module {
             updateMarkersUseCase = get()
         )
     }
-
-//    factory<VkWorker> {
-//        VkWorker(androidContext(), get())
-//    }
 }

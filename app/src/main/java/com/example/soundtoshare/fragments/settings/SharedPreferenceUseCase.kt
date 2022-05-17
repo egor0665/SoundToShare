@@ -2,14 +2,9 @@ package com.example.soundtoshare.fragments.settings
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.example.soundtoshare.external.SharedPreferencesExternal
-import com.example.soundtoshare.main.MainActivity
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 
-class SharedPreferenceUseCase(context: Context,val sharedPreferencesRepository: SharedPreferencesRepository ) {
-    init {
-//        sharedPreferencesRepository.initialize(context)
-    }
+class SharedPreferenceUseCase(val sharedPreferencesRepository: SharedPreferencesRepository ) {
 
     fun setIncognitoModeUseCase(mode: Boolean) {
         sharedPreferencesRepository.setIncognitoMode(mode)

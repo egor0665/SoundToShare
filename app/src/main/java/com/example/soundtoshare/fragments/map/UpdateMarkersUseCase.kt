@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.view.animation.BounceInterpolator
 import android.view.animation.Interpolator
 import com.example.soundtoshare.external.FirestoreDatabase
+import com.example.soundtoshare.fragments.home.VkGetDataUseCase
 import com.example.soundtoshare.repositories.User
 import com.example.soundtoshare.repositories.VkAPIRepository
 import com.google.android.gms.maps.GoogleMap
@@ -16,9 +17,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlin.math.max
 
 
-class UpdateMarkersUseCase(vkAPIRepository: VkAPIRepository, private val fireStoreDatabase: FirestoreDatabase) {
+class UpdateMarkersUseCase(vkGetDataUseCase: VkGetDataUseCase, private val fireStoreDatabase: FirestoreDatabase) {
     private lateinit var map: GoogleMap
-    private var myVkAccount: String = vkAPIRepository.getUserInfo()!!.firstName + " " + vkAPIRepository.getUserInfo()!!.lastName
+    private var myVkAccount: String = vkGetDataUseCase.getUserInfo()!!.firstName + " " +  vkGetDataUseCase.getUserInfo()!!.lastName
     private val markersMap = mutableMapOf<String, Marker>()
 
     fun initUseCase(googleMap: GoogleMap) {

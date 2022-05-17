@@ -1,11 +1,10 @@
 package com.example.soundtoshare.repositories
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.external.SharedPreferencesExternal
 
-class SharedPreferencesRepository(context: Context, val sharedPreferences: SharedPreferencesExternal){
+class SharedPreferencesRepository(val sharedPreferences: SharedPreferencesExternal){
     private val incognitoMode: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }

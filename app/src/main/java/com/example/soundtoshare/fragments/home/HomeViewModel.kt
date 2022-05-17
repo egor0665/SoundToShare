@@ -12,7 +12,11 @@ import com.vk.api.sdk.auth.VKScope
 import com.vk.sdk.api.audio.dto.AudioAudio
 
 class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
-//    private val vkGetDataUseCase = VkGetDataUseCase()
+
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
+    }
+
     private val firebaseGetDataUseCase = FireBaseGetDataUseCase()
     private val reactions : MutableLiveData<MutableList<Reaction>> by lazy {
         MutableLiveData<MutableList<Reaction>>()
@@ -52,13 +56,6 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         }
     }
 
-    fun setUserInfo(_userInfo: UserInfo?) {
-        vkGetDataUseCase.setUserInfo(_userInfo)
-    }
-
-    fun setSongData(_songData: AudioAudio?) {
-        vkGetDataUseCase.setSongData(_songData)
-    }
 
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
         return vkGetDataUseCase.getUserInfoLiveData()
