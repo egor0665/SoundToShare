@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
+import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.recycler_view.CustomRecyclerAdapter
 import com.example.soundtoshare.workers.VkWorker
@@ -36,17 +37,32 @@ class Home : Fragment() {
         viewModel.loadUserInfo()
         initWorkers()
 
-        val recyclerView: RecyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val recyclerViewItem1: RecyclerView = binding.recyclerViewItem1
+        recyclerViewItem1.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
-                recyclerView.adapter = CustomRecyclerAdapter(it)
+                recyclerViewItem1.adapter = CustomRecyclerAdapter(it)
         }
         return binding.root
+
+        val recyclerViewItem2: RecyclerView = binding.recyclerViewItem2
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         startUserInfoObserving()
+
+        binding.buttonGroup.setOnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                 R.id.radioButton1 -> {
+                    binding.recyclerViewItem2.visibility = View.GONE
+                    binding.recyclerViewItem1.visibility = View.VISIBLE
+                }
+                R.id.radioButton2 -> {
+                    binding.recyclerViewItem1.visibility = View.GONE
+                    binding.recyclerViewItem2.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     private fun initWorkers() {
@@ -68,11 +84,13 @@ class Home : Fragment() {
             imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
             val fullName = it.firstName + " " + it.lastName
             binding.fullName.text = fullName
+            binding.radioButton1.isChecked = true
 
             binding.shimmer.stopShimmer()
             binding.shimmer.visibility = View.GONE
             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
-            binding.recyclerView.visibility = View.VISIBLE
+            binding.recyclerViewItem1.visibility = View.VISIBLE
+            binding.buttonGroup.visibility = View.VISIBLE
 //            startOnLoadAnimation()
 
 
