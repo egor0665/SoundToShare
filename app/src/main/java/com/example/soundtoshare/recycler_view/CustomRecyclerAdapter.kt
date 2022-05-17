@@ -1,12 +1,21 @@
 package com.example.soundtoshare.recycler_view
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soundtoshare.R
 import com.example.soundtoshare.repositories.Reaction
+import com.nostra13.universalimageloader.core.DisplayImageOptions
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
 
 class CustomRecyclerAdapter(private val reactions: MutableList<Reaction>) : RecyclerView
 .Adapter<CustomRecyclerAdapter.MyViewHolder>() {
@@ -17,6 +26,7 @@ class CustomRecyclerAdapter(private val reactions: MutableList<Reaction>) : Recy
         val userTextView: TextView = itemView.findViewById(R.id.textViewUser)
         val reactionTextView: TextView = itemView.findViewById(R.id.textViewReaction)
         val timeTextView: TextView = itemView.findViewById(R.id.textViewTime)
+        val reactionAvatar: ImageView = itemView.findViewById(R.id.reactionAvatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -31,6 +41,14 @@ class CustomRecyclerAdapter(private val reactions: MutableList<Reaction>) : Recy
         holder.userTextView.text = reactions[position].from
         holder.reactionTextView.text = reactions[position].reaction
         holder.timeTextView.text = reactions[position].time
+        val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
+        val imageLoader = ImageLoader.getInstance()
+        imageLoader.init(ImageLoaderConfiguration.createDefault(holder.timeTextView.context))
+        imageLoader.displayImage(reactions[position].avatar, holder.reactionAvatar, options)
+
+        holder.itemView.setOnClickListener{
+            holder.reactionAvatar.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id"+reactions[position].fromId)))
+        }
     }
 
     override fun getItemCount() = reactions.size
