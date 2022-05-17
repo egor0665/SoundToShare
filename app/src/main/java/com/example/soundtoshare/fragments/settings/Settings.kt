@@ -37,11 +37,18 @@ class Settings : Fragment() {
             toggleIncognitoMode()
         }
         binding.buttonCheckStatus.setOnClickListener{
-            Toast.makeText(
-                this.requireContext(),
-                "biiiiiiiiiiiiiiiiiiiiiig text",
-                Toast.LENGTH_SHORT
-            ).show()
+            val fragment = this
+            viewModel.checkUserStatus {
+                val result = if (this != null)
+                    "Успешно! Ваша текущая музыка: " + this.artist + "-" + this.title
+                else
+                    "Проверьте включили ли Вы музыку и транлируите ли Вы ее в статус"
+                Toast.makeText(
+                    fragment.requireContext(),
+                    result,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

@@ -21,7 +21,7 @@ class VkAPIRepository {
         MutableLiveData<AudioAudio>()
     }
 
-    fun fetchVkMusic(fetchVkMusicCallback: () -> Unit) {
+    fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
         VK.execute(
             StatusService().statusGet(VK.getUserId()),
             object : VKApiCallback<StatusStatus> {
@@ -29,7 +29,7 @@ class VkAPIRepository {
                     // ЗАПРОС ДЛЯ ПОИСКА МУЗЫКИ: https://m.vk.com/audio?q=МАЛИНОВАЯ%20ЛАДА
                     songData.postValue(result.audio)
                     Log.d("Music", result.audio?.title.toString())
-                    fetchVkMusicCallback()
+                    fetchVkMusicCallback(result.audio)
                 }
                 override fun fail(error: Exception) {
                     songData.postValue(null)

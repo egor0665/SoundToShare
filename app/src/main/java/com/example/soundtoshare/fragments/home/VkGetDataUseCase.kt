@@ -7,12 +7,12 @@ import com.example.soundtoshare.repositories.VkAPIRepository
 import com.vk.sdk.api.audio.dto.AudioAudio
 
 class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
-//    private val vkApi = VkAPIRepository
+
     fun loadUserInfo() {
         vkApiRepository.getUserInfoRepository()
     }
 
-    fun fetchVkMusicUseCase(fetchVkMusicCallback: () -> Unit) {
+    fun fetchVkMusicUseCase(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
        vkApiRepository.fetchVkMusic{
            fetchVkMusicCallback()
        }
