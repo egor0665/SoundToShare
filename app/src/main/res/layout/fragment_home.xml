@@ -39,8 +39,81 @@
                 layout="@layout/shimmer_layout"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-
+                android:id="@+id/name"
                 />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                android:layout_marginTop="130dp"
+                >
+
+             <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                     android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                     android:id="@+id/item1"
+                />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item2"
+                    app:layout_constraintTop_toBottomOf="@+id/item1"
+                    android:layout_marginTop="10dp"
+                    />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item3"
+                    app:layout_constraintTop_toBottomOf="@+id/item2"
+                    android:layout_marginTop="10dp"
+                    />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item4"
+                    app:layout_constraintTop_toBottomOf="@+id/item3"
+                    android:layout_marginTop="10dp"
+                    />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item5"
+                    app:layout_constraintTop_toBottomOf="@+id/item4"
+                    android:layout_marginTop="10dp"
+                    />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item6"
+                    app:layout_constraintTop_toBottomOf="@+id/item5"
+                    android:layout_marginTop="10dp"
+                    />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item7"
+                    app:layout_constraintTop_toBottomOf="@+id/item6"
+                    android:layout_marginTop="10dp"
+                    />
+            <include
+                    layout="@layout/shimmer_home_recyclerview_item"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:id="@+id/item8"
+                    app:layout_constraintTop_toBottomOf="@+id/item7"
+                    android:layout_marginTop="10dp"
+                    />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,7 +163,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fullNameAndAvatarHolder" />
+            app:layout_constraintTop_toBottomOf="@id/fullNameAndAvatarHolder"
+            android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
