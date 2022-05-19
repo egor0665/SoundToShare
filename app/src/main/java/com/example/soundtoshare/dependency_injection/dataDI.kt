@@ -8,24 +8,23 @@ import com.example.soundtoshare.repositories.VkAPIRepository
 import org.koin.dsl.module
 
 val dataModule = module {
-    factory<VkAPIRepository> {
+    single<VkAPIRepository> {
         VkAPIRepository()
     }
 
     single<SharedPreferencesRepository> {
-        SharedPreferencesRepository(get())
+        SharedPreferencesRepository(sharedPreferences = get())
     }
 
     single<UserInfoRepository> {
-        UserInfoRepository(get())
+        UserInfoRepository(fireStoreDatabase = get())
     }
 
-    factory<SharedPreferencesExternal>{
-        SharedPreferencesExternal(get())
+    single<SharedPreferencesExternal>{
+        SharedPreferencesExternal(context = get())
     }
 
     single<FirestoreDatabase> {
         FirestoreDatabase()
     }
-
 }

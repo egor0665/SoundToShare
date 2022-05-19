@@ -6,7 +6,7 @@ import com.example.soundtoshare.repositories.VkAPIRepository
 import com.vk.sdk.api.audio.dto.AudioAudio
 
 class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
-    val userInfo: MutableLiveData<UserInfo> by lazy {
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
         MutableLiveData<UserInfo>()
     }
 
@@ -14,20 +14,21 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
         MutableLiveData<AudioAudio>()
     }
 
-    fun loadUserInfo() {
+    fun loadUserInfo(loadUserInfoCallBack: UserInfo.() -> Unit) {
         vkApiRepository.getUserInfoRepository {
                 userInfo.postValue(this)
+                loadUserInfoCallBack(this!!)
         }
     }
 
-    fun fetchVkMusicUseCase(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
+    fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
        vkApiRepository.fetchVkMusic{
            fetchVkMusicCallback()
        }
     }
 
-    fun getUserInfo() : UserInfo? {
-        return userInfo.value
+    fun getUserInfo() : UserInfo {
+        return userInfo.value!!
     }
 
     fun getUserInfoLiveData() : MutableLiveData<UserInfo> {

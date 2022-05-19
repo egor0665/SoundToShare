@@ -5,28 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.external.SharedPreferencesExternal
 
 class SharedPreferencesRepository(val sharedPreferences: SharedPreferencesExternal){
-    private val incognitoMode: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
 
-    init{
+    fun init(initCallBack: Boolean.() -> Unit){
         sharedPreferences.getIncognitoMode {
-            incognitoMode.postValue(this)
+            initCallBack(this)
             Log.d("SharedPreference","PreferencesInitialised2")
         }
     }
 
-    fun getIncognitoMode(): Boolean {
-        return (incognitoMode.value ?: false)
-    }
-
-    fun getObservableSharedPreference():MutableLiveData<Boolean>{
-        return incognitoMode
-    }
-
     fun setIncognitoMode(mode: Boolean){
-        incognitoMode.postValue(mode)
         sharedPreferences.setIncognitoMode(mode)
     }
-
 }

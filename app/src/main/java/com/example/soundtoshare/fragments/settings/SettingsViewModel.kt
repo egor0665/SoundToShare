@@ -8,19 +8,19 @@ import com.vk.sdk.api.audio.dto.AudioAudio
 class SettingsViewModel(private val sharedPreferenceUseCase: SharedPreferenceUseCase, private val vkGetDataUseCase: VkGetDataUseCase) : ViewModel() {
 
     fun setIncognitoMode(mode: Boolean) {
-        sharedPreferenceUseCase.setIncognitoModeUseCase(mode)
+        sharedPreferenceUseCase.setIncognitoMode(mode)
     }
 
     fun getObservableIncognitoMode(): MutableLiveData<Boolean>{
-        return sharedPreferenceUseCase.getObservableIncognitoModeSP()
+        return sharedPreferenceUseCase.getObservableSharedPreference()
     }
 
     fun getIncognitoMode(): Boolean {
-        return sharedPreferenceUseCase.getIncognitoModeUseCase()
+        return sharedPreferenceUseCase.getIncognitoMode()
     }
 
     fun checkUserStatus(checkUserStatusCallback: AudioAudio?.() -> Unit) {
-        vkGetDataUseCase.fetchVkMusicUseCase {
+        vkGetDataUseCase.fetchVkMusic {
             checkUserStatusCallback(this)
         }
     }

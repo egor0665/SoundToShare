@@ -19,8 +19,14 @@ import kotlin.math.max
 
 class UpdateMarkersUseCase(vkGetDataUseCase: VkGetDataUseCase, private val fireStoreDatabase: FirestoreDatabase) {
     private lateinit var map: GoogleMap
-    private var myVkAccount: String = vkGetDataUseCase.getUserInfo()!!.firstName + " " +  vkGetDataUseCase.getUserInfo()!!.lastName
+    private lateinit var myVkAccount: String
     private val markersMap = mutableMapOf<String, Marker>()
+
+    init {
+        vkGetDataUseCase.loadUserInfo{
+            myVkAccount = this.firstName + " " +  this.lastName
+        }
+    }
 
     fun initUseCase(googleMap: GoogleMap) {
         map = googleMap

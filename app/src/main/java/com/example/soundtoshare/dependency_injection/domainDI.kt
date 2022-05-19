@@ -11,16 +11,16 @@ val domainModule = module {
         VkGetDataUseCase(vkApiRepository = get())
     }
 
-    factory<LocationUpdateUseCase> {
-        LocationUpdateUseCase(get(),get(), get(), get())
+    single<LocationUpdateUseCase> {
+        LocationUpdateUseCase(context = get(), userInfoRepository = get(), sharedPreferenceUseCase = get(), vkGetDataUseCase = get())
     }
 
-    factory<SharedPreferenceUseCase> {
-        SharedPreferenceUseCase(get())
+    single<SharedPreferenceUseCase> {
+        SharedPreferenceUseCase(sharedPreferencesRepository = get())
     }
 
-    factory<UpdateMarkersUseCase> {
-        UpdateMarkersUseCase(get(), get())
+    single<UpdateMarkersUseCase> {
+        UpdateMarkersUseCase(vkGetDataUseCase = get(), fireStoreDatabase = get())
     }
 
 }

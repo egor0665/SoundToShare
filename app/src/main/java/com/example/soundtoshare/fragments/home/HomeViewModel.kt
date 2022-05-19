@@ -13,10 +13,6 @@ import com.vk.sdk.api.audio.dto.AudioAudio
 
 class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 
-    private val userInfo: MutableLiveData<UserInfo> by lazy {
-        MutableLiveData<UserInfo>()
-    }
-
     private val firebaseGetDataUseCase = FireBaseGetDataUseCase()
     private val reactions : MutableLiveData<MutableList<Reaction>> by lazy {
         MutableLiveData<MutableList<Reaction>>()
@@ -34,7 +30,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 
     fun loadUserInfo() {
         Log.d("test","KoinViewModel")
-        vkGetDataUseCase.loadUserInfo()
+        vkGetDataUseCase.loadUserInfo(){}
         firebaseGetDataUseCase.getReactions(VK.getUserId().toString()) {
             reactions.value?.add(this) ?: Log.d("firebase", "cannot add item")
             reactions.postValue(reactions.value)
@@ -51,7 +47,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
     }
 
     fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
-        vkGetDataUseCase.fetchVkMusicUseCase{
+        vkGetDataUseCase.fetchVkMusic{
             fetchVkMusicCallback()
         }
     }
@@ -59,14 +55,6 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
         return vkGetDataUseCase.getUserInfoLiveData()
-    }
-
-    fun getSongDataLiveData(): MutableLiveData<AudioAudio> {
-        return vkGetDataUseCase.getSongDataLiveData()
-    }
-
-    fun getUserInfo(): UserInfo? {
-        return vkGetDataUseCase.getUserInfo()
     }
 
 }
