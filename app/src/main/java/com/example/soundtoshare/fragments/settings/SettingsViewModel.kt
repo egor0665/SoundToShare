@@ -1,10 +1,5 @@
 package com.example.soundtoshare.fragments.settings
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.soundtoshare.fragments.home.VkGetDataUseCase
-import com.vk.sdk.api.audio.dto.AudioAudio
-
 class SettingsViewModel(private val incognitoModeUseCase: IncognitoModeUseCase, private val vkGetDataUseCase: VkGetDataUseCase) : ViewModel() {
 
     fun setIncognitoMode(mode: Boolean) {
@@ -21,6 +16,12 @@ class SettingsViewModel(private val incognitoModeUseCase: IncognitoModeUseCase, 
 
     fun checkUserStatus(checkUserStatusCallback: AudioAudio?.() -> Unit) {
         vkGetDataUseCase.fetchVkMusic {
+            checkUserStatusCallback(this)
+        }
+    }
+
+    fun checkUserStatus(checkUserStatusCallback: AudioAudio?.() -> Unit) {
+        vkGetDataUseCase.fetchVkMusicUseCase {
             checkUserStatusCallback(this)
         }
     }

@@ -2,7 +2,6 @@ package com.example.soundtoshare.fragments.home
 
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.soundtoshare.repositories.Reaction
@@ -10,6 +9,8 @@ import com.example.soundtoshare.repositories.UserInfo
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
 import com.vk.sdk.api.audio.dto.AudioAudio
+import java.util.*
+import java.util.concurrent.TimeUnit.*
 
 class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 
@@ -45,16 +46,13 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
     fun getObservableReactions(): MutableLiveData<MutableList<Reaction>> {
         return reactions
     }
-
     fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
         vkGetDataUseCase.fetchVkMusic{
             fetchVkMusicCallback()
         }
-    }
 
 
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
         return vkGetDataUseCase.getUserInfoLiveData()
     }
-
 }

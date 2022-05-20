@@ -9,7 +9,6 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
     private val userInfo: MutableLiveData<UserInfo> by lazy {
         MutableLiveData<UserInfo>()
     }
-
     private val songData: MutableLiveData<AudioAudio> by lazy {
         MutableLiveData<AudioAudio>()
     }
@@ -23,7 +22,7 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
 
     fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
        vkApiRepository.fetchVkMusic{
-           fetchVkMusicCallback()
+           fetchVkMusicCallback(this)
        }
     }
 
