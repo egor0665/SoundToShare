@@ -47,9 +47,10 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         return reactions
     }
     fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
-        vkGetDataUseCase.fetchVkMusic{
+        vkGetDataUseCase.fetchVkMusic {
             fetchVkMusicCallback()
         }
+    }
 
 
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {

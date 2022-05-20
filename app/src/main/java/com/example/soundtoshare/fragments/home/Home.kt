@@ -40,14 +40,14 @@ class Home : Fragment() {
         viewModel.loadUserInfo()
         initWorkers()
 
-        val recyclerViewItem1: RecyclerView = binding.recyclerViewItem1
-        recyclerViewItem1.layoutManager = LinearLayoutManager(requireContext())
+        val recyclerView1: RecyclerView = binding.recyclerView1
+        recyclerView1.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
-                recyclerView.adapter = CustomRecyclerAdapter(it)
+                recyclerView1.adapter = CustomRecyclerAdapter(it)
         }
+        val recyclerViewItem2: RecyclerView = binding.recyclerView2
         return binding.root
 
-        val recyclerViewItem2: RecyclerView = binding.recyclerViewItem2
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,12 +57,12 @@ class Home : Fragment() {
         binding.buttonGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                  R.id.radioButton1 -> {
-                    binding.recyclerViewItem2.visibility = View.GONE
-                    binding.recyclerViewItem1.visibility = View.VISIBLE
+                    binding.recyclerView2.visibility = View.GONE
+                    binding.recyclerView1.visibility = View.VISIBLE
                 }
                 R.id.radioButton2 -> {
-                    binding.recyclerViewItem1.visibility = View.GONE
-                    binding.recyclerViewItem2.visibility = View.VISIBLE
+                    binding.recyclerView1.visibility = View.GONE
+                    binding.recyclerView2.visibility = View.VISIBLE
                 }
             }
         }
@@ -109,8 +109,11 @@ class Home : Fragment() {
                         val fullName = it.firstName + " " + it.lastName
                         binding.fullName.text = fullName
                         binding.shimmer.stopShimmer()
+                        binding.radioButton1.isChecked = true
                         binding.shimmer.visibility = View.GONE
                         binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
+                        binding.recyclerView1.visibility = View.VISIBLE
+                        binding.buttonGroup.visibility = View.VISIBLE
                     }
 
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {
@@ -120,14 +123,8 @@ class Home : Fragment() {
 //             imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
 //             val fullName = it.firstName + " " + it.lastName
 //             binding.fullName.text = fullName
-//             binding.radioButton1.isChecked = true
 
-//             binding.shimmer.stopShimmer()
-//             binding.shimmer.visibility = View.GONE
-//             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
-//             binding.recyclerViewItem1.visibility = View.VISIBLE
-//             binding.buttonGroup.visibility = View.VISIBLE
-//            startOnLoadAnimation()
+
         }
     }
 

@@ -15,15 +15,15 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
 
     fun loadUserInfo(loadUserInfoCallBack: UserInfo.() -> Unit) {
         vkApiRepository.getUserInfoRepository {
-                userInfo.postValue(this)
-                loadUserInfoCallBack(this!!)
+            userInfo.postValue(this)
+            loadUserInfoCallBack(this!!)
         }
     }
 
     fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
-       vkApiRepository.fetchVkMusic{
-           fetchVkMusicCallback(this)
-       }
+        vkApiRepository.fetchVkMusic{
+            fetchVkMusicCallback(this)
+        }
     }
 
     fun getUserInfo() : UserInfo {
@@ -43,4 +43,3 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
     }
 
 }
-
