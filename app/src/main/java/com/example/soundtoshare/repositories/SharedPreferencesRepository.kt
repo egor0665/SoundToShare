@@ -1,19 +1,27 @@
 package com.example.soundtoshare.repositories
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.example.soundtoshare.external.SharedPreferencesExternal
+import android.content.Context
 
-class SharedPreferencesRepository(val sharedPreferences: SharedPreferencesExternal){
+class SharedPreferencesRepository(context: Context){
+    private val preferences = context.getSharedPreferences(sharedPreferenceName, Context.MODE_PRIVATE)!!
 
     fun init(initCallBack: Boolean.() -> Unit){
-        sharedPreferences.getIncognitoMode {
-            initCallBack(this)
-            Log.d("SharedPreference","PreferencesInitialised2")
+            getIncognitoMode {
+                initCallBack(this)
+            }
         }
+    fun setIncognitoMode(mode: Boolean){
+        val editor = preferences.edit()
+        editor.putBoolean(incognitoModeString,mode)
+        editor.apply()
     }
 
-    fun setIncognitoMode(mode: Boolean){
-        sharedPreferences.setIncognitoMode(mode)
+    fun getIncognitoMode( getIncognitoModeCallback: Boolean.() -> Unit){
+        getIncognitoModeCallback(preferences.getBoolean(incognitoModeString, false))
+    }
+
+    companion object {
+        const val sharedPreferenceName = "SoundToShareSP"
+        const val incognitoModeString = "IncognitoMode"
     }
 }

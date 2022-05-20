@@ -1,7 +1,6 @@
 package com.example.soundtoshare.dependency_injection
 
 import com.example.soundtoshare.external.FirestoreDatabase
-import com.example.soundtoshare.external.SharedPreferencesExternal
 import com.example.soundtoshare.repositories.UserInfoRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
@@ -13,15 +12,11 @@ val dataModule = module {
     }
 
     single<SharedPreferencesRepository> {
-        SharedPreferencesRepository(sharedPreferences = get())
+        SharedPreferencesRepository(context = get())
     }
 
     single<UserInfoRepository> {
         UserInfoRepository(fireStoreDatabase = get())
-    }
-
-    single<SharedPreferencesExternal>{
-        SharedPreferencesExternal(context = get())
     }
 
     single<FirestoreDatabase> {

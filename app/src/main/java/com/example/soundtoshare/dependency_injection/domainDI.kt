@@ -11,12 +11,12 @@ val domainModule = module {
         VkGetDataUseCase(vkApiRepository = get())
     }
 
-    single<LocationUpdateUseCase> {
-        LocationUpdateUseCase(context = get(), userInfoRepository = get(), sharedPreferenceUseCase = get(), vkGetDataUseCase = get())
-    }
-
     single<SharedPreferenceUseCase> {
         SharedPreferenceUseCase(sharedPreferencesRepository = get())
+    }
+
+    single<LocationUpdateUseCase> {
+        LocationUpdateUseCase(context = get(), userInfoRepository = get(), sharedPreferenceUseCase = get(), vkGetDataUseCase = get())
     }
 
     single<UpdateMarkersUseCase> {
