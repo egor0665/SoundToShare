@@ -1,26 +1,23 @@
 package com.example.soundtoshare.fragments.settings
 
-import android.content.Context
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.example.soundtoshare.fragments.home.VkGetDataUseCase
-import com.example.soundtoshare.repositories.SharedPreferencesRepository
-import com.vk.api.sdk.VK
-import com.vk.sdk.api.audio.dto.AudioAudio
-
-class SettingsViewModel(context: Context, private val sharedPreferenceUseCase: SharedPreferenceUseCase, private val vkGetDataUseCase: VkGetDataUseCase) : ViewModel() {
+class SettingsViewModel(private val incognitoModeUseCase: IncognitoModeUseCase, private val vkGetDataUseCase: VkGetDataUseCase) : ViewModel() {
 
     fun setIncognitoMode(mode: Boolean) {
-        sharedPreferenceUseCase.setIncognitoModeUseCase(mode)
+        incognitoModeUseCase.setIncognitoMode(mode)
     }
 
     fun getObservableIncognitoMode(): MutableLiveData<Boolean>{
-        return sharedPreferenceUseCase.getObservableIncognitoModeSP()
+        return incognitoModeUseCase.getObservableSharedPreference()
     }
 
     fun getIncognitoMode(): Boolean {
-        return sharedPreferenceUseCase.getIncognitoModeUseCase()
+        return incognitoModeUseCase.getIncognitoMode()
+    }
+
+    fun checkUserStatus(checkUserStatusCallback: AudioAudio?.() -> Unit) {
+        vkGetDataUseCase.fetchVkMusic {
+            checkUserStatusCallback(this)
+        }
     }
 
     fun checkUserStatus(checkUserStatusCallback: AudioAudio?.() -> Unit) {
