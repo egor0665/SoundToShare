@@ -1,5 +1,6 @@
 package com.example.soundtoshare.main
 
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -19,7 +20,7 @@ open class Navigator(
 
     protected fun selectFragment(fragment: Fragment) {
         val fragments: List<Fragment> = fragmentManager.fragments
-        val currentFragment = fragments.firstOrNull { it.isVisible }
+        val currentFragment = fragments.firstOrNull { it.isVisible && it.tag != null }
 
         val tag = fragment::class.java.simpleName
         val newFragment: Fragment? = fragmentManager.findFragmentByTag(tag)

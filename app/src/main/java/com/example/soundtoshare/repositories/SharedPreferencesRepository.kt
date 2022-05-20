@@ -1,33 +1,27 @@
 package com.example.soundtoshare.repositories
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.example.soundtoshare.external.SharedPreferencesExternal
 
-class SharedPreferencesRepository(context: Context, val sharedPreferences: SharedPreferencesExternal){
-    private val incognitoMode: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
+class SharedPreferencesRepository(context: Context){
+    private val preferences = context.getSharedPreferences(sharedPreferenceName, Context.MODE_PRIVATE)!!
 
-    init{
-        sharedPreferences.getIncognitoMode {
-            incognitoMode.postValue(this)
-            Log.d("SharedPreference","PreferencesInitialised2")
+    fun init(initCallBack: Boolean.() -> Unit){
+            getIncognitoMode {
+                initCallBack(this)
+            }
         }
-    }
-
-    fun getIncognitoMode(): Boolean {
-        return (incognitoMode.value ?: false)
-    }
-
-    fun getObservableSharedPreference():MutableLiveData<Boolean>{
-        return incognitoMode
-    }
-
     fun setIncognitoMode(mode: Boolean){
-        incognitoMode.postValue(mode)
-        sharedPreferences.setIncognitoMode(mode)
+        val editor = preferences.edit()
+        editor.putBoolean(incognitoModeString,mode)
+        editor.apply()
     }
 
+    fun getIncognitoMode( getIncognitoModeCallback: Boolean.() -> Unit){
+        getIncognitoModeCallback(preferences.getBoolean(incognitoModeString, false))
+    }
+
+    companion object {
+        const val sharedPreferenceName = "SoundToShareSP"
+        const val incognitoModeString = "IncognitoMode"
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.soundtoshare.fragments.home
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,9 @@ import com.example.soundtoshare.workers.VkWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
@@ -40,7 +43,7 @@ class Home : Fragment() {
         val recyclerViewItem1: RecyclerView = binding.recyclerViewItem1
         recyclerViewItem1.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
-                recyclerViewItem1.adapter = CustomRecyclerAdapter(it)
+                recyclerView.adapter = CustomRecyclerAdapter(it)
         }
         return binding.root
 
@@ -78,38 +81,55 @@ class Home : Fragment() {
     private fun startUserInfoObserving() {
 
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
-            val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer (360)).build()
+            val options =
+                DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
             val imageLoader = ImageLoader.getInstance()
             imageLoader.init(ImageLoaderConfiguration.createDefault(activity))
-            imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
-            val fullName = it.firstName + " " + it.lastName
-            binding.fullName.text = fullName
-            binding.radioButton1.isChecked = true
+            imageLoader.displayImage(
+                it.avatar_uri,
+                binding.avatar,
+                options,
+                object : ImageLoadingListener {
 
-            binding.shimmer.stopShimmer()
-            binding.shimmer.visibility = View.GONE
-            binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
-            binding.recyclerViewItem1.visibility = View.VISIBLE
-            binding.buttonGroup.visibility = View.VISIBLE
+                    override fun onLoadingStarted(imageUri: String?, view: View?) {
+                    }
+
+                    override fun onLoadingFailed(
+                        imageUri: String?,
+                        view: View?,
+                        failReason: FailReason?
+                    ) {
+                    }
+
+                    override fun onLoadingComplete(
+                        imageUri: String?,
+                        view: View?,
+                        loadedImage: Bitmap?
+                    ) {
+                        val fullName = it.firstName + " " + it.lastName
+                        binding.fullName.text = fullName
+                        binding.shimmer.stopShimmer()
+                        binding.shimmer.visibility = View.GONE
+                        binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
+                    }
+
+                    override fun onLoadingCancelled(imageUri: String?, view: View?) {
+
+                    }
+                })
+//             imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
+//             val fullName = it.firstName + " " + it.lastName
+//             binding.fullName.text = fullName
+//             binding.radioButton1.isChecked = true
+
+//             binding.shimmer.stopShimmer()
+//             binding.shimmer.visibility = View.GONE
+//             binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
+//             binding.recyclerViewItem1.visibility = View.VISIBLE
+//             binding.buttonGroup.visibility = View.VISIBLE
 //            startOnLoadAnimation()
-
-
         }
     }
-
-//    private fun fillList(): List<String> {
-//        val data = mutableListOf<String>()
-//        (0..30).forEach { i -> data.add("$i element") }
-//        return data
-//    }
-
-
-//    private fun startOnLoadAnimation() {
-//        val animation: Animation =
-//            AnimationUtils.loadAnimation(this.requireContext(), R.anim.default_animation)
-//        binding.fullNameAndAvatarHolder.startAnimation(animation)
-//        binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
-//    }
 
     companion object {
 

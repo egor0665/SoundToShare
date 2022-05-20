@@ -1,41 +1,46 @@
 package com.example.soundtoshare.fragments.home
 
 import androidx.lifecycle.MutableLiveData
-import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.repositories.UserInfo
 import com.example.soundtoshare.repositories.VkAPIRepository
 import com.vk.sdk.api.audio.dto.AudioAudio
 
 class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository) {
-//    private val vkApi = VkAPIRepository
-    fun loadUserInfo() {
-        vkApiRepository.getUserInfoRepository()
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
+    }
+    private val songData: MutableLiveData<AudioAudio> by lazy {
+        MutableLiveData<AudioAudio>()
     }
 
-    fun fetchVkMusicUseCase(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
+    fun loadUserInfo(loadUserInfoCallBack: UserInfo.() -> Unit) {
+        vkApiRepository.getUserInfoRepository {
+                userInfo.postValue(this)
+                loadUserInfoCallBack(this!!)
+        }
+    }
+
+    fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
        vkApiRepository.fetchVkMusic{
            fetchVkMusicCallback(this)
        }
     }
 
-    fun setUserInfo(_userInfo: UserInfo?) {
-        vkApiRepository.setUserInfo(_userInfo)
+    fun getUserInfo() : UserInfo {
+        return userInfo.value!!
     }
 
-    fun setSongData(_songData: AudioAudio?) {
-        vkApiRepository.setSongData(_songData)
+    fun getUserInfoLiveData() : MutableLiveData<UserInfo> {
+        return userInfo
     }
 
-    fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
-        return vkApiRepository.getUserInfoLiveData()
+    fun getSongData(): AudioAudio? {
+        return songData.value
     }
 
     fun getSongDataLiveData(): MutableLiveData<AudioAudio> {
-        return vkApiRepository.getSongDataLiveData()
+        return songData
     }
 
-    fun getUserInfo(): UserInfo? {
-        return vkApiRepository.getUserInfo()
-    }
 }
 

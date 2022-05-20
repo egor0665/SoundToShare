@@ -1,41 +1,28 @@
 package com.example.soundtoshare.fragments.home
 
-import android.util.Log
 import com.example.soundtoshare.external.FireBaseDatabase
 import com.example.soundtoshare.repositories.Reaction
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONTokener
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.*
+import java.util.concurrent.TimeUnit.*
 
 class FireBaseGetDataUseCase {
     private val firebaseDatabase = FireBaseDatabase()
 
     fun getReactions(vkId: String, getReactionsCallback: Reaction.() -> Unit) {
-//        firebaseDatabase.getReactions(vkId) {
-//        }
         firebaseDatabase.startListening(vkId){
-            val reactionArray = mutableListOf<Reaction>()
-            val parser = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
-            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-            val currentDate = sdf.format(Date())
-//            for (item in this.children) {
-                val formattedDate =
-                    formatter.format(parser.parse(this.child("time").value.toString()))
-                val reaction = Reaction(
-                    this.child("from").value.toString(),
-                    this.child("from_id").value.toString(),
-                    formattedDate,
-                    this.child("song").value.toString(),
-                    this.child("artist").value.toString(),
-                    getReaction(this.child("reaction").value.toString().toInt())
-                )
-                getReactionsCallback(reaction)
-//            }
+            val time = getTimeOfReaction(this.child("time").value.toString().toLong())
+
+            val reaction = Reaction(
+                this.child("from").value.toString(),
+                this.child("from_id").value.toString(),
+                time,
+                this.child("song").value.toString(),
+                this.child("artist").value.toString(),
+                getReaction(this.child("reaction").value.toString().toInt()),
+                this.child("avatar").value.toString()
+            )
+
+            getReactionsCallback(reaction)
         }
     }
 
@@ -46,4 +33,44 @@ class FireBaseGetDataUseCase {
             else -> "enjoyed"
         }
     }
+
+    private fun getTimeOfReaction(date : Long) : String {
+        lateinit var timeOfReaction : String
+        val dateDiff = Date().time - date
+
+        val second: Long = MILLISECONDS.toSeconds(dateDiff)
+        val minute: Long = MILLISECONDS.toMinutes(dateDiff)
+        val hour: Long = MILLISECONDS.toHours(dateDiff)
+        val day: Long = MILLISECONDS.toDays(dateDiff)
+
+        when {
+            second < 60 -> {
+                timeOfReaction = "$second Seconds ago"
+            }
+            minute < 60 -> {
+                timeOfReaction  = "$minute Minutes ago"
+            }
+            hour < 24 -> {
+                timeOfReaction  = "$hour Hours ago"
+            }
+            day >= 7 -> {
+                timeOfReaction = when {
+                    day > 365 -> {
+                        (day / 365).toString() + " Years ago"
+                    }
+                    day > 30 -> {
+                        (day / 30).toString() + " Months ago"
+                    }
+                    else -> {
+                        (day / 7).toString() + " Week ago"
+                    }
+                }
+            }
+            day < 7 -> {
+                timeOfReaction = "$day Days ago"
+            }
+        }
+        return timeOfReaction
+    }
+
 }

@@ -1,31 +1,25 @@
 package com.example.soundtoshare.dependency_injection
 
 import com.example.soundtoshare.external.FirestoreDatabase
-import com.example.soundtoshare.external.SharedPreferencesExternal
 import com.example.soundtoshare.repositories.UserInfoRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
 import org.koin.dsl.module
 
 val dataModule = module {
-    single<VkAPIRepository> {
+    factory<VkAPIRepository> {
         VkAPIRepository()
     }
 
-    single<SharedPreferencesRepository> {
-        SharedPreferencesRepository(get(), get())
+    factory<SharedPreferencesRepository> {
+        SharedPreferencesRepository(context = get())
     }
 
-    single<UserInfoRepository> {
-        UserInfoRepository(get())
+    factory<UserInfoRepository> {
+        UserInfoRepository(fireStoreDatabase = get())
     }
 
-    factory<SharedPreferencesExternal>{
-        SharedPreferencesExternal(get())
-    }
-
-    single<FirestoreDatabase> {
+    factory<FirestoreDatabase> {
         FirestoreDatabase()
     }
-
 }
