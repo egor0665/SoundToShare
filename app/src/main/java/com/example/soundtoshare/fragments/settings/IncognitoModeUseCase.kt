@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 
-class SharedPreferenceUseCase(val sharedPreferencesRepository: SharedPreferencesRepository ) {
+class IncognitoModeUseCase(val sharedPreferencesRepository: SharedPreferencesRepository ) {
     private val incognitoMode: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }

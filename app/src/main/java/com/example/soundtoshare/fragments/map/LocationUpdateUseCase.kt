@@ -7,7 +7,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.soundtoshare.fragments.home.VkGetDataUseCase
-import com.example.soundtoshare.fragments.settings.SharedPreferenceUseCase
+import com.example.soundtoshare.fragments.settings.IncognitoModeUseCase
 import com.example.soundtoshare.repositories.UserInfoRepository
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -15,7 +15,7 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.GeoPoint
 
-class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val sharedPreferenceUseCase: SharedPreferenceUseCase, vkGetDataUseCase: VkGetDataUseCase) : LiveData<GeoPoint>()  {
+class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val incognitoModeUseCase: IncognitoModeUseCase, vkGetDataUseCase: VkGetDataUseCase) : LiveData<GeoPoint>()  {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -31,10 +31,10 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             Log.d("Location", "Location changed")
-            Log.d("Location", sharedPreferenceUseCase.getIncognitoMode().toString())
+            Log.d("Location", incognitoModeUseCase.getIncognitoMode().toString())
             for (location in locationResult.locations) {
 
-                if (location != null && !sharedPreferenceUseCase.getIncognitoMode() && vkGetDataUseCase.getSongData()!= null
+                if (location != null && !incognitoModeUseCase.getIncognitoMode() && vkGetDataUseCase.getSongData()!= null
                     && vkGetDataUseCase.getSongData()!!.title.isNotEmpty()) {
 
                     val fullName = vkGetDataUseCase.getUserInfo()!!.firstName + " " + vkGetDataUseCase.getUserInfo()!!.lastName

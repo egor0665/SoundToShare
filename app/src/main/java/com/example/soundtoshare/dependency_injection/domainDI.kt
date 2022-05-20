@@ -3,7 +3,7 @@ package com.example.soundtoshare.dependency_injection
 import com.example.soundtoshare.fragments.home.VkGetDataUseCase
 import com.example.soundtoshare.fragments.map.LocationUpdateUseCase
 import com.example.soundtoshare.fragments.map.UpdateMarkersUseCase
-import com.example.soundtoshare.fragments.settings.SharedPreferenceUseCase
+import com.example.soundtoshare.fragments.settings.IncognitoModeUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -11,15 +11,15 @@ val domainModule = module {
         VkGetDataUseCase(vkApiRepository = get())
     }
 
-    single<SharedPreferenceUseCase> {
-        SharedPreferenceUseCase(sharedPreferencesRepository = get())
+    single<IncognitoModeUseCase> {
+        IncognitoModeUseCase(sharedPreferencesRepository = get())
     }
 
-    single<LocationUpdateUseCase> {
-        LocationUpdateUseCase(context = get(), userInfoRepository = get(), sharedPreferenceUseCase = get(), vkGetDataUseCase = get())
+    factory<LocationUpdateUseCase> {
+        LocationUpdateUseCase(context = get(), userInfoRepository = get(), incognitoModeUseCase = get(), vkGetDataUseCase = get())
     }
 
-    single<UpdateMarkersUseCase> {
+    factory<UpdateMarkersUseCase> {
         UpdateMarkersUseCase(vkGetDataUseCase = get(), fireStoreDatabase = get())
     }
 
