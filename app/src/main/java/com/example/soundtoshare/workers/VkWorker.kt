@@ -7,6 +7,7 @@ import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.soundtoshare.fragments.home.HomeViewModel
+import com.example.soundtoshare.fragments.map.MapViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*

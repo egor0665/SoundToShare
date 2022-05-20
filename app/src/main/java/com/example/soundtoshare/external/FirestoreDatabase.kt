@@ -15,17 +15,14 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FirestoreDatabase {
     private val database = Firebase.firestore
     private val _users = mutableListOf<User>()
     val users: List<User>
         get() = _users
-
-    // Костыль, мб есть варианты получше
-    val notify: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
 
     fun setUserInfo(vkAccount: String, vkId: String){
         Log.d("Firebase", vkAccount+ " " +vkId)
@@ -42,14 +39,15 @@ class FirestoreDatabase {
                 Log.w("Firestore", "Error adding document UserInfo", e)
             }
     }
-    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String) {
+    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String, vkId: String) {
         val user = hashMapOf(
             "VKAccount" to vkAccount,
+            "VKId" to vkId,
             "geoPoint" to GeoPoint(latitude, longitude),
             "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude)),
             "currentSong" to song,
             "currentArtist" to artist,
-            "lastUpdate" to Timestamp.now()
+            "lastUpdate" to Date().time
         )
 
         database.collection("Users").document(vkAccount)
@@ -62,7 +60,7 @@ class FirestoreDatabase {
             }
     }
 
-    fun fetchClosest(targetDevice: LatLng, radiusInM: Double) {
+    fun fetchClosest(targetDevice: LatLng, radiusInM: Double, fetchClosestCallback : List<User>.() -> Unit) {
         //TODO: Возможно заменить полную очистку на гибрид замены, очистки и добавления + добавить больше фильтрации
         _users.clear()
         val center = GeoLocation(targetDevice.latitude, targetDevice.longitude)
@@ -105,7 +103,8 @@ class FirestoreDatabase {
                         User(
                             it.getField<GeoPoint>("geoPoint")!!,
                             it.getField<String>("VKAccount").toString(),
-                            it.getField<Timestamp>("lastUpdate")!!
+                            it.getField<Long>("lastUpdate")!!,
+                            it.getField<String>("VKId")!!
                         )
                     )
                     Log.d(
@@ -114,7 +113,7 @@ class FirestoreDatabase {
                             .toString() + it.getField<String>("VKAccount").toString()
                     )
                 }
-                notify.value = true
+                fetchClosestCallback(_users)
             }
     }
 }

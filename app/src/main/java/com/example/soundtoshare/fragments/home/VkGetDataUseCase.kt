@@ -18,6 +18,8 @@ class VkGetDataUseCase(private val vkApiRepository : VkAPIRepository, private va
     fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
         vkApiRepository.fetchVkMusic{
             fetchVkMusicCallback(this)
+            if (this != null)
+                cacheRepository.setSongData(this)
         }
     }
 }

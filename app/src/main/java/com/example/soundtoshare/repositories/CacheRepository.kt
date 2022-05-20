@@ -19,7 +19,7 @@ class CacheRepository() {
         this.userInfo.postValue(userInfo)
     }
 
-    fun songData(songData: AudioAudio){
+    fun setSongData(songData: AudioAudio){
         this.songData.postValue(songData)
     }
 
