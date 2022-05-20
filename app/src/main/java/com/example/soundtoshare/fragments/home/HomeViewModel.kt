@@ -20,6 +20,11 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
     private val reactions : MutableLiveData<MutableList<Reaction>> by lazy {
         MutableLiveData<MutableList<Reaction>>()
     }
+
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
+    }
+
     init{
         Log.d("ViewModel", "Created ViewModel")
         reactions.postValue(mutableListOf())
@@ -33,7 +38,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
 
     fun loadUserInfo(binding: FragmentHomeBinding) {
         Log.d("test","KoinViewModel")
-        vkGetDataUseCase.loadUserInfo(){}
+        vkGetDataUseCase.loadUserInfo(){
+            userInfo.postValue(this)
+        }
         firebaseGetDataUseCase.getReactions(VK.getUserId().toString()) {
             reactions.value?.add(this) ?: Log.d("firebase", "cannot add item")
             reactions.postValue(reactions.value)
@@ -61,8 +68,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         }
     }
 
-
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
-        return vkGetDataUseCase.getUserInfoLiveData()
+        return userInfo
     }
 }
