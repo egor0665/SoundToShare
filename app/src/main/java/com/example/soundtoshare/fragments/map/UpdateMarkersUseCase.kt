@@ -1,16 +1,19 @@
 package com.example.soundtoshare.fragments.map
 
+import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.view.animation.BounceInterpolator
 import android.view.animation.Interpolator
+import com.example.soundtoshare.R
 import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.fragments.home.VkGetDataUseCase
 import com.example.soundtoshare.repositories.User
 import com.example.soundtoshare.repositories.VkAPIRepository
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -57,13 +60,15 @@ class UpdateMarkersUseCase(vkGetDataUseCase: VkGetDataUseCase, private val fireS
             oldMarker.position = LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude)
         }
         else {
+            //val bit = BitmapFactory.decodeFile(R.drawable.ic_circle_dot_record_round_icon)
             val userIndicator = MarkerOptions()
                 .position(LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude))
                 .title(newUser.VKAccount)
                 .snippet("lat:" + newUser.geoPoint.latitude + ", lng:" + newUser.geoPoint.longitude)
+               // .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_circle_dot_record_round_icon))
             val newMarker = map.addMarker(userIndicator)
             dropPinEffect(newMarker!!)
-            newMarker.tag = newUser
+            newMarker!!.tag = newUser
             markersMap[newUser.VKAccount] = newMarker
         }
     }

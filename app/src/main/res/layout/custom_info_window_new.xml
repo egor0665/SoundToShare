@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <LinearLayout
+            android:id="@+id/toplayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="5dip"
+            android:paddingLeft="10dip"
+            android:paddingRight="20dip"
+            android:paddingBottom="5dip">
+
+        <TextView
+                android:id="@+id/firstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/name_black"
+                android:textSize="14sp"
+
+                tools:ignore="MissingConstraints"
+                app:layout_constraintStart_toEndOf="@id/infoWindowAvatar"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+
+                />
+
+        <TextView
+                android:id="@+id/lastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/name_black"
+                android:textSize="14sp"
+
+                tools:ignore="MissingConstraints"
+                app:layout_constraintStart_toEndOf="@id/firstName"
+                app:layout_constraintTop_toTopOf="parent"
+
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+
+                />
+
+        <TextView
+                android:id="@+id/snippet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="10"
+                android:textColor="@color/name_black"
+                android:textSize="14sp"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/toplayout">
+
+        <Button
+                android:id="@+id/btnOne"
+                android:layout_width="120dip"
+                android:layout_height="40dip"
+                android:text="one btn"
+                android:background="@android:drawable/btn_default"
+                />
+
+
+        <Button
+                android:id="@+id/btnTwo"
+                android:layout_width="120dip"
+                android:layout_height="40dip"
+                android:text="two btn"
+                android:layout_marginLeft="10dip"
+                android:background="@android:drawable/btn_default"/>
+
+    </LinearLayout>
+</RelativeLayout>
