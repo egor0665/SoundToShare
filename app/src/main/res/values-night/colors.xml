@@ -24,4 +24,7 @@
     <color name="shimmer_color">#FFFFFFFF</color>
     <color name="backgroundThemeNavigationShimmer">#2d2d2d</color>
 
+    <color name="noAction">#FFFFFFFF</color>
+    <color name="yesAction">#22EF7A</color>
+
 </resources>
