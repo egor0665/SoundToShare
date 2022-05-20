@@ -7,20 +7,20 @@ import com.example.soundtoshare.fragments.settings.IncognitoModeUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    single<VkGetDataUseCase> {
-        VkGetDataUseCase(vkApiRepository = get())
+    factory<VkGetDataUseCase> {
+        VkGetDataUseCase(vkApiRepository = get(), cacheRepository = get())
     }
 
-    single<IncognitoModeUseCase> {
-        IncognitoModeUseCase(sharedPreferencesRepository = get())
+    factory<IncognitoModeUseCase> {
+        IncognitoModeUseCase(sharedPreferencesRepository = get(), cacheRepository = get())
     }
 
     factory<LocationUpdateUseCase> {
-        LocationUpdateUseCase(context = get(), userInfoRepository = get(), incognitoModeUseCase = get(), vkGetDataUseCase = get())
+        LocationUpdateUseCase(context = get(), userInfoRepository = get(), cacheRepository = get())
     }
 
     factory<UpdateMarkersUseCase> {
-        UpdateMarkersUseCase(vkGetDataUseCase = get(), fireStoreDatabase = get())
+        UpdateMarkersUseCase(cacheRepository = get(), fireStoreDatabase = get())
     }
 
 }

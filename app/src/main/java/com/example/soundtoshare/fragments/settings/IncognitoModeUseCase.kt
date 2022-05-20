@@ -1,29 +1,26 @@
 package com.example.soundtoshare.fragments.settings
 
 import androidx.lifecycle.MutableLiveData
+import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 
-class IncognitoModeUseCase(val sharedPreferencesRepository: SharedPreferencesRepository ) {
-    private val incognitoMode: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
-
+class IncognitoModeUseCase(val sharedPreferencesRepository: SharedPreferencesRepository, private val cacheRepository: CacheRepository ) {
     init{
         sharedPreferencesRepository.init {
-            incognitoMode.postValue(this)
+            cacheRepository.setIncognitoMode(this)
         }
     }
 
     fun getIncognitoMode(): Boolean {
-        return (incognitoMode.value ?: false)
+        return cacheRepository.getIncognitoMode()
     }
 
-    fun getObservableSharedPreference():MutableLiveData<Boolean>{
-        return incognitoMode
+    fun getIncognitoModeLiveData():MutableLiveData<Boolean>{
+        return cacheRepository.getIncognitoModeLiveData()
     }
 
     fun setIncognitoMode(mode: Boolean){
-        incognitoMode.postValue(mode)
+        cacheRepository.setIncognitoMode(mode)
         sharedPreferencesRepository.setIncognitoMode(mode)
     }
 }
