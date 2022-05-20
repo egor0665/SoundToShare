@@ -5,6 +5,23 @@
       <map>
         <entry key="..\:/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="..\:/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_heart_love_like_icon.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_like_thumbs_up_icon.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/oval_button.xml" value="0.145" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/radio_selected.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/radio_selector.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/recycler_button.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/rounded_button.xml" value="0.145" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/rounded_button_black.xml" value="0.145" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.176" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_map.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_settings.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/home_layout_name.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/home_recyclerview_item.xml" value="0.13697916666666668" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/shimmer_home_recyclerview_item.xml" value="0.264" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/shimmer_layout.xml" value="0.25" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/shimmer_layout_button.xml" value="0.4" />
       </map>
     </option>
   </component>
