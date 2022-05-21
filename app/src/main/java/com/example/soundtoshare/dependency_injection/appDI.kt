@@ -22,8 +22,9 @@ val appModule = module {
     }
     viewModel<MapViewModel>{
         MapViewModel(
-            locationUpdate = get(),
-            updateMarkersUseCase = get()
+            locationUpdateUseCase = get(),
+            updateMarkersUseCase = get(),
+            moveCameraUseCase = get()
         )
     }
 }

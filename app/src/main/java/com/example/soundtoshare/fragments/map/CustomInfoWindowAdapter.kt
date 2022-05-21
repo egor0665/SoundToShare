@@ -5,10 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.example.soundtoshare.R
 import com.example.soundtoshare.repositories.User
@@ -26,15 +24,19 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
 
     init {
         mapWrapperLayout.init(googleMap, getPixelsFromDp(context, (39 + 20).toFloat()))
-        val infoButton1 = infoWindow.findViewById<View>(R.id.btnOne) as Button
-        val infoButton2 = infoWindow.findViewById<View>(R.id.btnTwo) as Button
+        val infoButton1 = infoWindow.findViewById<View>(R.id.buttonLike) as AppCompatButton
+        val infoButton2 = infoWindow.findViewById<View>(R.id.buttonPlay) as AppCompatButton
+        val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
+
+        icon.setImageResource(R.drawable.ic_incognito)
+
 
         // Setting custom OnTouchListener which deals with the pressed state
         // so it shows up
         infoButtonListener = object : OnInfoWindowElemTouchListener(
             infoButton1,
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default),
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
+            ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon),
+            ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 // Here we can perform some action triggered after clicking the button
@@ -46,8 +48,8 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
 
         infoButtonListener2 = object : OnInfoWindowElemTouchListener(
             infoButton2,
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default),
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
+            ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon),
+            ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 //TODO: Реализовать кнопки
@@ -58,8 +60,8 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
     }
 
     override fun getInfoContents(marker: Marker): View {
-        val infoTitle = infoWindow.findViewById<TextView>(R.id.title)
-        val infoSnippet = infoWindow.findViewById<TextView>(R.id.snippet)
+        val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
+        val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
         // Setting up the infoWindow with current's marker info
         infoSnippet?.text = marker.title
         infoTitle?.text = marker.snippet

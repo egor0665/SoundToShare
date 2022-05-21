@@ -5,6 +5,39 @@
       <map>
         <entry key="..\:/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="..\:/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_circle_dot_record_round_icon.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_circle_fill_play_icon.xml" value="0.2055" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_heart_love_like_icon.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_incognito_white.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_like_thumbs_up_icon.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_like_thumbs_up_icon_map.xml" value="0.2055" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_map.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_settings.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_tmplogo.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/ic_vk_social_media_logo_icon_out.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/oval_button.xml" value="0.145" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/oval_button_map.xml" value="0.2055" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/oval_map_marker.xml" value="0.1" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/radio_selected.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/radio_selector.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/recycler_button.xml" value="0.207" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/rounded_button.xml" value="0.145" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/drawable/rounded_button_black.xml" value="0.145" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/custom_info_background_window.xml" value="0.2" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/custom_info_window.xml" value="0.264" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/custom_info_window_new.xml" value="0.4" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.176" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_map.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_settings.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/home_layout_name.xml" value="0.2" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/home_recyclerview_item.xml" value="0.2" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/shimmer_home_recyclerview_item.xml" value="0.568922305764411" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/shimmer_layout.xml" value="0.25" />
+        <entry key="..\:/Users/shiga/AndroidStudioProjects/SoundToShare/app/src/main/res/layout/shimmer_layout_button.xml" value="0.4" />
+        <entry key="..\:/Users/shiga/AppData/Local/Android/Sdk/platforms/android-32/data/res/drawable/btn_default.xml" value="0.1365" />
+        <entry key="..\:/Users/shiga/AppData/Local/Android/Sdk/platforms/android-32/data/res/drawable/btn_default_small.xml" value="0.1365" />
       </map>
     </option>
   </component>

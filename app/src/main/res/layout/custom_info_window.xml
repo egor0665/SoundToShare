@@ -1,89 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:background="@color/backgroundThemeNavigation">
+
+<ImageView
+        android:id="@+id/avatar"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fullNameAndSong"
+        android:layout_marginStart="10dp"
+        android:translationZ="90dp"
+        android:src="@drawable/ic_tmplogo"
+        tools:ignore="MissingConstraints"
+        />
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/fullNameAndSong"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <LinearLayout
-            android:id="@+id/toplayout"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@+id/avatar"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/button"
+          tools:ignore="MissingConstraints">
+
+
+    <TextView
+            android:id="@+id/firstName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="5dip"
-            android:paddingLeft="10dip"
-            android:paddingRight="20dip"
-            android:paddingBottom="5dip">
+            android:textSize="14sp"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/gotham_bold"
+            android:paddingStart="10dp"
 
-        <TextView
-                android:id="@+id/firstName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/name_black"
-                android:textSize="14sp"
-
-                tools:ignore="MissingConstraints"
-                app:layout_constraintStart_toEndOf="@id/infoWindowAvatar"
-                app:layout_constraintTop_toTopOf="parent"
-
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-
-                />
-
-        <TextView
-                android:id="@+id/lastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/name_black"
-                android:textSize="14sp"
-
-                tools:ignore="MissingConstraints"
-                app:layout_constraintStart_toEndOf="@id/firstName"
-                app:layout_constraintTop_toTopOf="parent"
-
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
-
-                />
-
-        <TextView
-                android:id="@+id/snippet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="10"
-                android:textColor="@color/name_black"
-                android:textSize="14sp"/>
-
-    </LinearLayout>
-    <LinearLayout
-            android:layout_width="match_parent"
+            tools:ignore="MissingConstraints" />
+    <TextView
+            android:id="@+id/lastName"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/toplayout">
+            android:textSize="10sp"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/gotham_medium"
+            app:layout_constraintTop_toBottomOf="@+id/firstName"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            tools:ignore="MissingConstraints"
 
-        <Button
-                android:id="@+id/btnOne"
-                android:layout_width="120dip"
-                android:layout_height="40dip"
-                android:text="one btn"
-                android:background="@android:drawable/btn_default"
-                />
+            />
 
 
-        <Button
-                android:id="@+id/btnTwo"
-                android:layout_width="120dip"
-                android:layout_height="40dip"
-                android:text="two btn"
-                android:layout_marginLeft="10dip"
-                android:background="@android:drawable/btn_default"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-</RelativeLayout>
+<androidx.constraintlayout.widget.ConstraintLayout
+
+        android:id="@+id/button"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toEndOf="@+id/fullNameAndSong"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="10dp"
+        tools:ignore="MissingConstraints">
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonLike"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+
+            android:background="@drawable/ic_like_thumbs_up_icon"
+            tools:ignore="MissingConstraints" />
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonPlay"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:fontFamily="@font/gotham_medium"
+            app:layout_constraintStart_toEndOf="@+id/buttonLike"
+            android:layout_marginStart="5dp"
+
+            android:background="@drawable/ic_circle_fill_play_icon"
+
+            tools:ignore="MissingConstraints" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

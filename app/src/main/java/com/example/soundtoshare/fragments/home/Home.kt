@@ -37,7 +37,14 @@ class Home : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater)
         binding.shimmer.startShimmer()
-        viewModel.loadUserInfo()
+        binding.shimmerReyclerView.startShimmer()
+        viewModel.loadUserInfo(){
+            binding.shimmerReyclerView.stopShimmer()
+            binding.radioButton1.isChecked = true
+            binding.shimmerReyclerView.visibility = View.GONE
+            binding.recyclerView1.visibility = View.VISIBLE
+            binding.buttonGroup.visibility = View.VISIBLE
+        }
         initWorkers()
 
         val recyclerView1: RecyclerView = binding.recyclerView1
@@ -109,11 +116,14 @@ class Home : Fragment() {
                         val fullName = it.firstName + " " + it.lastName
                         binding.fullName.text = fullName
                         binding.shimmer.stopShimmer()
-                        binding.radioButton1.isChecked = true
                         binding.shimmer.visibility = View.GONE
                         binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
-                        binding.recyclerView1.visibility = View.VISIBLE
-                        binding.buttonGroup.visibility = View.VISIBLE
+
+//                        binding.shimmerReyclerView.stopShimmer()
+//                        binding.radioButton1.isChecked = true
+//                        binding.shimmerReyclerView.visibility = View.GONE
+//                        binding.recyclerView1.visibility = View.VISIBLE
+//                        binding.buttonGroup.visibility = View.VISIBLE
                     }
 
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {

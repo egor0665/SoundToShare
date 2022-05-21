@@ -41,7 +41,7 @@ class MapFragment : Fragment() {
             setInfoWindowAdapter(customInfoWindowAdapter)
             setOnCameraIdleListener(viewModel)
         }
-        viewModel.moveCameraUseCase = MoveCameraUseCase(map)
+        viewModel.moveCameraUseCase.initUseCase(map!!)
         viewModel.updateMarkersUseCase.initUseCase(map!!)
     }
 
@@ -63,7 +63,7 @@ class MapFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-//        getLocationPermission()
+        //getLocationPermission()
         //TODO: Повторный запрос разрешений
     }
 

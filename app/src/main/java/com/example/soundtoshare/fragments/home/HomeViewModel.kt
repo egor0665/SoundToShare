@@ -1,9 +1,11 @@
 package com.example.soundtoshare.fragments.home
 
 import android.util.Log
+import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.repositories.UserInfo
 import com.vk.api.sdk.VK
@@ -18,6 +20,11 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
     private val reactions : MutableLiveData<MutableList<Reaction>> by lazy {
         MutableLiveData<MutableList<Reaction>>()
     }
+
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
+    }
+
     init{
         Log.d("ViewModel", "Created ViewModel")
         reactions.postValue(mutableListOf())
@@ -29,16 +36,21 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         authLauncher.launch(arrayList)
     }
 
-    fun loadUserInfo() {
+    fun loadUserInfo(loadUserInfoCallBack : () -> Unit) {
         Log.d("test","KoinViewModel")
-        vkGetDataUseCase.loadUserInfo(){}
+        vkGetDataUseCase.loadUserInfo(){
+            userInfo.postValue(this)
+        }
         firebaseGetDataUseCase.getReactions(VK.getUserId().toString()) {
             reactions.value?.add(this) ?: Log.d("firebase", "cannot add item")
             reactions.postValue(reactions.value)
-            reactions.value?.forEach { Log.d("firebase", it.toString()) } ?: Log.d(
+            reactions.value?.forEach {
+                Log.d("firebase", it.toString())
+            } ?: Log.d(
                 "firebase",
                 "ya hz"
             )
+            loadUserInfoCallBack()
         }
 
     }
@@ -52,8 +64,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         }
     }
 
-
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
-        return vkGetDataUseCase.getUserInfoLiveData()
+        return userInfo
     }
 }
