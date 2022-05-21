@@ -14,12 +14,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentMapBinding
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.vk.api.sdk.VK
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -43,6 +45,15 @@ class MapFragment : Fragment() {
         }
         viewModel.moveCameraUseCase = MoveCameraUseCase(map)
         viewModel.updateMarkersUseCase.initUseCase(map!!)
+        customInfoWindowAdapter.getObservableButtonClicked().observe(activity as LifecycleOwner) {
+            when (it.second) {
+                from: String, fromId: Int,song: String, artist:String, avatar: String
+                1-> viewModel.likeSong(it.first.VKAccount, it.first.VKId.toInt(), it.first.song, it.first.artist, VK.getUserId().toString(), VK. )
+                2->startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://m.vk.com/audio?q="+it.first.song+"-"+ it.first.artist)))
+            }
+
+
+        }
     }
 
     override fun onCreateView(
@@ -51,6 +62,7 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMapBinding.inflate(inflater)
+
         return binding.root
     }
 

@@ -27,21 +27,21 @@ class FirestoreDatabase {
         MutableLiveData<Boolean>()
     }
 
-    fun setUserInfo(vkAccount: String, vkId: String){
-        Log.d("Firebase", vkAccount+ " " +vkId)
-        val userInfo = hashMapOf(
-            "VKAccount" to vkAccount,
-            "vkId" to vkId
-        )
-        database.collection("UserInfo").document(vkId)
-            .set(userInfo)
-            .addOnSuccessListener {
-                Log.d("Firestore", "DocumentSnapshot added  ")
-            }
-            .addOnFailureListener { e ->
-                Log.w("Firestore", "Error adding document UserInfo", e)
-            }
-    }
+//    fun setUserInfo(vkAccount: String, vkId: String){
+//        Log.d("Firebase", vkAccount+ " " +vkId)
+//        val userInfo = hashMapOf(
+//            "VKAccount" to vkAccount,
+//            "vkId" to vkId
+//        )
+//        database.collection("UserInfo").document(vkId)
+//            .set(userInfo)
+//            .addOnSuccessListener {
+//                Log.d("Firestore", "DocumentSnapshot added  ")
+//            }
+//            .addOnFailureListener { e ->
+//                Log.w("Firestore", "Error adding document UserInfo", e)
+//            }
+//    }
     fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String) {
         val user = hashMapOf(
             "VKAccount" to vkAccount,
@@ -60,6 +60,12 @@ class FirestoreDatabase {
             .addOnFailureListener { e ->
                 Log.w("Firestore", "Error adding document", e)
             }
+    }
+    fun addReaction(){
+
+        val reaction = hashMapOf(
+            from =
+        )
     }
 
     fun fetchClosest(targetDevice: LatLng, radiusInM: Double) {
@@ -105,7 +111,10 @@ class FirestoreDatabase {
                         User(
                             it.getField<GeoPoint>("geoPoint")!!,
                             it.getField<String>("VKAccount").toString(),
-                            it.getField<Timestamp>("lastUpdate")!!
+                            it.getField<Timestamp>("lastUpdate")!!,
+                            song = it.getField<String>("currentSong")!!,
+                            artist = it.getField<String>("currentArtist")!!,
+                            VKId = it.getField<String>("VKId")!!
                         )
                     )
                     Log.d(

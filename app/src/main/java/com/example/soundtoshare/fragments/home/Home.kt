@@ -13,7 +13,8 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
-import com.example.soundtoshare.recycler_view.CustomRecyclerAdapter
+import com.example.soundtoshare.recycler_view.RecyclerAdapterLikedSongs
+import com.example.soundtoshare.recycler_view.RecyclerAdapterReactions
 import com.example.soundtoshare.workers.VkWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -28,7 +29,6 @@ import java.util.concurrent.TimeUnit
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,12 +40,7 @@ class Home : Fragment() {
         viewModel.loadUserInfo()
         initWorkers()
 
-        val recyclerView1: RecyclerView = binding.recyclerView1
-        recyclerView1.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
-                recyclerView1.adapter = CustomRecyclerAdapter(it)
-        }
-        val recyclerViewItem2: RecyclerView = binding.recyclerView2
+
         return binding.root
 
     }
@@ -53,10 +48,11 @@ class Home : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         startUserInfoObserving()
-
+        setUpRecyclers()
         binding.buttonGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                  R.id.radioButton1 -> {
+                     viewModel.addLikedSong()
                     binding.recyclerView2.visibility = View.GONE
                     binding.recyclerView1.visibility = View.VISIBLE
                 }
@@ -68,6 +64,20 @@ class Home : Fragment() {
         }
     }
 
+    private fun setUpRecyclers() {
+        val recyclerView1: RecyclerView = binding.recyclerView1
+        val recyclerView2: RecyclerView = binding.recyclerView2
+        recyclerView1.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView2.layoutManager = LinearLayoutManager(requireContext())
+        viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
+            recyclerView1.adapter = RecyclerAdapterReactions(it)
+        }
+        viewModel.getObservableLikedSongs().observe(activity as LifecycleOwner) {
+            recyclerView2.adapter = RecyclerAdapterLikedSongs(it)
+        }
+        viewModel.loadLikedSongs()
+    }
+
     private fun initWorkers() {
         WorkManager.getInstance(requireContext())
             .enqueue(
@@ -77,7 +87,6 @@ class Home : Fragment() {
                     .build()
             )
     }
-
     private fun startUserInfoObserving() {
 
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {

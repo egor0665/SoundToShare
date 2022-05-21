@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'com.google.gms.google-services'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -39,6 +40,7 @@ android {
 dependencies {
     def work_version = "2.7.1"
     def koin_version = "3.1.2"
+    def roomVersion = "2.4.2"
     implementation 'com.google.firebase:firebase-firestore-ktx:23.0.2'
     implementation 'com.vk:android-sdk-core:3.5.2'
     implementation 'com.vk:android-sdk-api:3.5.2'
@@ -80,4 +82,16 @@ dependencies {
 //    implementation "io.insert-koin:koin-android:$koin_version"
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+    // Room
+
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+//    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.room:room-guava:$roomVersion")
+    testImplementation("androidx.room:room-testing:$roomVersion")
+    implementation("androidx.room:room-paging:2.5.0-alpha01")
 }

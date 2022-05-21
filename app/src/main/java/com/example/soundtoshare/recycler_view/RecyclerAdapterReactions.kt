@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soundtoshare.R
 import com.example.soundtoshare.repositories.Reaction
@@ -17,8 +15,8 @@ import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
 
-class CustomRecyclerAdapter(private val reactions: MutableList<Reaction>) : RecyclerView
-.Adapter<CustomRecyclerAdapter.MyViewHolder>() {
+class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : RecyclerView
+.Adapter<RecyclerAdapterReactions.MyViewHolder>() {
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val songTextView: TextView = itemView.findViewById(R.id.textViewSong)
@@ -31,7 +29,7 @@ class CustomRecyclerAdapter(private val reactions: MutableList<Reaction>) : Recy
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.home_recyclerview_item, parent, false)
+            .inflate(R.layout.home_recyclerview_reaction_item, parent, false)
         return MyViewHolder(itemView)
     }
 

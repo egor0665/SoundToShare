@@ -1,9 +1,12 @@
 package com.example.soundtoshare.dependency_injection
 
+import com.example.soundtoshare.external.FireBaseDatabase
 import com.example.soundtoshare.external.FirestoreDatabase
+import com.example.soundtoshare.repositories.LikedSongsRoomDB
 import com.example.soundtoshare.repositories.UserInfoRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
+import com.example.soundtoshare.repositories.roomdb.RoomDBRepository
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -15,11 +18,18 @@ val dataModule = module {
         SharedPreferencesRepository(context = get())
     }
 
+    single<RoomDBRepository> {
+        RoomDBRepository(context = get())
+    }
+
     factory<UserInfoRepository> {
         UserInfoRepository(fireStoreDatabase = get())
     }
 
     factory<FirestoreDatabase> {
         FirestoreDatabase()
+    }
+    factory<FireBaseDatabase> {
+        FireBaseDatabase()
     }
 }

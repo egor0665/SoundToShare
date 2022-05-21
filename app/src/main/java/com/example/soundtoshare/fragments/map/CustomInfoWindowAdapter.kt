@@ -10,20 +10,24 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.R
 import com.example.soundtoshare.repositories.User
+import com.example.soundtoshare.repositories.roomdb.LikedSong
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.model.Marker
 
 
 @SuppressLint("ClickableViewAccessibility")
-class CustomInfoWindowAdapter(private val context: Activity, private val infoWindow: ViewGroup,
+class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGroup,
                               googleMap: GoogleMap?) : InfoWindowAdapter {
     private val mapWrapperLayout: MapWrapperLayout = context.findViewById(R.id.map_relative_layout)
     private var infoButtonListener: OnInfoWindowElemTouchListener
     private var infoButtonListener2: OnInfoWindowElemTouchListener
-
+    private val buttonClicked : MutableLiveData<Pair<User,Int>> by lazy {
+        MutableLiveData<Pair<User,Int>>()
+    }
     init {
         mapWrapperLayout.init(googleMap, getPixelsFromDp(context, (39 + 20).toFloat()))
         val infoButton1 = infoWindow.findViewById<View>(R.id.btnOne) as Button
@@ -38,8 +42,11 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 // Here we can perform some action triggered after clicking the button
-                //TODO: Реализовать кнопки
-                Toast.makeText(context, "click on button 1", Toast.LENGTH_SHORT).show()
+                val user = marker!!.tag as User
+                buttonClicked.postValue(Pair(user,1))
+
+//                Toast.makeText(context, "click on button 1", Toast.LENGTH_SHORT).show()
+                buttonClicked.postValue(Pair(user,0))
             }
         }
         infoButton1.setOnTouchListener(infoButtonListener)
@@ -50,22 +57,28 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
             ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
-                //TODO: Реализовать кнопки
-                Toast.makeText(context, "click on button 2", Toast.LENGTH_LONG).show()
+                val user = marker!!.tag as User
+                buttonClicked.postValue(Pair(user,2))
+
+//                Toast.makeText(context, "click on button 2", Toast.LENGTH_LONG).show()
+                buttonClicked.postValue(Pair(user,0))
             }
         }
         infoButton2.setOnTouchListener(infoButtonListener2)
     }
 
     override fun getInfoContents(marker: Marker): View {
-        val infoTitle = infoWindow.findViewById<TextView>(R.id.title)
-        val infoSnippet = infoWindow.findViewById<TextView>(R.id.snippet)
+//        val infoTitle = infoWindow.findViewById<TextView>(R.id.title)
+//        val infoSnippet = infoWindow.findViewById<TextView>(R.id.snippet)
+//        val infoArtistSong = infoWindow.findViewById<TextView>(R.id.snippet)
+        val infoTitle = infoWindow.findViewById<TextView>(R.id.fullName)
+        val infoSnippet = infoWindow.findViewById<TextView>(R.id.artistSong)
         // Setting up the infoWindow with current's marker info
-        infoSnippet?.text = marker.title
-        infoTitle?.text = marker.snippet
+        infoSnippet?.text = (marker.tag as User).VKAccount
+        infoTitle?.text = (marker.tag as User).artist +" - "+ (marker.tag as User).song
         //ИЛИ (в тэге содержится объект User)
-        val user: User = marker.tag as User
-        infoSnippet?.text = user.VKAccount
+//        val user: User = marker.tag as User
+//        infoSnippet?.text = user.VKAccount
 
 
         infoButtonListener.setMarker(marker)
@@ -83,6 +96,9 @@ class CustomInfoWindowAdapter(private val context: Activity, private val infoWin
     private fun getPixelsFromDp(context: Context, dp: Float): Int {
         val scale = context.resources.displayMetrics.density
         return (dp * scale + 0.5f).toInt()
+    }
+    fun getObservableButtonClicked(): MutableLiveData<Pair<User,Int>>{
+        return buttonClicked
     }
 
 

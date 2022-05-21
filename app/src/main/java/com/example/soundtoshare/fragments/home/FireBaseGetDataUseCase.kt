@@ -18,19 +18,10 @@ class FireBaseGetDataUseCase {
                 time,
                 this.child("song").value.toString(),
                 this.child("artist").value.toString(),
-                getReaction(this.child("reaction").value.toString().toInt()),
                 this.child("avatar").value.toString()
             )
 
             getReactionsCallback(reaction)
-        }
-    }
-
-    private fun getReaction(num: Int): String{
-        return when (num){
-            1 -> "liked"
-            2 -> "lamed"
-            else -> "enjoyed"
         }
     }
 
