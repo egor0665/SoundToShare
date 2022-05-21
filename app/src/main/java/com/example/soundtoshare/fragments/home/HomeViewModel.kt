@@ -36,7 +36,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
         authLauncher.launch(arrayList)
     }
 
-    fun loadUserInfo(binding: FragmentHomeBinding) {
+    fun loadUserInfo(loadUserInfoCallBack : () -> Unit) {
         Log.d("test","KoinViewModel")
         vkGetDataUseCase.loadUserInfo(){
             userInfo.postValue(this)
@@ -46,15 +46,11 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase) : ViewModel() {
             reactions.postValue(reactions.value)
             reactions.value?.forEach {
                 Log.d("firebase", it.toString())
-                binding.shimmerReyclerView.stopShimmer()
-                binding.radioButton1.isChecked = true
-                binding.shimmerReyclerView.visibility = View.GONE
-                binding.recyclerView1.visibility = View.VISIBLE
-                binding.buttonGroup.visibility = View.VISIBLE
             } ?: Log.d(
                 "firebase",
                 "ya hz"
             )
+            loadUserInfoCallBack()
         }
 
     }

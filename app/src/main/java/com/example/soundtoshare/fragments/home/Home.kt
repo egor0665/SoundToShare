@@ -38,14 +38,19 @@ class Home : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         binding.shimmer.startShimmer()
         binding.shimmerReyclerView.startShimmer()
-        viewModel.loadUserInfo(binding)
+        viewModel.loadUserInfo(){
+            binding.shimmerReyclerView.stopShimmer()
+            binding.radioButton1.isChecked = true
+            binding.shimmerReyclerView.visibility = View.GONE
+            binding.recyclerView1.visibility = View.VISIBLE
+            binding.buttonGroup.visibility = View.VISIBLE
+        }
         initWorkers()
 
         val recyclerView1: RecyclerView = binding.recyclerView1
         recyclerView1.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
                 recyclerView1.adapter = CustomRecyclerAdapter(it)
-
         }
         val recyclerViewItem2: RecyclerView = binding.recyclerView2
         return binding.root
