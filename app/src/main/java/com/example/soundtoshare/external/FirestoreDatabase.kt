@@ -39,7 +39,7 @@ class FirestoreDatabase {
                 Log.w("Firestore", "Error adding document UserInfo", e)
             }
     }
-    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String, vkId: String) {
+    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String, vkId: String, avatar: String) {
         val user = hashMapOf(
             "VKAccount" to vkAccount,
             "VKId" to vkId,
@@ -47,7 +47,8 @@ class FirestoreDatabase {
             "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude)),
             "currentSong" to song,
             "currentArtist" to artist,
-            "lastUpdate" to Date().time
+            "lastUpdate" to Date().time,
+            "avatar" to avatar
         )
 
         database.collection("Users").document(vkAccount)
@@ -106,7 +107,8 @@ class FirestoreDatabase {
                             song = it.getField<String>("currentSong")!!,
                             artist = it.getField<String>("currentArtist")!!,
                             VKAccountID = it.getField<String>("VKId")!!,
-                            lastUpdate = it.getField<Long>("lastUpdate")!!
+                            lastUpdate = it.getField<Long>("lastUpdate")!!,
+                            avatar = it.getField<String>("avatar")!!
                         )
                     )
                     Log.d(

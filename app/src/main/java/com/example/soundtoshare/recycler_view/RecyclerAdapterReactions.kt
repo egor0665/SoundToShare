@@ -18,6 +18,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : RecyclerView
 .Adapter<RecyclerAdapterReactions.MyViewHolder>() {
@@ -43,7 +45,7 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
         holder.artistTextView.text = reactions[position].artist
         holder.userTextView.text = reactions[position].from
         holder.reactionTextView.text = "liked"
-        holder.timeTextView.text = reactions[position].time
+        holder.timeTextView.text = getTimeOfReaction(reactions[position].time)
         val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
         val imageLoader = ImageLoader.getInstance()
         imageLoader.init(ImageLoaderConfiguration.createDefault(holder.timeTextView.context))
@@ -55,4 +57,42 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
     }
 
     override fun getItemCount() = reactions.size
+    private fun getTimeOfReaction(date : Long) : String {
+        lateinit var timeOfReaction : String
+        val dateDiff = Date().time - date
+
+        val second: Long = TimeUnit.MILLISECONDS.toSeconds(dateDiff)
+        val minute: Long = TimeUnit.MILLISECONDS.toMinutes(dateDiff)
+        val hour: Long = TimeUnit.MILLISECONDS.toHours(dateDiff)
+        val day: Long = TimeUnit.MILLISECONDS.toDays(dateDiff)
+
+        when {
+            second < 60 -> {
+                timeOfReaction = "$second Seconds ago"
+            }
+            minute < 60 -> {
+                timeOfReaction  = "$minute Minutes ago"
+            }
+            hour < 24 -> {
+                timeOfReaction  = "$hour Hours ago"
+            }
+            day >= 7 -> {
+                timeOfReaction = when {
+                    day > 365 -> {
+                        (day / 365).toString() + " Years ago"
+                    }
+                    day > 30 -> {
+                        (day / 30).toString() + " Months ago"
+                    }
+                    else -> {
+                        (day / 7).toString() + " Week ago"
+                    }
+                }
+            }
+            day < 7 -> {
+                timeOfReaction = "$day Days ago"
+            }
+        }
+        return timeOfReaction
+    }
 }

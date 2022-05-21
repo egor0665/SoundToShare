@@ -20,7 +20,7 @@ val domainModule = module {
         IncognitoModeUseCase(sharedPreferencesRepository = get(), cacheRepository = get())
     }
     factory<LikePlayUseCase>{
-        LikePlayUseCase(roomDBRepository = get(), fireBaseDatabase = get())
+        LikePlayUseCase(roomDBRepository = get(), fireBaseDatabase = get(), cacheRepository = get() )
     }
     factory<LikedSongsUseCase> {
         LikedSongsUseCase(roomDBRepository = get())

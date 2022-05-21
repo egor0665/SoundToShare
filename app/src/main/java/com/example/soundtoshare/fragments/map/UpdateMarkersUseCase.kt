@@ -68,7 +68,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
                 .position(LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude))
                 .title(newUser.VKAccountID)
                 .snippet("lat:" + newUser.geoPoint.latitude + ", lng:" + newUser.geoPoint.longitude)
-                .icon(BitmapFromVector(context, R.drawable.ic_circle_dot_record_round_icon))
+                //.icon(BitmapFromVector(context, R.drawable.ic_circle_dot_record_round_icon))
             val newMarker = map.addMarker(userIndicator)
                 //dropPinEffect(newMarker!!)
             newMarker!!.tag = newUser

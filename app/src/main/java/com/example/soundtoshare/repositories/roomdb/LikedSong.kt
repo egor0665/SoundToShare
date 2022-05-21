@@ -9,5 +9,6 @@ data class LikedSong(
     @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     @ColumnInfo(name = "artist") val artist: String?,
     @ColumnInfo(name = "song") val song: String?,
-    @ColumnInfo(name = "time") val time: String?
+    @ColumnInfo(name = "time") val time: Long?,
+    @ColumnInfo(name = "user") val user: String?,
 )

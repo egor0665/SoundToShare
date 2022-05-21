@@ -1,16 +1,22 @@
 package com.example.soundtoshare.fragments.map
 
+import android.util.Log
 import com.example.soundtoshare.external.FireBaseDatabase
+import com.example.soundtoshare.repositories.CacheRepository
+import com.example.soundtoshare.repositories.User
 import com.example.soundtoshare.repositories.roomdb.LikedSong
 import com.example.soundtoshare.repositories.roomdb.RoomDBRepository
 
-class LikePlayUseCase(val roomDBRepository: RoomDBRepository, val fireBaseDatabase: FireBaseDatabase) {
-    fun likeSong(from: String, fromId: Int,song: String, artist:String, avatar: String) {
-        roomDBRepository.addLikedSong(song,artist)
-//        fireBaseDatabase.likeSong(from, fromId, song, artist, avatar)
+class LikePlayUseCase(val roomDBRepository: RoomDBRepository, val fireBaseDatabase: FireBaseDatabase, val cacheRepository: CacheRepository) {
+    fun likeSong(toUser: User) {
+
+        roomDBRepository.checkForLike(toUser){
+            Log.d("room", this.toString())
+            if (this.isEmpty()) {
+                fireBaseDatabase.likeSong(toUser, cacheRepository.getUserInfo())
+                roomDBRepository.addLikedSong(toUser)
+            }
+        }
     }
 
-    fun playSong(song: String, artist: String) {
-
-    }
 }

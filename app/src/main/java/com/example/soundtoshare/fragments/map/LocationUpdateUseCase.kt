@@ -42,7 +42,8 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
                     val song = cacheRepository.getSongData()!!.title
                     val artist = cacheRepository.getSongData()!!.artist
                     val id = cacheRepository.getUserInfo().id
-                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id)
+                    val avatar = cacheRepository.getUserInfo().avatar_uri
+                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id, avatar)
                     //TODO: Решить, что мы будем сохранять и сделать из этого сущность
                 }
             }

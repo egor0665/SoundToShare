@@ -2,11 +2,12 @@ package com.example.soundtoshare.fragments.map
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.firestore.GeoPoint
 
 
-class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateMarkersUseCase: UpdateMarkersUseCase,  var moveCameraUseCase: MoveCameraUseCase,  likePlayUseCase: LikePlayUseCase) : ViewModel(),
+class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateMarkersUseCase: UpdateMarkersUseCase,  val moveCameraUseCase: MoveCameraUseCase, val likePlayUseCase: LikePlayUseCase) : ViewModel(),
     GoogleMap.OnCameraIdleListener {
 
 //   val user: MutableLiveData<User> by lazy {
@@ -25,8 +26,9 @@ class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateM
         Log.d("camera changed", "changed")
     }
 
-    fun likeSong(from: String, fromId: Int,song: String, artist:String, avatar: String) {
-//        likePlayUseCase.likeSong(from, fromId,song, artist, avatar)
+    fun likeSong(toUser: User) {
+        Log.d("reaction", "newreaction")
+        likePlayUseCase.likeSong(toUser)
     }
 
     fun onCamera(){

@@ -40,15 +40,11 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         infoButtonListener = object : OnInfoWindowElemTouchListener(
             infoButton1,
             ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon),
-            ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon)
+            ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon_map_reversed)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
-                // Here we can perform some action triggered after clicking the button
                 val user = marker!!.tag as User
                 buttonClicked.postValue(Pair(user,1))
-
-                Toast.makeText(context, "click on button 1", Toast.LENGTH_SHORT).show()
-                buttonClicked.postValue(Pair(user,0))
             }
         }
         infoButton1.setOnTouchListener(infoButtonListener)
@@ -56,14 +52,11 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         infoButtonListener2 = object : OnInfoWindowElemTouchListener(
             infoButton2,
             ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon),
-            ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon)
+            ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon_reversed)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 val user = marker!!.tag as User
                 buttonClicked.postValue(Pair(user,2))
-
-                Toast.makeText(context, "click on button 2", Toast.LENGTH_LONG).show()
-                buttonClicked.postValue(Pair(user,0))
             }
         }
         infoButton2.setOnTouchListener(infoButtonListener2)

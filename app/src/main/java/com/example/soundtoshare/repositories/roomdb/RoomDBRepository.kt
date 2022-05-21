@@ -3,6 +3,7 @@ package com.example.soundtoshare.repositories.roomdb
 import android.content.Context
 import androidx.room.Room
 import com.example.soundtoshare.repositories.LikedSongsRoomDB
+import com.example.soundtoshare.repositories.User
 import com.google.firebase.Timestamp
 import kotlinx.coroutines.*
 import java.util.*
@@ -19,18 +20,24 @@ class RoomDBRepository(context :Context) {
         ioScope.launch {getLikedSongsCallback(likedSongDao.getAll())}
     }
 
-    fun addLikedSong(song:String, artist:String) {
+    fun addLikedSong(toUser: User) {
         val ioScope = CoroutineScope(Dispatchers.IO + Job())
 
         ioScope.launch {
             likedSongDao.insertAll(
                 LikedSong(
-                    song = song,
-                    artist = artist,
-                    time = System.currentTimeMillis().toString()
+                    song = toUser.song,
+                    artist = toUser.artist,
+                    time = System.currentTimeMillis(),
+                    user = toUser.VKAccount
                 )
             )
         }
 
+    }
+
+    fun checkForLike(toUser: User, getLikedSongsCallback: MutableList<LikedSong>.() -> Unit) {
+        val ioScope = CoroutineScope(Dispatchers.IO + Job())
+        ioScope.launch {getLikedSongsCallback(likedSongDao.getLikedWithTime(System.currentTimeMillis(),toUser.VKAccount))}
     }
 }

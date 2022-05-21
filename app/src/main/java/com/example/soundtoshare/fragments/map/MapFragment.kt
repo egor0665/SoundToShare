@@ -45,15 +45,14 @@ class MapFragment : Fragment() {
         }
         viewModel.moveCameraUseCase.initUseCase(map!!)
         viewModel.updateMarkersUseCase.initUseCase(map!!)
-//        customInfoWindowAdapter.getObservableButtonClicked().observe(activity as LifecycleOwner) {
-//            when (it.second) {
-////                from: String, fromId: Int,song: String, artist:String, avatar: String
-////                1-> viewModel.likeSong(it.first.VKAccount, it.first.VKId.toInt(), it.first.song, it.first.artist, VK.getUserId().toString(), VK. )
-////                2->startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://m.vk.com/audio?q="+it.first.song+"-"+ it.first.artist)))
-//            }
-//
-//
-//        }
+        customInfoWindowAdapter.getObservableButtonClicked().observe(activity as LifecycleOwner) {
+            when (it.second) {
+                1-> viewModel.likeSong(it.first)
+                2->startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://m.vk.com/audio?q="+it.first.song+"-"+ it.first.artist)))
+            }
+
+
+        }
     }
 
     override fun onCreateView(
