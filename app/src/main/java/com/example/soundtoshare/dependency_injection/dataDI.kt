@@ -2,7 +2,7 @@ package com.example.soundtoshare.dependency_injection
 
 import com.example.soundtoshare.external.FireBaseDatabase
 import com.example.soundtoshare.external.FirestoreDatabase
-import com.example.soundtoshare.repositories.LikedSongsRoomDB
+import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.UserInfoRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 import com.example.soundtoshare.repositories.VkAPIRepository
@@ -31,5 +31,8 @@ val dataModule = module {
     }
     factory<FireBaseDatabase> {
         FireBaseDatabase()
+    }
+    single<CacheRepository> {
+        CacheRepository()
     }
 }

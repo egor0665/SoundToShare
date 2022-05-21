@@ -1,6 +1,7 @@
 package com.example.soundtoshare.recycler_view
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soundtoshare.R
+import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.repositories.Reaction
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 
 class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : RecyclerView
 .Adapter<RecyclerAdapterReactions.MyViewHolder>() {
@@ -34,10 +38,11 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+
         holder.songTextView.text = reactions[position].song
         holder.artistTextView.text = reactions[position].artist
         holder.userTextView.text = reactions[position].from
-        holder.reactionTextView.text = reactions[position].reaction
+        holder.reactionTextView.text = "liked"
         holder.timeTextView.text = reactions[position].time
         val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
         val imageLoader = ImageLoader.getInstance()

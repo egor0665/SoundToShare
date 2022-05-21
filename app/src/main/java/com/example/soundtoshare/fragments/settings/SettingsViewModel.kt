@@ -12,7 +12,7 @@ class SettingsViewModel(private val incognitoModeUseCase: IncognitoModeUseCase, 
     }
 
     fun getObservableIncognitoMode(): MutableLiveData<Boolean> {
-        return incognitoModeUseCase.getObservableSharedPreference()
+        return incognitoModeUseCase.getIncognitoModeLiveData()
     }
 
     fun getIncognitoMode(): Boolean {

@@ -4,16 +4,12 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.room.Room
-import com.example.soundtoshare.repositories.LikedSongsRoomDB
 import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.repositories.UserInfo
 import com.example.soundtoshare.repositories.roomdb.LikedSong
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
-import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.*
-import java.util.concurrent.TimeUnit.*
 
 class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCase: LikedSongsUseCase) : ViewModel() {
     private val firebaseGetDataUseCase = FireBaseGetDataUseCase()
@@ -22,6 +18,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
     }
     private val likedSongs : MutableLiveData<MutableList<LikedSong>> by lazy {
         MutableLiveData<MutableList<LikedSong>>()
+    }
+    private val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
     }
 
     init{
@@ -40,16 +39,21 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
         likedSongsUseCase.getLikedSongs { likedSongs.postValue(this) }
     }
 
-    fun loadUserInfo() {
+    fun loadUserInfo(loadUserInfoCallBack : () -> Unit) {
         Log.d("test","KoinViewModel")
-        vkGetDataUseCase.loadUserInfo(){}
+        vkGetDataUseCase.loadUserInfo(){
+            userInfo.postValue(this)
+        }
         firebaseGetDataUseCase.getReactions(VK.getUserId().toString()) {
             reactions.value?.add(this) ?: Log.d("firebase", "cannot add item")
             reactions.postValue(reactions.value)
-            reactions.value?.forEach { Log.d("firebase", it.toString()) } ?: Log.d(
+            reactions.value?.forEach {
+                Log.d("firebase", it.toString())
+            } ?: Log.d(
                 "firebase",
                 "ya hz"
             )
+            loadUserInfoCallBack()
         }
 
     }
@@ -69,7 +73,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
     }
 
     fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
-        return vkGetDataUseCase.getUserInfoLiveData()
+        return userInfo
     }
 
     fun addLikedSong() {

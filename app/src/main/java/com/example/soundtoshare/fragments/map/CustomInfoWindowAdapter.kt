@@ -5,10 +5,8 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.R
@@ -30,22 +28,26 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
     }
     init {
         mapWrapperLayout.init(googleMap, getPixelsFromDp(context, (39 + 20).toFloat()))
-        val infoButton1 = infoWindow.findViewById<View>(R.id.btnOne) as Button
-        val infoButton2 = infoWindow.findViewById<View>(R.id.btnTwo) as Button
+        val infoButton1 = infoWindow.findViewById<View>(R.id.buttonLike) as AppCompatButton
+        val infoButton2 = infoWindow.findViewById<View>(R.id.buttonPlay) as AppCompatButton
+        val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
+
+        icon.setImageResource(R.drawable.ic_incognito)
+
 
         // Setting custom OnTouchListener which deals with the pressed state
         // so it shows up
         infoButtonListener = object : OnInfoWindowElemTouchListener(
             infoButton1,
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default),
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
+            ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon),
+            ContextCompat.getDrawable(context, R.drawable.ic_like_thumbs_up_icon)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 // Here we can perform some action triggered after clicking the button
                 val user = marker!!.tag as User
                 buttonClicked.postValue(Pair(user,1))
 
-//                Toast.makeText(context, "click on button 1", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "click on button 1", Toast.LENGTH_SHORT).show()
                 buttonClicked.postValue(Pair(user,0))
             }
         }
@@ -53,14 +55,14 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
 
         infoButtonListener2 = object : OnInfoWindowElemTouchListener(
             infoButton2,
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default),
-            ContextCompat.getDrawable(context, android.R.drawable.btn_default_small)
+            ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon),
+            ContextCompat.getDrawable(context, R.drawable.ic_circle_fill_play_icon)
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 val user = marker!!.tag as User
                 buttonClicked.postValue(Pair(user,2))
 
-//                Toast.makeText(context, "click on button 2", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "click on button 2", Toast.LENGTH_LONG).show()
                 buttonClicked.postValue(Pair(user,0))
             }
         }
@@ -68,11 +70,9 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
     }
 
     override fun getInfoContents(marker: Marker): View {
-//        val infoTitle = infoWindow.findViewById<TextView>(R.id.title)
-//        val infoSnippet = infoWindow.findViewById<TextView>(R.id.snippet)
-//        val infoArtistSong = infoWindow.findViewById<TextView>(R.id.snippet)
-        val infoTitle = infoWindow.findViewById<TextView>(R.id.fullName)
-        val infoSnippet = infoWindow.findViewById<TextView>(R.id.artistSong)
+
+        val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
+        val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
         // Setting up the infoWindow with current's marker info
         infoSnippet?.text = (marker.tag as User).VKAccount
         infoTitle?.text = (marker.tag as User).artist +" - "+ (marker.tag as User).song
