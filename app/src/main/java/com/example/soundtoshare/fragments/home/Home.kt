@@ -13,7 +13,9 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
-import com.example.soundtoshare.recycler_view.CustomRecyclerAdapter
+import com.example.soundtoshare.recycler_view.RecyclerAdapterLikedSongs
+import com.example.soundtoshare.recycler_view.RecyclerAdapterReactions
+import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.workers.VkWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -28,13 +30,11 @@ import java.util.concurrent.TimeUnit
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentHomeBinding.inflate(inflater)
         binding.shimmer.startShimmer()
         binding.shimmerReyclerView.startShimmer()
@@ -46,24 +46,18 @@ class Home : Fragment() {
             binding.buttonGroup.visibility = View.VISIBLE
         }
         initWorkers()
-
-        val recyclerView1: RecyclerView = binding.recyclerView1
-        recyclerView1.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
-                recyclerView1.adapter = CustomRecyclerAdapter(it)
-        }
-        val recyclerViewItem2: RecyclerView = binding.recyclerView2
         return binding.root
-
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         startUserInfoObserving()
-
+        setUpRecyclers()
         binding.buttonGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
                  R.id.radioButton1 -> {
+                     viewModel.addLikedSong()
                     binding.recyclerView2.visibility = View.GONE
                     binding.recyclerView1.visibility = View.VISIBLE
                 }
@@ -73,6 +67,30 @@ class Home : Fragment() {
                 }
             }
         }
+    }
+
+    private fun setUpRecyclers() {
+        val recyclerView1: RecyclerView = binding.recyclerView1
+        val recyclerView2: RecyclerView = binding.recyclerView2
+        var linearLayoutManager1 = LinearLayoutManager(requireContext())
+        var linearLayoutManager2 = LinearLayoutManager(requireContext())
+        linearLayoutManager1.apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        linearLayoutManager2.apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        recyclerView1.layoutManager = linearLayoutManager1
+        recyclerView2.layoutManager = linearLayoutManager2
+        viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
+            recyclerView1.adapter = RecyclerAdapterReactions(it)
+        }
+        viewModel.getObservableLikedSongs().observe(activity as LifecycleOwner) {
+            recyclerView2.adapter = RecyclerAdapterLikedSongs(it)
+        }
+        viewModel.loadLikedSongs()
     }
 
     private fun initWorkers() {
@@ -85,8 +103,11 @@ class Home : Fragment() {
             )
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) viewModel.loadLikedSongs()
+    }
     private fun startUserInfoObserving() {
-
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
             val options =
                 DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
@@ -97,7 +118,6 @@ class Home : Fragment() {
                 binding.avatar,
                 options,
                 object : ImageLoadingListener {
-
                     override fun onLoadingStarted(imageUri: String?, view: View?) {
                     }
 
@@ -118,23 +138,10 @@ class Home : Fragment() {
                         binding.shimmer.stopShimmer()
                         binding.shimmer.visibility = View.GONE
                         binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
-
-//                        binding.shimmerReyclerView.stopShimmer()
-//                        binding.radioButton1.isChecked = true
-//                        binding.shimmerReyclerView.visibility = View.GONE
-//                        binding.recyclerView1.visibility = View.VISIBLE
-//                        binding.buttonGroup.visibility = View.VISIBLE
                     }
-
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {
-
                     }
                 })
-//             imageLoader.displayImage(it.avatar_uri,  binding.avatar, options)
-//             val fullName = it.firstName + " " + it.lastName
-//             binding.fullName.text = fullName
-
-
         }
     }
 

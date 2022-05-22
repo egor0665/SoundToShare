@@ -32,16 +32,18 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            Log.d("Location", "Location changed")
             Log.d("Location", cacheRepository.getIncognitoMode().toString())
             for (location in locationResult.locations) {
+                Log.d("FireStore", "Updated music")
                 if (location != null && !cacheRepository.getIncognitoMode() && cacheRepository.getSongData()!= null
                     && cacheRepository.getSongData()!!.title.isNotEmpty()) {
+                        Log.d("FireStore", "Updated music")
                     val fullName = cacheRepository.getUserInfo().firstName + " " + cacheRepository.getUserInfo().lastName
                     val song = cacheRepository.getSongData()!!.title
                     val artist = cacheRepository.getSongData()!!.artist
                     val id = cacheRepository.getUserInfo().id
-                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id)
+                    val avatar = cacheRepository.getUserInfo().avatar_uri
+                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id, avatar)
                     //TODO: Решить, что мы будем сохранять и сделать из этого сущность
                 }
             }
@@ -50,7 +52,7 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
 
     override fun onInactive() {
         super.onInactive()
-        //fusedLocationClient.removeLocationUpdates(locationCallback)
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     @SuppressLint("MissingPermission")

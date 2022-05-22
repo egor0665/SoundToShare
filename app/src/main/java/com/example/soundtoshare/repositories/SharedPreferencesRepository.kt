@@ -16,7 +16,7 @@ class SharedPreferencesRepository(context: Context){
         editor.apply()
     }
 
-    fun getIncognitoMode( getIncognitoModeCallback: Boolean.() -> Unit){
+    private fun getIncognitoMode(getIncognitoModeCallback: Boolean.() -> Unit){
         getIncognitoModeCallback(preferences.getBoolean(incognitoModeString, false))
     }
 

@@ -11,7 +11,8 @@ import org.koin.dsl.module
 val appModule = module {
     viewModel<HomeViewModel> {
         HomeViewModel(
-            vkGetDataUseCase = get()
+            vkGetDataUseCase = get(),
+            likedSongsUseCase = get()
         )
     }
     viewModel<SettingsViewModel>{
@@ -24,7 +25,8 @@ val appModule = module {
         MapViewModel(
             locationUpdateUseCase = get(),
             updateMarkersUseCase = get(),
-            moveCameraUseCase = get()
+            moveCameraUseCase = get(),
+            likePlayUseCase = get()
         )
     }
 }
