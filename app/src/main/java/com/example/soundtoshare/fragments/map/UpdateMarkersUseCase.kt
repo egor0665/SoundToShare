@@ -6,66 +6,76 @@ import android.graphics.Canvas
 import android.location.Location
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
 import com.example.soundtoshare.R
 import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.FailReason
-import com.nostra13.universalimageloader.core.assist.ImageSize
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
-import java.util.*
 
 
-class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fireStoreDatabase: FirestoreDatabase, private val context: Context):
-    GoogleMap.OnMarkerClickListener {
+class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fireStoreDatabase: FirestoreDatabase, private val context: Context)
+    : GoogleMap.OnMarkerClickListener {
     private lateinit var map: GoogleMap
     private var myVkAccount: String = cacheRepository.getUserInfo().id
     private val markersMap = mutableMapOf<String, Marker>()
+    private val imageLoader = ImageLoader.getInstance()
 
     fun initUseCase(googleMap: GoogleMap) {
         map = googleMap
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context))
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
-        val imageLoader = ImageLoader.getInstance()
         val user = marker.tag as User
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context))
-        imageLoader.loadImage(user.avatar, object : ImageLoadingListener {
-            override fun onLoadingStarted(imageUri: String?, view: View?) {
-            }
+        if (user.bitmap == null) {
+            Toast.makeText(
+                context,
+                "Loading user info",
+                Toast.LENGTH_LONG
+            ).show()
 
-            override fun onLoadingFailed(
-                imageUri: String?,
-                view: View?,
-                failReason: FailReason?
-            ) {
-            }
-            override fun onLoadingComplete(
-                imageUri: String?,
-                view: View?,
-                loadedImage: Bitmap?
-            ) {
-                Log.d("kek", "lel")
-                user.bitmap = loadedImage
-                marker.tag = user
-                if (marker.isInfoWindowShown) {
-                    marker.hideInfoWindow()
-                } else {
-                    marker.showInfoWindow()
+            imageLoader.loadImage(user.avatar, object : ImageLoadingListener {
+                override fun onLoadingStarted(imageUri: String?, view: View?) {
                 }
+
+                override fun onLoadingFailed(
+                    imageUri: String?,
+                    view: View?,
+                    failReason: FailReason?
+                ) {
+                }
+                override fun onLoadingComplete(
+                    imageUri: String?,
+                    view: View?,
+                    loadedImage: Bitmap?
+                ) {
+                    Log.d("kek", "lel")
+                    user.bitmap = loadedImage
+                    marker.tag = user
+                    if (marker.isInfoWindowShown) {
+                        marker.hideInfoWindow()
+                    } else {
+                        marker.showInfoWindow()
+                    }
+                }
+                override fun onLoadingCancelled(imageUri: String?, view: View?) {
+                }
+            })
+        }
+        else {
+            if (marker.isInfoWindowShown) {
+                marker.hideInfoWindow()
+            } else {
+                marker.showInfoWindow()
             }
-            override fun onLoadingCancelled(imageUri: String?, view: View?) {
-            }
-        })
+        }
         return true
     }
 
@@ -89,35 +99,11 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
     }
 
     private fun addOrUpdateMarker(newUser: User) {
-        val imageLoader = ImageLoader.getInstance()
-        imageLoader.init(ImageLoaderConfiguration.createDefault(context))
-        imageLoader.loadImage(newUser.avatar, object : ImageLoadingListener {
-            override fun onLoadingStarted(imageUri: String?, view: View?) {
-            }
-
-            override fun onLoadingFailed(
-                imageUri: String?,
-                view: View?,
-                failReason: FailReason?
-            ) {
-            }
-            override fun onLoadingComplete(
-                imageUri: String?,
-                view: View?,
-                loadedImage: Bitmap?
-            ) {
-                newUser.bitmap = loadedImage
-            }
-            override fun onLoadingCancelled(imageUri: String?, view: View?) {
-            }
-        })
-
-
-
 
         val oldMarker = markersMap[newUser.VKAccountID]
         if (oldMarker != null) {
             oldMarker.position = LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude)
+            newUser.bitmap = (oldMarker.tag as User).bitmap
             oldMarker.tag = newUser
         }
         else {
@@ -126,18 +112,16 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
                 .title(newUser.VKAccountID)
                 .snippet("lat:" + newUser.geoPoint.latitude + ", lng:" + newUser.geoPoint.longitude)
                 .icon(bitmapFromVector(context, R.drawable.ic_circle_dot_record_round_icon))
+                .anchor(0.5f, 0.5f)
             val newMarker = map.addMarker(userIndicator)
-                //dropPinEffect(newMarker!!)
             newMarker!!.tag = newUser
             markersMap[newUser.VKAccountID] = newMarker
         }
     }
 
-    private fun bitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
-        // below line is use to generate a drawable.
+    private fun bitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
 
-        // below line is use to set bounds to our vector drawable.
         vectorDrawable!!.setBounds(
             0,
             0,
@@ -145,22 +129,15 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             vectorDrawable.intrinsicHeight
         )
 
-        // below line is use to create a bitmap for our
-        // drawable which we have added.
         val bitmap = Bitmap.createBitmap(
             vectorDrawable.intrinsicWidth,
             vectorDrawable.intrinsicHeight,
             Bitmap.Config.ARGB_8888
         )
 
-        // below line is use to add bitmap in our canvas.
         val canvas = Canvas(bitmap)
-
-        // below line is use to draw our
-        // vector drawable in canvas.
         vectorDrawable.draw(canvas)
 
-        // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 

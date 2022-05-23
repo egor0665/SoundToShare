@@ -1,12 +1,9 @@
 package com.example.soundtoshare.fragments.map
 
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.Marker
 import com.google.firebase.firestore.GeoPoint
 
 
@@ -14,6 +11,7 @@ class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateM
     GoogleMap.OnCameraIdleListener{
 
     fun startLocationUpdate() = locationUpdateUseCase
+    fun uploadUserData() = locationUpdateUseCase.uploadData()
 
     fun cameraSetUp(lastKnownLocation: GeoPoint) {
         moveCameraUseCase.moveAtDeviceCenter(lastKnownLocation)

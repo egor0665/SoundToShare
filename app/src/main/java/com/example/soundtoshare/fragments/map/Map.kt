@@ -47,7 +47,7 @@ class Map : Fragment() {
             setMapStyle(MapStyleOptions.loadRawResourceStyle(requireContext(), R.raw.map_without_labels_style))
             setInfoWindowAdapter(customInfoWindowAdapter)
             setOnCameraIdleListener(viewModel)
-//            setOnMarkerClickListener(viewModel.updateMarkersUseCase)
+            setOnMarkerClickListener(viewModel.updateMarkersUseCase)
         }
         viewModel.moveCameraUseCase.initUseCase(map!!)
         viewModel.updateMarkersUseCase.initUseCase(map!!)
@@ -157,7 +157,6 @@ class Map : Fragment() {
         viewModel.startLocationUpdate().observe(viewLifecycleOwner) {
             viewModel.cameraSetUp(it)
         }
-//        viewModel.startLocationUpdate()
     }
 
     private fun startDeniedPermissionAlert() {

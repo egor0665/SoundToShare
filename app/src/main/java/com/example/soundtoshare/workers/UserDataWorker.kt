@@ -29,7 +29,7 @@ class UserDataWorker(context: Context, params: WorkerParameters) : Worker(contex
                         .build()
                 )
         }
-        mapViewModel.locationUpdateUseCase.uploadData()
+        mapViewModel.uploadUserData()
         return Result.success()
     }
 }

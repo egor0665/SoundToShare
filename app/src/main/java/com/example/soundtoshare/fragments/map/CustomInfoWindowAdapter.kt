@@ -63,29 +63,10 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
     }
 
     override fun getInfoContents(marker: Marker): View {
-
-//        val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
-//        val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
-//        val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
-//        // Setting up the infoWindow with current's marker info
-//        val user: User = marker.tag as User
-//        infoSnippet?.text = user.VKAccount
-//        infoTitle?.text = user.artist +" - "+ user.song
-//
-//        val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
-//        val imageLoader = ImageLoader.getInstance()
-//        imageLoader.init(ImageLoaderConfiguration.createDefault(icon.context))
-//        imageLoader.displayImage(user.avatar, icon, options)
-//
-//        infoButtonListener.setMarker(marker)
-//        infoButtonListener2.setMarker(marker)
-//        // We must call this to set the current marker and infoWindow references
-//        // to the MapWrapperLayout
-//        mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow)
         return infoWindow
     }
 
-    override fun getInfoWindow(marker: Marker): View? {
+    override fun getInfoWindow(marker: Marker): View {
         val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
         val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
         val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
@@ -102,7 +83,6 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         // We must call this to set the current marker and infoWindow references
         // to the MapWrapperLayout
         mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow)
-        marker.showInfoWindow()
         return infoWindow
     }
 
