@@ -3,6 +3,7 @@ package com.example.soundtoshare.fragments.map
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.graphics.*
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
@@ -11,10 +12,13 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.R
 import com.example.soundtoshare.repositories.User
-import com.example.soundtoshare.repositories.roomdb.LikedSong
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.model.Marker
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.nostra13.universalimageloader.core.assist.FailReason
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 
 
 @SuppressLint("ClickableViewAccessibility")
@@ -27,13 +31,9 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         MutableLiveData<Pair<User,Int>>()
     }
     init {
-        mapWrapperLayout.init(googleMap, getPixelsFromDp(context, (39 + 20).toFloat()))
+        mapWrapperLayout.init(googleMap, getPixelsFromDp(context, 20.toFloat()))
         val infoButton1 = infoWindow.findViewById<View>(R.id.buttonLike) as AppCompatButton
         val infoButton2 = infoWindow.findViewById<View>(R.id.buttonPlay) as AppCompatButton
-        val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
-
-        icon.setImageResource(R.drawable.ic_incognito)
-
 
         // Setting custom OnTouchListener which deals with the pressed state
         // so it shows up
@@ -64,26 +64,61 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
 
     override fun getInfoContents(marker: Marker): View {
 
-        val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
-        val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
-        // Setting up the infoWindow with current's marker info
-        infoSnippet?.text = (marker.tag as User).VKAccount
-        infoTitle?.text = (marker.tag as User).artist +" - "+ (marker.tag as User).song
-        //ИЛИ (в тэге содержится объект User)
+//        val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
+//        val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
+//        val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
+//        // Setting up the infoWindow with current's marker info
 //        val user: User = marker.tag as User
 //        infoSnippet?.text = user.VKAccount
+//        infoTitle?.text = user.artist +" - "+ user.song
+//
+//        val options = DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
+//        val imageLoader = ImageLoader.getInstance()
+//        imageLoader.init(ImageLoaderConfiguration.createDefault(icon.context))
+//        imageLoader.displayImage(user.avatar, icon, options)
+//
+//        infoButtonListener.setMarker(marker)
+//        infoButtonListener2.setMarker(marker)
+//        // We must call this to set the current marker and infoWindow references
+//        // to the MapWrapperLayout
+//        mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow)
+        return infoWindow
+    }
 
+    override fun getInfoWindow(marker: Marker): View? {
+        val infoTitle = infoWindow.findViewById<TextView>(R.id.lastName)
+        val infoSnippet = infoWindow.findViewById<TextView>(R.id.firstName)
+        val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
+        // Setting up the infoWindow with current's marker info
+        val user: User = marker.tag as User
+        infoSnippet?.text = user.VKAccount
+        infoTitle?.text = user.artist +" - "+ user.song
+
+        if (user.bitmap != null)
+         icon.setImageBitmap(getRoundedCornerBitmap(user.bitmap!!, 40))
 
         infoButtonListener.setMarker(marker)
         infoButtonListener2.setMarker(marker)
         // We must call this to set the current marker and infoWindow references
         // to the MapWrapperLayout
         mapWrapperLayout.setMarkerWithInfoWindow(marker, infoWindow)
+        marker.showInfoWindow()
         return infoWindow
     }
 
-    override fun getInfoWindow(marker: Marker): View? {
-        return null
+    private fun getRoundedCornerBitmap(bitmap: Bitmap, pixels: Int): Bitmap? {
+        val output = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(output)
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+        val rectF = RectF(Rect(0, 0, bitmap.width, bitmap.height))
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = -0xbdbdbe
+        canvas.drawRoundRect(rectF, bitmap.height.toFloat(), bitmap.height.toFloat(), paint)
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(bitmap, rect, rect, paint)
+        return output
     }
 
     private fun getPixelsFromDp(context: Context, dp: Float): Int {

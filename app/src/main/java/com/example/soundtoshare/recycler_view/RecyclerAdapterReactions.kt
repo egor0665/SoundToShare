@@ -68,7 +68,7 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
 
         when {
             second < 60 -> {
-                timeOfReaction = "$second Seconds ago"
+                timeOfReaction = "Not long ago"
             }
             minute < 60 -> {
                 timeOfReaction  = "$minute Minutes ago"

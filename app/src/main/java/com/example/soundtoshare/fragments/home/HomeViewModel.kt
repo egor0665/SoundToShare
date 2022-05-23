@@ -66,7 +66,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
         return likedSongs
     }
 
-    fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
+    fun fetchVkMusic(fetchVkMusicCallback: () -> Unit) {
         vkGetDataUseCase.fetchVkMusic {
             fetchVkMusicCallback()
         }

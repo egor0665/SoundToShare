@@ -13,21 +13,23 @@ import org.koin.core.component.inject
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class VkWorker(context: Context, params: WorkerParameters) : Worker(context, params),
+class UserDataWorker(context: Context, params: WorkerParameters) : Worker(context, params),
     KoinComponent {
-    private val viewModel: HomeViewModel by inject()
+    private val homeViewModel: HomeViewModel by inject()
+    private val mapViewModel: MapViewModel by inject()
     override fun doWork(): Result {
-        viewModel.fetchVkMusicViewModel {
+        homeViewModel.fetchVkMusic {
             Log.d("Worker", "Worker stop at:" + Calendar.getInstance().time.toString())
             WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
             WorkManager.getInstance(applicationContext)
                 .enqueue(
-                    OneTimeWorkRequest.Builder(VkWorker::class.java)
+                    OneTimeWorkRequest.Builder(UserDataWorker::class.java)
                         .addTag("VKMusic")
                         .setInitialDelay(20, TimeUnit.SECONDS)
                         .build()
                 )
         }
+        mapViewModel.locationUpdateUseCase.uploadData()
         return Result.success()
     }
 }

@@ -15,8 +15,7 @@ import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.recycler_view.RecyclerAdapterLikedSongs
 import com.example.soundtoshare.recycler_view.RecyclerAdapterReactions
-import com.example.soundtoshare.repositories.Reaction
-import com.example.soundtoshare.workers.VkWorker
+import com.example.soundtoshare.workers.UserDataWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
@@ -96,7 +95,7 @@ class Home : Fragment() {
     private fun initWorkers() {
         WorkManager.getInstance(requireContext())
             .enqueue(
-                OneTimeWorkRequest.Builder(VkWorker::class.java)
+                OneTimeWorkRequest.Builder(UserDataWorker::class.java)
                     .addTag("VKMusic")
                     .setInitialDelay(10, TimeUnit.SECONDS)
                     .build()
