@@ -1,17 +1,25 @@
 package com.example.soundtoshare.main
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.work.WorkManager
 import com.example.soundtoshare.BuildConfig
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
@@ -54,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         with(NotificationManagerCompat.from(this)) {
             cancel(notificationId)
         }
+        WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
         super.onDestroy()
     }
 
@@ -94,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                     navigator.setScreen(Screen.SignIn)
                 }
             }
-        }
+    }
 
     fun vkSignOut() {
         VK.logout()
@@ -106,9 +115,9 @@ class MainActivity : AppCompatActivity() {
 
          builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_tmplogo)
-            .setContentText("Uploading your music data...")
+            .setContentText("Sharing your music taste...")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-             .setOngoing(true)
+             .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "SoundToShare"

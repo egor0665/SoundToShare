@@ -57,6 +57,7 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
     }
 
     override fun getItemCount() = reactions.size
+
     private fun getTimeOfReaction(date : Long) : String {
         lateinit var timeOfReaction : String
         val dateDiff = Date().time - date

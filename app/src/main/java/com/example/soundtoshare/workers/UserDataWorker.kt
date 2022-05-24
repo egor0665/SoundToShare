@@ -2,6 +2,7 @@ package com.example.soundtoshare.workers
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
@@ -13,7 +14,7 @@ import org.koin.core.component.inject
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class UserDataWorker(context: Context, params: WorkerParameters) : Worker(context, params),
+class UserDataWorker(val context: Context, params: WorkerParameters) : Worker(context, params),
     KoinComponent {
     private val homeViewModel: HomeViewModel by inject()
     private val mapViewModel: MapViewModel by inject()

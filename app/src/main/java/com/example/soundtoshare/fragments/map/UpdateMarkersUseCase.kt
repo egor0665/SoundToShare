@@ -1,9 +1,11 @@
 package com.example.soundtoshare.fragments.map
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -18,10 +20,12 @@ import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
+import java.util.*
 
 
 class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fireStoreDatabase: FirestoreDatabase, private val context: Context)
-    : GoogleMap.OnMarkerClickListener {
+    : GoogleMap.OnMarkerClickListener,
+    GoogleMap.OnInfoWindowClickListener {
     private lateinit var map: GoogleMap
     private var myVkAccount: String = cacheRepository.getUserInfo().id
     private val markersMap = mutableMapOf<String, Marker>()
@@ -30,6 +34,11 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
     fun initUseCase(googleMap: GoogleMap) {
         map = googleMap
         imageLoader.init(ImageLoaderConfiguration.createDefault(context))
+    }
+
+    override fun onInfoWindowClick(marker: Marker) {
+        val user = marker.tag as User
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id"+user.VKAccountID)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -90,7 +99,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()){
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null"/* && Date().time - user.lastUpdate < 60000*/) {
+                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
                 }
@@ -146,8 +155,8 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         val invisibleAndOldMarkers = markersMap.filterValues {
             val user = it.tag as User
             it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
-            it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude /*||
-            Date().time - user.lastUpdate > 60000*/
+            it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
+            Date().time - user.lastUpdate > 60000
         }
         invisibleAndOldMarkers.forEach() {
             it.value.remove()

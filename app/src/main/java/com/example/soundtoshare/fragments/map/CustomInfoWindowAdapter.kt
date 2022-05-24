@@ -31,7 +31,7 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         MutableLiveData<Pair<User,Int>>()
     }
     init {
-        mapWrapperLayout.init(googleMap, getPixelsFromDp(context, 20.toFloat()))
+        mapWrapperLayout.init(googleMap, getPixelsFromDp(context, 15.toFloat()))
         val infoButton1 = infoWindow.findViewById<View>(R.id.buttonLike) as AppCompatButton
         val infoButton2 = infoWindow.findViewById<View>(R.id.buttonPlay) as AppCompatButton
 

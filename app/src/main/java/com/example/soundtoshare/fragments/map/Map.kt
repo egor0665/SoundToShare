@@ -48,6 +48,7 @@ class Map : Fragment() {
             setInfoWindowAdapter(customInfoWindowAdapter)
             setOnCameraIdleListener(viewModel)
             setOnMarkerClickListener(viewModel.updateMarkersUseCase)
+            setOnInfoWindowClickListener(viewModel.updateMarkersUseCase)
         }
         viewModel.moveCameraUseCase.initUseCase(map!!)
         viewModel.updateMarkersUseCase.initUseCase(map!!)

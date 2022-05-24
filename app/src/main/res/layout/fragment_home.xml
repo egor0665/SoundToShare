@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/logo"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:id="@+id/shimmer"
             >
 
@@ -49,14 +49,13 @@
             app:layout_constraintTop_toBottomOf="@id/logo"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/shimmerReyclerView"
-            android:layout_marginTop="137dp"
+            android:layout_marginTop="123dp"
             >
         <include
                 layout="@layout/shimmer_layout_button"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:id="@+id/button"
-
                 />
 
 
@@ -141,7 +140,7 @@
             android:layout_width="match_parent"
             app:layout_constraintTop_toBottomOf="@id/logo"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:visibility="gone">
 
         <ImageView
@@ -177,7 +176,7 @@
             android:orientation="horizontal"
 
             app:layout_constraintTop_toBottomOf="@+id/logo"
-            android:layout_marginTop="137dp"
+            android:layout_marginTop="123dp"
             tools:ignore="MissingConstraints"
 
             android:visibility="gone">
@@ -208,6 +207,21 @@
                 android:button="@android:color/transparent"
                 android:background="@drawable/radio_selector"/>
     </RadioGroup>
+
+    <TextView
+            android:id="@+id/noLikes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textColor="@color/textColor"
+            android:fontFamily="@font/gotham_medium"
+            android:gravity="center"
+            android:text="No likes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonGroup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView1"
