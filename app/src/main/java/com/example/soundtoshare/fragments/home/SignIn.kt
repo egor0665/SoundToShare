@@ -61,63 +61,6 @@ class SignIn : Fragment() {
                 arrayListOf(VKScope.STATUS, VKScope.OFFLINE)
             )
         }
-//        getLocationPermission()
-    }
-
-    private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        var locationPermissionGranted = true
-        permissions.entries.forEach {
-            if (!it.value) locationPermissionGranted = false
-        }
-        if (!locationPermissionGranted) {
-            startDeniedPermissionAlert()
-        }
-    }
-
-
-    private fun getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            != PackageManager.PERMISSION_GRANTED
-        )  {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                requestMultiplePermissions.launch(arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION/*,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION)*/))
-                requestMultiplePermissions.launch(arrayOf(
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION))
-            }
-            else {
-                requestMultiplePermissions.launch(arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION))
-            }
-        }
-    }
-
-
-    private fun startDeniedPermissionAlert() {
-        val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext()).apply {
-            setTitle("Permission needed")
-            setMessage("Location permission needed for app to work")
-            setPositiveButton("Open Setting") { _, _ ->
-                val uri: Uri = Uri.fromParts("package", requireActivity().packageName, null)
-                val intent = Intent().apply {
-                    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                    data = uri
-                }
-                requireActivity().startActivity(intent)
-            }
-            setNegativeButton("Cancel") { _, _ ->
-                startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME))
-            }
-        }
-
-        val dialog: AlertDialog = alertDialogBuilder.create()
-        dialog.show()
     }
 
     companion object {

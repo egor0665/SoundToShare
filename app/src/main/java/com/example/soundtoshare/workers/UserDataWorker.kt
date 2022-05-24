@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit
 class UserDataWorker(val context: Context, params: WorkerParameters) : Worker(context, params),
     KoinComponent {
     private val homeViewModel: HomeViewModel by inject()
-    private val mapViewModel: MapViewModel by inject()
     override fun doWork(): Result {
         homeViewModel.fetchVkMusic {
             Log.d("Worker", "Worker stop at:" + Calendar.getInstance().time.toString())
@@ -29,8 +28,8 @@ class UserDataWorker(val context: Context, params: WorkerParameters) : Worker(co
                         .setInitialDelay(20, TimeUnit.SECONDS)
                         .build()
                 )
+            homeViewModel.uploadUserData()
         }
-        mapViewModel.uploadUserData()
         return Result.success()
     }
 }

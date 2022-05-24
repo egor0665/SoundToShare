@@ -11,7 +11,6 @@ class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateM
     GoogleMap.OnCameraIdleListener{
 
     fun startLocationUpdate() = locationUpdateUseCase
-    fun uploadUserData() = locationUpdateUseCase.uploadData()
 
     fun cameraSetUp(lastKnownLocation: GeoPoint) {
         moveCameraUseCase.moveAtDeviceCenter(lastKnownLocation)
