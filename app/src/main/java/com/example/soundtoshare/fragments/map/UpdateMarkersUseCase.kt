@@ -115,7 +115,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()){
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 600000) {
+                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
                 }

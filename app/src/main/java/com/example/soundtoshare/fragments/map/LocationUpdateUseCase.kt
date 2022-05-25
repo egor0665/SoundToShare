@@ -17,7 +17,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.GeoPoint
 import com.vk.api.sdk.VK
 
-class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val cacheRepository: CacheRepository) : LiveData<GeoPoint>()  {
+class LocationUpdateUseCase(
+    context: Context,
+    var userInfoRepository: UserInfoRepository,
+    val cacheRepository: CacheRepository
+) : LiveData<GeoPoint>() {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -33,26 +37,37 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
     }
 
     private fun setLocationData(location: Location) {
-         value = GeoPoint(location.latitude,
-                          location.longitude)
+        value = GeoPoint(
+            location.latitude,
+            location.longitude
+        )
     }
 
-@SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission")
     fun uploadData() {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 location?.also {
                     Log.d("Location upload", cacheRepository.getIncognitoMode().toString())
-                    if (!cacheRepository.getIncognitoMode() && cacheRepository.getSongData()!= null
-                    && cacheRepository.getSongData()!!.title.isNotEmpty()) {
+                    if (!cacheRepository.getIncognitoMode() && cacheRepository.getSongData() != null
+                        && cacheRepository.getSongData()!!.title.isNotEmpty()
+                    ) {
                         Log.d("FireStore", "Updated music")
-                    val fullName = cacheRepository.getUserInfo().firstName + " " + cacheRepository.getUserInfo().lastName
-                    val song = cacheRepository.getSongData()!!.title
-                    val artist = cacheRepository.getSongData()!!.artist
-                    val id = cacheRepository.getUserInfo().id
-                    val avatar = cacheRepository.getUserInfo().avatar_uri
-                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id, avatar)
-                }
+                        val fullName =
+                            cacheRepository.getUserInfo().firstName + " " + cacheRepository.getUserInfo().lastName
+                        val song = cacheRepository.getSongData()!!.title
+                        val artist = cacheRepository.getSongData()!!.artist
+                        val id = cacheRepository.getUserInfo().id
+                        val avatar = cacheRepository.getUserInfo().avatar_uri
+                        userInfoRepository.storeCurrentUserInfo(
+                            location,
+                            fullName,
+                            song,
+                            artist,
+                            id,
+                            avatar
+                        )
+                    }
                 }
             }
     }
