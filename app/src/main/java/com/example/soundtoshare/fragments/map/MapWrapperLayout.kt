@@ -9,7 +9,6 @@ import android.widget.RelativeLayout
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.Marker
 
-
 class MapWrapperLayout : RelativeLayout {
     /**
      * Reference to a GoogleMap object
@@ -72,8 +71,11 @@ class MapWrapperLayout : RelativeLayout {
             val copyEv = MotionEvent.obtain(ev)
             copyEv.offsetLocation(
                 (
-                        -point.x + infoWindow!!.width / 2).toFloat(), (
-                        -point.y + infoWindow!!.height + bottomOffsetPixels).toFloat()
+                    -point.x + infoWindow!!.width / 2
+                    ).toFloat(),
+                (
+                    -point.y + infoWindow!!.height + bottomOffsetPixels
+                    ).toFloat()
             )
 
             // Dispatch the adjusted MotionEvent to the infoWindow

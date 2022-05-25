@@ -1,14 +1,12 @@
 package com.example.soundtoshare.external
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.repositories.User
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.QuerySnapshot
@@ -24,8 +22,8 @@ class FirestoreDatabase {
     val users: List<User>
         get() = _users
 
-    fun setUserInfo(vkAccount: String, vkId: String){
-        Log.d("Firebase", vkAccount+ " " +vkId)
+    fun setUserInfo(vkAccount: String, vkId: String) {
+        Log.d("Firebase", vkAccount + " " + vkId)
         val userInfo = hashMapOf(
             "VKAccount" to vkAccount,
             "vkId" to vkId
@@ -39,7 +37,15 @@ class FirestoreDatabase {
                 Log.w("Firestore", "Error adding document UserInfo", e)
             }
     }
-    fun updateUserInformation(latitude: Double, longitude: Double, vkAccount: String, song: String, artist: String, vkId: String, avatar: String) {
+    fun updateUserInformation(
+        latitude: Double,
+        longitude: Double,
+        vkAccount: String,
+        song: String,
+        artist: String,
+        vkId: String,
+        avatar: String
+    ) {
         val user = hashMapOf(
             "VKAccount" to vkAccount,
             "VKId" to vkId,
@@ -61,8 +67,12 @@ class FirestoreDatabase {
             }
     }
 
-    fun fetchClosest(targetDevice: LatLng, radiusInM: Double, fetchClosestCallback : List<User>.() -> Unit) {
-        //TODO: Возможно заменить полную очистку на гибрид замены, очистки и добавления + добавить больше фильтрации
+    fun fetchClosest(
+        targetDevice: LatLng,
+        radiusInM: Double,
+        fetchClosestCallback: List<User>.() -> Unit
+    ) {
+        // TODO: Возможно заменить полную очистку на гибрид замены, очистки и добавления + добавить больше фильтрации
         _users.clear()
         val center = GeoLocation(targetDevice.latitude, targetDevice.longitude)
 
@@ -121,5 +131,3 @@ class FirestoreDatabase {
             }
     }
 }
-
-

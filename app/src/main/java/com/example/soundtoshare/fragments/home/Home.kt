@@ -23,9 +23,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
-
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -49,7 +48,6 @@ class Home : Fragment() {
         initWorkers()
         return binding.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -161,7 +159,8 @@ class Home : Fragment() {
 
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {
                     }
-                })
+                }
+            )
         }
     }
 

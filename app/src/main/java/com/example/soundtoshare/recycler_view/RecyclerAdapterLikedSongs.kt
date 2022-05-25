@@ -36,7 +36,9 @@ class RecyclerAdapterLikedSongs(private val likedSongs: MutableList<LikedSong>) 
             holder.playImageView.context.startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://m.vk.com/audio?q=" + likedSongs[position].song + "-" + likedSongs[position].artist)
+                    Uri.parse(
+                        "https://m.vk.com/audio?q=" + likedSongs[position].song + "-" + likedSongs[position].artist
+                    )
                 )
             )
         }

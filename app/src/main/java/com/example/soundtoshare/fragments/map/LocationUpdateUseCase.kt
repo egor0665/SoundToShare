@@ -3,19 +3,12 @@ package com.example.soundtoshare.fragments.map
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.soundtoshare.fragments.home.VkGetDataUseCase
-import com.example.soundtoshare.fragments.settings.IncognitoModeUseCase
 import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.UserInfoRepository
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.GeoPoint
-import com.vk.api.sdk.VK
 
 class LocationUpdateUseCase(
     context: Context,
@@ -49,8 +42,8 @@ class LocationUpdateUseCase(
             .addOnSuccessListener { location: Location? ->
                 location?.also {
                     Log.d("Location upload", cacheRepository.getIncognitoMode().toString())
-                    if (!cacheRepository.getIncognitoMode() && cacheRepository.getSongData() != null
-                        && cacheRepository.getSongData()!!.title.isNotEmpty()
+                    if (!cacheRepository.getIncognitoMode() && cacheRepository.getSongData() != null &&
+                        cacheRepository.getSongData()!!.title.isNotEmpty()
                     ) {
                         Log.d("FireStore", "Updated music")
                         val fullName =
@@ -72,6 +65,3 @@ class LocationUpdateUseCase(
             }
     }
 }
-
-
-

@@ -3,11 +3,10 @@ package com.example.soundtoshare.fragments.map
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint
 
 class MoveCameraUseCase() {
-    private lateinit var map : GoogleMap
+    private lateinit var map: GoogleMap
 
     fun initUseCase(googleMap: GoogleMap) {
         map = googleMap

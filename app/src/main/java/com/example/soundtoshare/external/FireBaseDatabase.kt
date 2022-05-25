@@ -6,17 +6,15 @@ import com.example.soundtoshare.repositories.UserInfo
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
-
 
 class FireBaseDatabase {
     private var lastLike = LastLike("", Date().time)
     private val database = Firebase.database.reference
 
-    fun startListening(vkId: String, listeningCallback: Pair<DataSnapshot, Boolean>.() -> Unit ){
+    fun startListening(vkId: String, listeningCallback: Pair<DataSnapshot, Boolean>.() -> Unit) {
         getReactions(vkId, listeningCallback)
         val childEventListener = object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -44,7 +42,7 @@ class FireBaseDatabase {
     }
 
     fun getReactions(vkId: String, listeningCallback: Pair<DataSnapshot, Boolean>.() -> Unit) {
-        Log.d("firebase", "vk id:"+vkId)
+        Log.d("firebase", "vk id:" + vkId)
         database.child("reaction")
             .child(vkId)
             .get()
@@ -69,8 +67,7 @@ class FireBaseDatabase {
             "avatar" to fromUser.avatar_uri
         )
 
-        database.child("reaction").child(toUser.VKAccountID).push().setValue(reaction);
+        database.child("reaction").child(toUser.VKAccountID).push().setValue(reaction)
     }
-
 }
 data class LastLike(val toId: String, val time: Long)

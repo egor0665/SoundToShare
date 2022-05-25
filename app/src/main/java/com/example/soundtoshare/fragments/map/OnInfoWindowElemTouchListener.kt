@@ -8,7 +8,6 @@ import android.view.View
 import android.view.View.OnTouchListener
 import com.google.android.gms.maps.model.Marker
 
-
 abstract class OnInfoWindowElemTouchListener(
     private val view: View,
     private val bgDrawableNormal: Drawable?,

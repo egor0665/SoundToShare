@@ -36,7 +36,7 @@ class Settings : Fragment() {
         binding.buttonIncognito.setOnClickListener {
             toggleIncognitoMode()
         }
-        binding.buttonCheckStatus.setOnClickListener{
+        binding.buttonCheckStatus.setOnClickListener {
             val fragment = this
             viewModel.checkUserStatus {
                 val result = if (this != null)
@@ -52,20 +52,20 @@ class Settings : Fragment() {
         }
     }
 
-    private fun initIncognitoModeButton(){
+    private fun initIncognitoModeButton() {
         viewModel.getObservableIncognitoMode().observe(activity as LifecycleOwner) {
             setIncognitoModeButton(it)
         }
     }
 
-    private fun setIncognitoModeButton(mode: Boolean){
+    private fun setIncognitoModeButton(mode: Boolean) {
         if (mode) binding.buttonIncognito.text = incognitoOn
         else binding.buttonIncognito.text = incognitoOff
     }
 
     private fun toggleIncognitoMode() {
         val newMode = !viewModel.getIncognitoMode()
-        Log.d("SharedPreference",newMode.toString())
+        Log.d("SharedPreference", newMode.toString())
         viewModel.setIncognitoMode(newMode)
         setIncognitoModeButton(newMode)
     }

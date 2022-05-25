@@ -4,8 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.SharedPreferencesRepository
 
-class IncognitoModeUseCase(val sharedPreferencesRepository: SharedPreferencesRepository, private val cacheRepository: CacheRepository ) {
-    init{
+class IncognitoModeUseCase(
+    val sharedPreferencesRepository: SharedPreferencesRepository,
+    private val cacheRepository: CacheRepository
+) {
+    init {
         sharedPreferencesRepository.init {
             cacheRepository.setIncognitoMode(this)
         }
@@ -15,11 +18,11 @@ class IncognitoModeUseCase(val sharedPreferencesRepository: SharedPreferencesRep
         return cacheRepository.getIncognitoMode()
     }
 
-    fun getIncognitoModeLiveData():MutableLiveData<Boolean>{
+    fun getIncognitoModeLiveData(): MutableLiveData<Boolean> {
         return cacheRepository.getIncognitoModeLiveData()
     }
 
-    fun setIncognitoMode(mode: Boolean){
+    fun setIncognitoMode(mode: Boolean) {
         cacheRepository.setIncognitoMode(mode)
         sharedPreferencesRepository.setIncognitoMode(mode)
     }

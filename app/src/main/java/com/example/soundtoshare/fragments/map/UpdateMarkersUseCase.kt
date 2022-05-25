@@ -23,9 +23,12 @@ import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import java.util.*
 
-
-class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fireStoreDatabase: FirestoreDatabase, private val context: Context)
-    : GoogleMap.OnMarkerClickListener,
+class UpdateMarkersUseCase(
+    val cacheRepository: CacheRepository,
+    private val fireStoreDatabase: FirestoreDatabase,
+    private val context: Context
+) :
+    GoogleMap.OnMarkerClickListener,
     GoogleMap.OnInfoWindowClickListener {
     private lateinit var map: GoogleMap
     private var myVkAccount: String = cacheRepository.getUserInfo().id
@@ -39,58 +42,71 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
 
     override fun onInfoWindowClick(marker: Marker) {
         val user = marker.tag as User
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id"+user.VKAccountID)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        context.startActivity(
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id" + user.VKAccountID)).setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK
+            )
+        )
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
         val user = marker.tag as User
         if (user.bitmap == null) {
 
-            imageLoader.loadImage(user.avatar, object : ImageLoadingListener {
-                override fun onLoadingStarted(imageUri: String?, view: View?) {
-                }
+            imageLoader.loadImage(
+                user.avatar,
+                object : ImageLoadingListener {
+                    override fun onLoadingStarted(imageUri: String?, view: View?) {
+                    }
 
-                override fun onLoadingFailed(
-                    imageUri: String?,
-                    view: View?,
-                    failReason: FailReason?
-                ) {
-                    Toast.makeText(
-                        context,
-                        "Failed to load avatar",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                override fun onLoadingComplete(
-                    imageUri: String?,
-                    view: View?,
-                    loadedImage: Bitmap?
-                ) {
-                    Log.d("kek", "lel")
-                    user.bitmap = loadedImage
-                    marker.tag = user
-                    if (marker.isInfoWindowShown) {
-                        marker.hideInfoWindow()
-                    } else {
-                        map.animateCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                            LatLng(user.geoPoint.latitude, user.geoPoint.longitude),
-                                map.cameraPosition.zoom))
-                        marker.showInfoWindow()
+                    override fun onLoadingFailed(
+                        imageUri: String?,
+                        view: View?,
+                        failReason: FailReason?
+                    ) {
+                        Toast.makeText(
+                            context,
+                            "Failed to load avatar",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                    override fun onLoadingComplete(
+                        imageUri: String?,
+                        view: View?,
+                        loadedImage: Bitmap?
+                    ) {
+                        Log.d("kek", "lel")
+                        user.bitmap = loadedImage
+                        marker.tag = user
+                        if (marker.isInfoWindowShown) {
+                            marker.hideInfoWindow()
+                        } else {
+                            map.animateCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        user.geoPoint.latitude,
+                                        user.geoPoint.longitude
+                                    ),
+                                    map.cameraPosition.zoom
+                                )
+                            )
+                            marker.showInfoWindow()
+                        }
+                    }
+                    override fun onLoadingCancelled(imageUri: String?, view: View?) {
                     }
                 }
-                override fun onLoadingCancelled(imageUri: String?, view: View?) {
-                }
-            })
-        }
-        else {
+            )
+        } else {
             if (marker.isInfoWindowShown) {
                 marker.hideInfoWindow()
             } else {
                 map.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         LatLng(user.geoPoint.latitude, user.geoPoint.longitude),
-                        map.cameraPosition.zoom))
+                        map.cameraPosition.zoom
+                    )
+                )
                 marker.showInfoWindow()
             }
         }
@@ -104,9 +120,10 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             map.cameraPosition.target.latitude,
             map.cameraPosition.target.longitude,
             map.projection.visibleRegion.latLngBounds.northeast.latitude,
-            map.projection.visibleRegion.latLngBounds.northeast.longitude, results
+            map.projection.visibleRegion.latLngBounds.northeast.longitude,
+            results
         )
-        fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()){
+        fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()) {
             this.forEach() { user ->
                 if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
                     addOrUpdateMarker(user)
@@ -123,8 +140,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             oldMarker.position = LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude)
             newUser.bitmap = (oldMarker.tag as User).bitmap
             oldMarker.tag = newUser
-        }
-        else {
+        } else {
             val userIndicator = MarkerOptions()
                 .position(LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude))
                 .title(newUser.VKAccountID)
@@ -164,8 +180,8 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         val invisibleAndOldMarkers = markersMap.filterValues {
             val user = it.tag as User
             it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
-            it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
-            Date().time - user.lastUpdate > 60000
+                it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
+                Date().time - user.lastUpdate > 60000
         }
         invisibleAndOldMarkers.forEach() {
             it.value.remove()

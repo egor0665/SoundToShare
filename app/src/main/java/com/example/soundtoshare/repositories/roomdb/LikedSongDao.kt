@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.soundtoshare.repositories.User
 
 @Dao
 interface LikedSongDao {
@@ -15,7 +14,7 @@ interface LikedSongDao {
     fun loadAllByIds(userIds: IntArray): List<LikedSong>
 
     @Query("SELECT * FROM LikedSong WHERE user = (:user) and (:time) - time < 60000")
-    fun getLikedWithTime(time: Long, user : String): MutableList<LikedSong>
+    fun getLikedWithTime(time: Long, user: String): MutableList<LikedSong>
 
 //    @Query("SELECT * FROM LikedSong WHERE first_name LIKE :first AND " +
 //            "last_name LIKE :last LIMIT 1")

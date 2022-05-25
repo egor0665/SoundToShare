@@ -13,12 +13,9 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
-import android.widget.Toast
-
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -37,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var builder: NotificationCompat.Builder
     lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
     private var locationPermissionGranted = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,7 +72,6 @@ class MainActivity : AppCompatActivity() {
             cancel(notificationId)
         }
         WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
-
 
         super.onDestroy()
     }
@@ -135,11 +130,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initNotification() {
 
-         builder = NotificationCompat.Builder(this, CHANNEL_ID)
+        builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_tmplogo)
             .setContentText("Sharing your music taste...")
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-             .setAutoCancel(true)
+            .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "SoundToShare"
@@ -155,16 +150,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        locationPermissionGranted = true
-        permissions.entries.forEach {
-            if (!it.value) locationPermissionGranted = false
+    private val requestMultiplePermissions =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            locationPermissionGranted = true
+            permissions.entries.forEach {
+                if (!it.value) locationPermissionGranted = false
+            }
+            if (!locationPermissionGranted) {
+                startDeniedPermissionAlert()
+            }
         }
-        if (!locationPermissionGranted) {
-            startDeniedPermissionAlert()
-        }
-    }
-
 
     private fun getLocationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -173,23 +168,23 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.ACCESS_BACKGROUND_LOCATION
                 )
                 != PackageManager.PERMISSION_GRANTED
-            )
-            {
+            ) {
                 startDeniedPermissionAlert()
-            }
-            else
+            } else
                 locationPermissionGranted = true
-        }
-        else {
+        } else {
             if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
                 )
                 != PackageManager.PERMISSION_GRANTED
-            )  {
-                requestMultiplePermissions.launch(arrayOf(
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.ACCESS_FINE_LOCATION))
+            ) {
+                requestMultiplePermissions.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    )
+                )
             }
         }
     }
@@ -204,12 +199,10 @@ class MainActivity : AppCompatActivity() {
                     action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                     data = uri
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
                     addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                 }
                 startActivity(intent)
-
-
             }
             setNegativeButton("Quit") { _, _ ->
                 startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME))
@@ -239,5 +232,4 @@ class MainActivity : AppCompatActivity() {
         const val CHANNEL_ID = "SoundToShare"
         const val notificationId = 1
     }
-
 }

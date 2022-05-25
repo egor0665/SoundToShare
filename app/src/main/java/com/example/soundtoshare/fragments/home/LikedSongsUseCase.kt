@@ -3,9 +3,9 @@ package com.example.soundtoshare.fragments.home
 import com.example.soundtoshare.repositories.roomdb.LikedSong
 import com.example.soundtoshare.repositories.roomdb.RoomDBRepository
 
-class LikedSongsUseCase(val roomDBRepository: RoomDBRepository){
-    fun getLikedSongs(getLikedSongsCallback: MutableList<LikedSong>.() -> Unit){
-        roomDBRepository.getLikedSongs{
+class LikedSongsUseCase(val roomDBRepository: RoomDBRepository) {
+    fun getLikedSongs(getLikedSongsCallback: MutableList<LikedSong>.() -> Unit) {
+        roomDBRepository.getLikedSongs {
             getLikedSongsCallback(this)
         }
     }
@@ -13,6 +13,4 @@ class LikedSongsUseCase(val roomDBRepository: RoomDBRepository){
     fun addLikedSong() {
 //        roomDBRepository.addLikedSong()
     }
-
-
 }

@@ -8,6 +8,3 @@ import com.example.soundtoshare.repositories.roomdb.LikedSongDao
 abstract class LikedSongsRoomDB : RoomDatabase() {
     abstract fun likedSongDao(): LikedSongDao
 }
-
-
-

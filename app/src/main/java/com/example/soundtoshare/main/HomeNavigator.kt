@@ -29,5 +29,4 @@ open class HomeNavigator(fragmentManager: FragmentManager, containerId: Int) :
             else -> return
         }
     }
-
 }

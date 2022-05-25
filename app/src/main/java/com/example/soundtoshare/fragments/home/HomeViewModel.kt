@@ -2,7 +2,6 @@ package com.example.soundtoshare.fragments.home
 
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.soundtoshare.fragments.map.LocationUpdateUseCase
@@ -14,13 +13,17 @@ import com.vk.api.sdk.auth.VKScope
 import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.*
 
-class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCase: LikedSongsUseCase, val locationUpdateUseCase: LocationUpdateUseCase) : ViewModel() {
+class HomeViewModel(
+    val vkGetDataUseCase: VkGetDataUseCase,
+    val likedSongsUseCase: LikedSongsUseCase,
+    val locationUpdateUseCase: LocationUpdateUseCase
+) : ViewModel() {
     private val firebaseGetDataUseCase = FireBaseGetDataUseCase()
     private var checkReactionsEmpty = false
-    private val reactions : MutableLiveData<MutableList<Reaction>> by lazy {
+    private val reactions: MutableLiveData<MutableList<Reaction>> by lazy {
         MutableLiveData<MutableList<Reaction>>()
     }
-    private val likedSongs : MutableLiveData<MutableList<LikedSong>> by lazy {
+    private val likedSongs: MutableLiveData<MutableList<LikedSong>> by lazy {
         MutableLiveData<MutableList<LikedSong>>()
     }
 
@@ -28,7 +31,7 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
         MutableLiveData<UserInfo>()
     }
 
-    init{
+    init {
         Log.d("ViewModel", "Created ViewModel")
 //        reactions.postValue(mutableListOf())
     }
@@ -40,13 +43,13 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
         authLauncher.launch(arrayList)
     }
 
-    fun loadLikedSongs(){
+    fun loadLikedSongs() {
         likedSongsUseCase.getLikedSongs { likedSongs.postValue(this) }
     }
 
-    fun loadUserInfo(loadUserInfoCallBack : () -> Unit) {
-        Log.d("test","KoinViewModel")
-        vkGetDataUseCase.loadUserInfo(){
+    fun loadUserInfo(loadUserInfoCallBack: () -> Unit) {
+        Log.d("test", "KoinViewModel")
+        vkGetDataUseCase.loadUserInfo() {
             userInfo.postValue(this)
         }
         firebaseGetDataUseCase.getReactions(VK.getUserId().toString()) {
@@ -63,14 +66,11 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
                     "firebase",
                     "ya hz"
                 )
-            }
-            else {
+            } else {
                 reactions.postValue(mutableListOf())
             }
             loadUserInfoCallBack()
-
         }
-
     }
 
     fun getObservableReactions(): MutableLiveData<MutableList<Reaction>> {

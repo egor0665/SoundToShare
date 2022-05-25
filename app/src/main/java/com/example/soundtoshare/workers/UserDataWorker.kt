@@ -2,19 +2,18 @@ package com.example.soundtoshare.workers
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.soundtoshare.fragments.home.HomeViewModel
-import com.example.soundtoshare.fragments.map.MapViewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.*
 import java.util.concurrent.TimeUnit
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class UserDataWorker(val context: Context, params: WorkerParameters) : Worker(context, params),
+class UserDataWorker(val context: Context, params: WorkerParameters) :
+    Worker(context, params),
     KoinComponent {
     private val homeViewModel: HomeViewModel by inject()
     override fun doWork(): Result {

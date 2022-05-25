@@ -6,9 +6,13 @@ import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.firestore.GeoPoint
 
-
-class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateMarkersUseCase: UpdateMarkersUseCase,  val moveCameraUseCase: MoveCameraUseCase, val likePlayUseCase: LikePlayUseCase) : ViewModel(),
-    GoogleMap.OnCameraIdleListener{
+class MapViewModel(
+    val locationUpdateUseCase: LocationUpdateUseCase,
+    val updateMarkersUseCase: UpdateMarkersUseCase,
+    val moveCameraUseCase: MoveCameraUseCase,
+    val likePlayUseCase: LikePlayUseCase
+) : ViewModel(),
+    GoogleMap.OnCameraIdleListener {
 
     fun startLocationUpdate() = locationUpdateUseCase
 

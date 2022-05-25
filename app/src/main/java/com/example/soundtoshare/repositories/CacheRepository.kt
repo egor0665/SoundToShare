@@ -1,6 +1,5 @@
 package com.example.soundtoshare.repositories
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.vk.sdk.api.audio.dto.AudioAudio
 
@@ -15,40 +14,39 @@ class CacheRepository() {
         MutableLiveData<Boolean>()
     }
 
-    fun setUserInfo(userInfo: UserInfo){
+    fun setUserInfo(userInfo: UserInfo) {
         this.userInfo.postValue(userInfo)
     }
 
-    fun setSongData(songData: AudioAudio){
+    fun setSongData(songData: AudioAudio) {
         this.songData.postValue(songData)
     }
 
-    fun setIncognitoMode(mode: Boolean){
+    fun setIncognitoMode(mode: Boolean) {
         this.incognitoMode.postValue(mode)
     }
 // zdez inogda chashitsya
-    fun getUserInfo() : UserInfo {
+    fun getUserInfo(): UserInfo {
         return this.userInfo.value!!
     }
 
-    fun getSongData() : AudioAudio? {
+    fun getSongData(): AudioAudio? {
         return this.songData.value
     }
 
-    fun getIncognitoMode() : Boolean {
+    fun getIncognitoMode(): Boolean {
         return (this.incognitoMode.value ?: false)
     }
 
-    fun getUserInfoLiveData() : MutableLiveData<UserInfo>{
+    fun getUserInfoLiveData(): MutableLiveData<UserInfo> {
         return userInfo
     }
 
-    fun getSongDataLiveData() : MutableLiveData<AudioAudio>{
+    fun getSongDataLiveData(): MutableLiveData<AudioAudio> {
         return songData
     }
 
-    fun getIncognitoModeLiveData() : MutableLiveData<Boolean>{
+    fun getIncognitoModeLiveData(): MutableLiveData<Boolean> {
         return incognitoMode
     }
-
 }

@@ -1,7 +1,6 @@
 package com.example.soundtoshare.recycler_view
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +9,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soundtoshare.R
-import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.repositories.Reaction
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
-import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -51,15 +47,20 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
         imageLoader.init(ImageLoaderConfiguration.createDefault(holder.timeTextView.context))
         imageLoader.displayImage(reactions[position].avatar, holder.reactionAvatar, options)
 
-        holder.itemView.setOnClickListener{
-            holder.reactionAvatar.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id"+reactions[position].fromId)))
+        holder.itemView.setOnClickListener {
+            holder.reactionAvatar.context.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://vk.com/id" + reactions[position].fromId)
+                )
+            )
         }
     }
 
     override fun getItemCount() = reactions.size
 
-    private fun getTimeOfReaction(date : Long) : String {
-        lateinit var timeOfReaction : String
+    private fun getTimeOfReaction(date: Long): String {
+        lateinit var timeOfReaction: String
         val dateDiff = Date().time - date
 
         val second: Long = TimeUnit.MILLISECONDS.toSeconds(dateDiff)
@@ -72,10 +73,10 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
                 timeOfReaction = "Not long ago"
             }
             minute < 60 -> {
-                timeOfReaction  = "$minute Minutes ago"
+                timeOfReaction = "$minute Minutes ago"
             }
             hour < 24 -> {
-                timeOfReaction  = "$hour Hours ago"
+                timeOfReaction = "$hour Hours ago"
             }
             day >= 7 -> {
                 timeOfReaction = when {

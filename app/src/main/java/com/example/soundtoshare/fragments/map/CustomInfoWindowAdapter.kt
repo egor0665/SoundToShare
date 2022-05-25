@@ -15,20 +15,18 @@ import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter
 import com.google.android.gms.maps.model.Marker
-import com.nostra13.universalimageloader.core.ImageLoader
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
-import com.nostra13.universalimageloader.core.assist.FailReason
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
-
 
 @SuppressLint("ClickableViewAccessibility")
-class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGroup,
-                              googleMap: GoogleMap?) : InfoWindowAdapter {
+class CustomInfoWindowAdapter(
+    context: Activity,
+    private val infoWindow: ViewGroup,
+    googleMap: GoogleMap?
+) : InfoWindowAdapter {
     private val mapWrapperLayout: MapWrapperLayout = context.findViewById(R.id.map_relative_layout)
     private var infoButtonListener: OnInfoWindowElemTouchListener
     private var infoButtonListener2: OnInfoWindowElemTouchListener
-    private val buttonClicked : MutableLiveData<Pair<User,Int>> by lazy {
-        MutableLiveData<Pair<User,Int>>()
+    private val buttonClicked: MutableLiveData<Pair<User, Int>> by lazy {
+        MutableLiveData<Pair<User, Int>>()
     }
     init {
         mapWrapperLayout.init(googleMap, getPixelsFromDp(context, 15.toFloat()))
@@ -44,7 +42,7 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 val user = marker!!.tag as User
-                buttonClicked.postValue(Pair(user,1))
+                buttonClicked.postValue(Pair(user, 1))
             }
         }
         infoButton1.setOnTouchListener(infoButtonListener)
@@ -56,7 +54,7 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         ) {
             override fun onClickConfirmed(v: View?, marker: Marker?) {
                 val user = marker!!.tag as User
-                buttonClicked.postValue(Pair(user,2))
+                buttonClicked.postValue(Pair(user, 2))
             }
         }
         infoButton2.setOnTouchListener(infoButtonListener2)
@@ -73,10 +71,10 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         // Setting up the infoWindow with current's marker info
         val user: User = marker.tag as User
         infoSnippet?.text = user.VKAccount
-        infoTitle?.text = user.artist +" - "+ user.song
+        infoTitle?.text = user.artist + " - " + user.song
 
         if (user.bitmap != null)
-         icon.setImageBitmap(getRoundedCornerBitmap(user.bitmap!!, 40))
+            icon.setImageBitmap(getRoundedCornerBitmap(user.bitmap!!, 40))
 
         infoButtonListener.setMarker(marker)
         infoButtonListener2.setMarker(marker)
@@ -105,9 +103,7 @@ class CustomInfoWindowAdapter(context: Activity, private val infoWindow: ViewGro
         val scale = context.resources.displayMetrics.density
         return (dp * scale + 0.5f).toInt()
     }
-    fun getObservableButtonClicked(): MutableLiveData<Pair<User,Int>>{
+    fun getObservableButtonClicked(): MutableLiveData<Pair<User, Int>> {
         return buttonClicked
     }
-
-
 }
