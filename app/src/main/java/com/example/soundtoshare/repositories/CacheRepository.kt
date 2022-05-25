@@ -26,7 +26,7 @@ class CacheRepository() {
     fun setIncognitoMode(mode: Boolean){
         this.incognitoMode.postValue(mode)
     }
-
+// zdez inogda chashitsya
     fun getUserInfo() : UserInfo {
         return this.userInfo.value!!
     }
