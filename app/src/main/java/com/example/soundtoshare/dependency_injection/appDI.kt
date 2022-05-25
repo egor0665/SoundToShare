@@ -12,7 +12,8 @@ val appModule = module {
     viewModel<HomeViewModel> {
         HomeViewModel(
             vkGetDataUseCase = get(),
-            likedSongsUseCase = get()
+            likedSongsUseCase = get(),
+            locationUpdateUseCase = get()
         )
     }
     viewModel<SettingsViewModel>{

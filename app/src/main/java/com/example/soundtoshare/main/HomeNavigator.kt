@@ -2,8 +2,8 @@ package com.example.soundtoshare.main
 
 import androidx.fragment.app.FragmentManager
 import com.example.soundtoshare.fragments.home.Home
-import com.example.soundtoshare.fragments.home.SignInFragment
-import com.example.soundtoshare.fragments.map.MapFragment
+import com.example.soundtoshare.fragments.home.SignIn
+import com.example.soundtoshare.fragments.map.Map
 import com.example.soundtoshare.fragments.settings.Settings
 
 open class HomeNavigator(fragmentManager: FragmentManager, containerId: Int) :
@@ -20,11 +20,11 @@ open class HomeNavigator(fragmentManager: FragmentManager, containerId: Int) :
             }
 
             is Screen.Map -> {
-                selectFragment(MapFragment())
+                selectFragment(Map())
             }
 
             is Screen.SignIn -> {
-                replaceFragment(SignInFragment())
+                selectFragment(SignIn())
             }
             else -> return
         }

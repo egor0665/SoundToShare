@@ -57,6 +57,7 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
     }
 
     override fun getItemCount() = reactions.size
+
     private fun getTimeOfReaction(date : Long) : String {
         lateinit var timeOfReaction : String
         val dateDiff = Date().time - date
@@ -68,7 +69,7 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
 
         when {
             second < 60 -> {
-                timeOfReaction = "$second Seconds ago"
+                timeOfReaction = "Not long ago"
             }
             minute < 60 -> {
                 timeOfReaction  = "$minute Minutes ago"

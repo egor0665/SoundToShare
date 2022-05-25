@@ -17,43 +17,9 @@ import com.google.android.gms.location.LocationServices
 import com.google.firebase.firestore.GeoPoint
 import com.vk.api.sdk.VK
 
-class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, cacheRepository: CacheRepository) : LiveData<GeoPoint>()  {
+class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRepository, val cacheRepository: CacheRepository) : LiveData<GeoPoint>()  {
 
     private var fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-
-    companion object {
-        val locationRequest: LocationRequest = LocationRequest.create().apply {
-            interval = 10000
-            fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            maxWaitTime = 10000
-        }
-    }
-
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult) {
-            Log.d("Location", cacheRepository.getIncognitoMode().toString())
-            for (location in locationResult.locations) {
-                Log.d("FireStore", "Updated music")
-                if (location != null && !cacheRepository.getIncognitoMode() && cacheRepository.getSongData()!= null
-                    && cacheRepository.getSongData()!!.title.isNotEmpty()) {
-                        Log.d("FireStore", "Updated music")
-                    val fullName = cacheRepository.getUserInfo().firstName + " " + cacheRepository.getUserInfo().lastName
-                    val song = cacheRepository.getSongData()!!.title
-                    val artist = cacheRepository.getSongData()!!.artist
-                    val id = cacheRepository.getUserInfo().id
-                    val avatar = cacheRepository.getUserInfo().avatar_uri
-                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id, avatar)
-                    //TODO: Решить, что мы будем сохранять и сделать из этого сущность
-                }
-            }
-        }
-    }
-
-    override fun onInactive() {
-        super.onInactive()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
 
     @SuppressLint("MissingPermission")
     override fun onActive() {
@@ -64,7 +30,6 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
                     setLocationData(it)
                 }
             }
-        startLocationUpdates()
     }
 
     private fun setLocationData(location: Location) {
@@ -72,13 +37,24 @@ class LocationUpdateUseCase(context: Context, var userInfoRepository: UserInfoRe
                           location.longitude)
     }
 
-    @SuppressLint("MissingPermission")
-    private fun startLocationUpdates() {
-        fusedLocationClient.requestLocationUpdates(
-            locationRequest,
-            locationCallback,
-            Looper.getMainLooper()
-        )
+@SuppressLint("MissingPermission")
+    fun uploadData() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                location?.also {
+                    Log.d("Location upload", cacheRepository.getIncognitoMode().toString())
+                    if (!cacheRepository.getIncognitoMode() && cacheRepository.getSongData()!= null
+                    && cacheRepository.getSongData()!!.title.isNotEmpty()) {
+                        Log.d("FireStore", "Updated music")
+                    val fullName = cacheRepository.getUserInfo().firstName + " " + cacheRepository.getUserInfo().lastName
+                    val song = cacheRepository.getSongData()!!.title
+                    val artist = cacheRepository.getSongData()!!.artist
+                    val id = cacheRepository.getUserInfo().id
+                    val avatar = cacheRepository.getUserInfo().avatar_uri
+                    userInfoRepository.storeCurrentUserInfo(location, fullName, song, artist, id, avatar)
+                }
+                }
+            }
     }
 }
 

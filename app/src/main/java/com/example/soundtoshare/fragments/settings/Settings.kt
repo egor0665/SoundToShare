@@ -40,9 +40,9 @@ class Settings : Fragment() {
             val fragment = this
             viewModel.checkUserStatus {
                 val result = if (this != null)
-                    "Успешно! Ваша текущая музыка: " + this.artist + "-" + this.title
+                    "Your music: " + this.artist + "-" + this.title
                 else
-                    "Проверьте включили ли Вы музыку и транлируите ли Вы ее в статус"
+                    "Check your music translation in status or start music"
                 Toast.makeText(
                     fragment.requireContext(),
                     result,

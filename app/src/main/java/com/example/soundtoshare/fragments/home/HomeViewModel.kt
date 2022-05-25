@@ -2,30 +2,35 @@ package com.example.soundtoshare.fragments.home
 
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.soundtoshare.fragments.map.LocationUpdateUseCase
 import com.example.soundtoshare.repositories.Reaction
 import com.example.soundtoshare.repositories.UserInfo
 import com.example.soundtoshare.repositories.roomdb.LikedSong
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
+import com.vk.sdk.api.audio.dto.AudioAudio
 import java.util.*
 
-class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCase: LikedSongsUseCase) : ViewModel() {
+class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCase: LikedSongsUseCase, val locationUpdateUseCase: LocationUpdateUseCase) : ViewModel() {
     private val firebaseGetDataUseCase = FireBaseGetDataUseCase()
+    private var checkReactionsEmpty = false
     private val reactions : MutableLiveData<MutableList<Reaction>> by lazy {
         MutableLiveData<MutableList<Reaction>>()
     }
     private val likedSongs : MutableLiveData<MutableList<LikedSong>> by lazy {
         MutableLiveData<MutableList<LikedSong>>()
     }
+
     private val userInfo: MutableLiveData<UserInfo> by lazy {
         MutableLiveData<UserInfo>()
     }
 
     init{
         Log.d("ViewModel", "Created ViewModel")
-        reactions.postValue(mutableListOf())
+//        reactions.postValue(mutableListOf())
     }
 
     fun signInVK(
@@ -45,15 +50,25 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
             userInfo.postValue(this)
         }
         firebaseGetDataUseCase.getReactions(VK.getUserId().toString()) {
-            reactions.value?.add(this) ?: Log.d("firebase", "cannot add item")
-            reactions.postValue(reactions.value)
-            reactions.value?.forEach {
-                Log.d("firebase", it.toString())
-            } ?: Log.d(
-                "firebase",
-                "ya hz"
-            )
+            if (!checkReactionsEmpty) {
+                reactions.value = mutableListOf()
+                checkReactionsEmpty = true
+            }
+            if (this != null) {
+                reactions.value?.add(this) ?: Log.d("firebase", "cannot add item")
+                reactions.postValue(reactions.value)
+                reactions.value?.forEach {
+                    Log.d("firebase", it.toString())
+                } ?: Log.d(
+                    "firebase",
+                    "ya hz"
+                )
+            }
+            else {
+                reactions.postValue(mutableListOf())
+            }
             loadUserInfoCallBack()
+
         }
 
     }
@@ -66,9 +81,9 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
         return likedSongs
     }
 
-    fun fetchVkMusicViewModel(fetchVkMusicCallback: () -> Unit) {
+    fun fetchVkMusic(fetchVkMusicCallback: AudioAudio?.() -> Unit) {
         vkGetDataUseCase.fetchVkMusic {
-            fetchVkMusicCallback()
+            fetchVkMusicCallback(this)
         }
     }
 
@@ -79,4 +94,6 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
     fun addLikedSong() {
         likedSongsUseCase.addLikedSong()
     }
+
+    fun uploadUserData() = locationUpdateUseCase.uploadData()
 }

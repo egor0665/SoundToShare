@@ -8,11 +8,7 @@ import com.google.firebase.firestore.GeoPoint
 
 
 class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateMarkersUseCase: UpdateMarkersUseCase,  val moveCameraUseCase: MoveCameraUseCase, val likePlayUseCase: LikePlayUseCase) : ViewModel(),
-    GoogleMap.OnCameraIdleListener {
-
-//   val user: MutableLiveData<User> by lazy {
-//       MutableLiveData<User>()
-//    }
+    GoogleMap.OnCameraIdleListener{
 
     fun startLocationUpdate() = locationUpdateUseCase
 
@@ -21,18 +17,13 @@ class MapViewModel(val locationUpdateUseCase: LocationUpdateUseCase, val updateM
     }
 
     override fun onCameraIdle() {
+        updateMarkersUseCase.removeMarkers()
         updateMarkersUseCase.getClosest()
-        updateMarkersUseCase.removeInvisibleMarkers()
-        Log.d("camera changed", "changed")
+        Log.d("Load users", "changed")
     }
 
     fun likeSong(toUser: User) {
         Log.d("reaction", "newreaction")
         likePlayUseCase.likeSong(toUser)
-    }
-
-    fun onCamera(){
-        updateMarkersUseCase.getClosest()
-        updateMarkersUseCase.removeInvisibleMarkers()
     }
 }
