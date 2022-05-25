@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigator: HomeNavigator
     private lateinit var builder: NotificationCompat.Builder
     lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
+    private var locationPermissionGranted = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,6 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(binding.root)
-        getLocationPermission()
     }
 
     override fun onStart() {
@@ -63,7 +63,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        getLocationPermission()
+        if (!locationPermissionGranted)
+            getLocationPermission()
     }
 
     override fun onStop() {
@@ -159,7 +160,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val requestMultiplePermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-        var locationPermissionGranted = true
+        locationPermissionGranted = true
         permissions.entries.forEach {
             if (!it.value) locationPermissionGranted = false
         }
@@ -177,7 +178,11 @@ class MainActivity : AppCompatActivity() {
                 )
                 != PackageManager.PERMISSION_GRANTED
             )
+            {
                 startDeniedPermissionAlert()
+            }
+            else
+                locationPermissionGranted = true
         }
         else {
             if (ContextCompat.checkSelfPermission(
@@ -202,8 +207,13 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent().apply {
                     action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                     data = uri
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                    addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
                 }
                 startActivity(intent)
+
+
             }
             setNegativeButton("Quit") { _, _ ->
                 startActivity(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME))
@@ -213,6 +223,20 @@ class MainActivity : AppCompatActivity() {
         val dialog: AlertDialog = alertDialogBuilder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
+
+        val mPositiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        mPositiveButton.setOnClickListener {
+            dialog.cancel()
+            val uri: Uri = Uri.fromParts("package", packageName, null)
+            val intent = Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = uri
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+            }
+            startActivity(intent)
+        }
     }
 
     companion object {
