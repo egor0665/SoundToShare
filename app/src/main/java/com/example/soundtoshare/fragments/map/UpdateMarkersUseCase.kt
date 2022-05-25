@@ -32,13 +32,13 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
     }
 
     fun getClosest() {
-//        markersMap.forEach() {
-//            val user = it.value.tag as User
-//            if (Date().time - user.lastUpdate > 60000) {
-//                it.value.remove()
-//                markersMap.remove(it.key)
-//            }
-//        }
+        markersMap.forEach() {
+            val user = it.value.tag as User
+            if (Date().time - user.lastUpdate > 60000) {
+                it.value.remove()
+                markersMap.remove(it.key)
+            }
+        }
         Log.d("time", "kek")
         val results = FloatArray(1)
         Location.distanceBetween(
@@ -49,11 +49,10 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()){
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount)
-//                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
+                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
-//                }
+                }
             }
         }
     }

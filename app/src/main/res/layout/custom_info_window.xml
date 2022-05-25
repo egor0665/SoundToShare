@@ -40,7 +40,10 @@
                 android:textColor="@color/textColor"
                 android:fontFamily="@font/gotham_bold"
                 android:paddingStart="10dp"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="200dp"/>
 
         <TextView
                 android:id="@+id/lastName"
@@ -52,7 +55,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/firstName"
                 android:layout_marginTop="10dp"
                 android:paddingStart="10dp"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:maxWidth="200dp"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
