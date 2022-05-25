@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit
 class Home : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: HomeViewModel by viewModel()
+    private var noLikes = View.VISIBLE
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +39,7 @@ class Home : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater)
         binding.shimmer.startShimmer()
         binding.shimmerReyclerView.startShimmer()
-        viewModel.loadUserInfo(){
+        viewModel.loadUserInfo() {
             binding.shimmerReyclerView.stopShimmer()
             binding.radioButton1.isChecked = true
             binding.shimmerReyclerView.visibility = View.GONE
@@ -56,14 +57,16 @@ class Home : Fragment() {
         setUpRecyclers()
         binding.buttonGroup.setOnCheckedChangeListener { group, checkedId ->
             when (checkedId) {
-                 R.id.radioButton1 -> {
-                     viewModel.addLikedSong()
+                R.id.radioButton1 -> {
+                    viewModel.addLikedSong()
                     binding.recyclerView2.visibility = View.GONE
                     binding.recyclerView1.visibility = View.VISIBLE
+                    binding.noLikes.visibility = noLikes
                 }
                 R.id.radioButton2 -> {
                     binding.recyclerView1.visibility = View.GONE
                     binding.recyclerView2.visibility = View.VISIBLE
+                    binding.noLikes.visibility = View.GONE
                 }
             }
         }
@@ -95,8 +98,10 @@ class Home : Fragment() {
                 recyclerView1.adapter = RecyclerAdapterReactions(it)
                 if (it.isEmpty()) {
                     binding.noLikes.visibility = View.VISIBLE
+                    noLikes = View.VISIBLE
                 } else {
                     binding.noLikes.visibility = View.GONE
+                    noLikes = View.GONE
                 }
             }
         }
@@ -120,6 +125,7 @@ class Home : Fragment() {
         super.onHiddenChanged(hidden)
         if (!hidden) viewModel.loadLikedSongs()
     }
+
     private fun startUserInfoObserving() {
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
             val options =
@@ -152,6 +158,7 @@ class Home : Fragment() {
                         binding.shimmer.visibility = View.GONE
                         binding.fullNameAndAvatarHolder.visibility = View.VISIBLE
                     }
+
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {
                     }
                 })
