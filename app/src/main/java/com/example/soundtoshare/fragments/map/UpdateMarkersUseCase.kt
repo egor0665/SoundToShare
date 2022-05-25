@@ -165,7 +165,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             val user = it.tag as User
             it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
             it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
-            Date().time - user.lastUpdate > 600000
+            Date().time - user.lastUpdate > 60000
         }
         invisibleAndOldMarkers.forEach() {
             it.value.remove()
