@@ -14,7 +14,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : RecyclerView

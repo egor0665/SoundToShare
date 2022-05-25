@@ -150,8 +150,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getLocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            checkSelfPermissionTrue()
+        else
+            checkSelfPermissionFalse()
+    }
+
+    private fun checkSelfPermissionTrue() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+            startDeniedPermissionAlert()
+        else
+            locationPermissionGranted = true
+    }
+
+    private fun checkSelfPermissionFalse() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        )
+            requestMultiplePermissions.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            )
+    }
+
     private val requestMultiplePermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+            permissions ->
             locationPermissionGranted = true
             permissions.entries.forEach {
                 if (!it.value) locationPermissionGranted = false
@@ -160,34 +193,6 @@ class MainActivity : AppCompatActivity() {
                 startDeniedPermissionAlert()
             }
         }
-
-    private fun getLocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                )
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                startDeniedPermissionAlert()
-            } else
-                locationPermissionGranted = true
-        } else {
-            if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                requestMultiplePermissions.launch(
-                    arrayOf(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                )
-            }
-        }
-    }
 
     private fun startDeniedPermissionAlert() {
         val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this).apply {

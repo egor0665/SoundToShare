@@ -42,12 +42,14 @@ class LocationUpdateUseCase(
             .addOnSuccessListener { location: Location? ->
                 location?.also {
                     Log.d("Location upload", cacheRepository.getIncognitoMode().toString())
-                    if (!cacheRepository.getIncognitoMode() && cacheRepository.getSongData() != null &&
+                    if (!cacheRepository.getIncognitoMode() &&
+                        cacheRepository.getSongData() != null &&
                         cacheRepository.getSongData()!!.title.isNotEmpty()
                     ) {
                         Log.d("FireStore", "Updated music")
                         val fullName =
-                            cacheRepository.getUserInfo().firstName + " " + cacheRepository.getUserInfo().lastName
+                            cacheRepository.getUserInfo().firstName + " " +
+                                cacheRepository.getUserInfo().lastName
                         val song = cacheRepository.getSongData()!!.title
                         val artist = cacheRepository.getSongData()!!.artist
                         val id = cacheRepository.getUserInfo().id

@@ -16,12 +16,16 @@ import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.User
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import com.nostra13.universalimageloader.core.assist.FailReason
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
-import java.util.*
+import java.util.Date
 
 class UpdateMarkersUseCase(
     val cacheRepository: CacheRepository,
@@ -125,7 +129,9 @@ class UpdateMarkersUseCase(
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()) {
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
+                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time -
+                    user.lastUpdate < 60000
+                ) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
                 }
@@ -179,8 +185,10 @@ class UpdateMarkersUseCase(
         val bounds = map.projection.visibleRegion.latLngBounds
         val invisibleAndOldMarkers = markersMap.filterValues {
             val user = it.tag as User
-            it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
-                it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
+            it.position.latitude > bounds.northeast.latitude || it.position.longitude >
+                bounds.northeast.longitude ||
+                it.position.latitude < bounds.southwest.latitude || it.position.longitude <
+                bounds.southwest.longitude ||
                 Date().time - user.lastUpdate > 60000
         }
         invisibleAndOldMarkers.forEach() {

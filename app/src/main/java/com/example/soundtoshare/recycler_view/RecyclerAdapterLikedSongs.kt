@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.soundtoshare.R
 import com.example.soundtoshare.repositories.roomdb.LikedSong
-import java.util.*
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 class RecyclerAdapterLikedSongs(private val likedSongs: MutableList<LikedSong>) : RecyclerView
@@ -37,7 +37,9 @@ class RecyclerAdapterLikedSongs(private val likedSongs: MutableList<LikedSong>) 
                 Intent(
                     Intent.ACTION_VIEW,
                     Uri.parse(
-                        "https://m.vk.com/audio?q=" + likedSongs[position].song + "-" + likedSongs[position].artist
+                        "https://m.vk.com/audio?q=" +
+                            likedSongs[position].song + "-" +
+                            likedSongs[position].artist
                     )
                 )
             )

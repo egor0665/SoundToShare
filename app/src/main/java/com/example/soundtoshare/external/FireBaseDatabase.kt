@@ -8,7 +8,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
+import java.util.Date
 
 class FireBaseDatabase {
     private var lastLike = LastLike("", Date().time)

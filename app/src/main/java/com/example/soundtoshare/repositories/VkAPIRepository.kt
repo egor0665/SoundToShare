@@ -28,7 +28,10 @@ class VkAPIRepository {
 
     fun getUserInfoRepository(getUserInfoCallback: UserInfo?.() -> Unit) {
         VK.execute(
-            UsersService().usersGet(arrayListOf(VK.getUserId()), arrayListOf(UsersFields.PHOTO_200)),
+            UsersService().usersGet(
+                arrayListOf(VK.getUserId()),
+                arrayListOf(UsersFields.PHOTO_200)
+            ),
             object : VKApiCallback<List<UsersUserFull>> {
                 override fun success(result: List<UsersUserFull>) {
                     getUserInfoCallback(

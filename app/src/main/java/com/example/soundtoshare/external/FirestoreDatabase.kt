@@ -13,7 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
-import java.util.*
+import java.util.Date
 import kotlin.collections.ArrayList
 
 class FirestoreDatabase {

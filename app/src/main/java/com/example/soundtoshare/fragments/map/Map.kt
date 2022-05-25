@@ -16,7 +16,7 @@ import com.example.soundtoshare.databinding.FragmentMapBinding
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.MapStyleOptions
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Map : Fragment() {
@@ -83,7 +83,8 @@ class Map : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment: SupportMapFragment? = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        val mapFragment: SupportMapFragment? = childFragmentManager.findFragmentById(R.id.map)
+            as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
         initLoad()
         onStartLocationUpdate()
