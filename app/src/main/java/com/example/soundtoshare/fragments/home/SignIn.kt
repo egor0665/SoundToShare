@@ -27,7 +27,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SignIn : Fragment() {
 
     private lateinit var binding: FragmentSignInBinding
-    private lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
 
     private val viewModel: HomeViewModel by viewModel()
 
@@ -37,19 +36,6 @@ class SignIn : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSignInBinding.inflate(inflater)
-        authVkLauncher = VK.login(requireActivity()) { result: VKAuthenticationResult ->
-            when (result) {
-                is VKAuthenticationResult.Success -> {
-                    Log.d("VK_auth", VK.getUserId().toString())
-                    (activity as MainActivity).navigate(Screen.Home)
-                    (activity as MainActivity).binding.navView.visibility = View.VISIBLE
-                }
-                is VKAuthenticationResult.Failed -> {
-                    Log.d("VK_auth", "FAILURE")
-                }
-            }
-        }
-
         return binding.root
     }
 
@@ -57,7 +43,7 @@ class SignIn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonSignIn.setOnClickListener(){
             viewModel.signInVK(
-                authVkLauncher,
+                (activity as MainActivity).authVkLauncher,
                 arrayListOf(VKScope.STATUS, VKScope.OFFLINE)
             )
         }
