@@ -98,13 +98,6 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
     }
 
     fun getClosest() {
-        markersMap.forEach() {
-            val user = it.value.tag as User
-            if (Date().time - user.lastUpdate > 60000) {
-                it.value.remove()
-                markersMap.remove(it.key)
-            }
-        }
         Log.d("time", "kek")
         val results = FloatArray(1)
         Location.distanceBetween(
