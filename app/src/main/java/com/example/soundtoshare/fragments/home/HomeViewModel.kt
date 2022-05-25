@@ -94,4 +94,6 @@ class HomeViewModel(val vkGetDataUseCase : VkGetDataUseCase, val likedSongsUseCa
     fun addLikedSong() {
         likedSongsUseCase.addLikedSong()
     }
+
+    fun uploadUserData() = locationUpdateUseCase.uploadData()
 }

@@ -14,6 +14,7 @@ import com.example.soundtoshare.R
 import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.User
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -44,11 +45,6 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
     override fun onMarkerClick(marker: Marker): Boolean {
         val user = marker.tag as User
         if (user.bitmap == null) {
-            Toast.makeText(
-                context,
-                "Loading user info",
-                Toast.LENGTH_LONG
-            ).show()
 
             imageLoader.loadImage(user.avatar, object : ImageLoadingListener {
                 override fun onLoadingStarted(imageUri: String?, view: View?) {
@@ -59,6 +55,11 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
                     view: View?,
                     failReason: FailReason?
                 ) {
+                    Toast.makeText(
+                        context,
+                        "Failed to load avatar",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
                 override fun onLoadingComplete(
                     imageUri: String?,
@@ -71,6 +72,10 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
                     if (marker.isInfoWindowShown) {
                         marker.hideInfoWindow()
                     } else {
+                        map.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                            LatLng(user.geoPoint.latitude, user.geoPoint.longitude),
+                                map.cameraPosition.zoom))
                         marker.showInfoWindow()
                     }
                 }
@@ -82,6 +87,10 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             if (marker.isInfoWindowShown) {
                 marker.hideInfoWindow()
             } else {
+                map.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(user.geoPoint.latitude, user.geoPoint.longitude),
+                        map.cameraPosition.zoom))
                 marker.showInfoWindow()
             }
         }
@@ -99,7 +108,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()){
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
+                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 600000) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
                 }
@@ -156,7 +165,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             val user = it.tag as User
             it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
             it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
-            Date().time - user.lastUpdate > 60000
+            Date().time - user.lastUpdate > 600000
         }
         invisibleAndOldMarkers.forEach() {
             it.value.remove()
