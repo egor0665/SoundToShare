@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
@@ -157,11 +158,14 @@ class MainActivity : AppCompatActivity() {
             checkSelfPermissionFalse()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun checkSelfPermissionTrue() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+        val accessBackgroundLocation = ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.ACCESS_BACKGROUND_LOCATION
+        )
+        if (accessBackgroundLocation
+            != PackageManager.PERMISSION_GRANTED
         )
             startDeniedPermissionAlert()
         else
@@ -169,11 +173,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkSelfPermissionFalse() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+        val accessFineLocation = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
+        if (accessFineLocation != PackageManager.PERMISSION_GRANTED)
             requestMultiplePermissions.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_COARSE_LOCATION,
