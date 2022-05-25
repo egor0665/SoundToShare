@@ -12,7 +12,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import android.widget.Toast
+
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,11 +28,14 @@ import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.ActivityMainBinding
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.VKApiConfig
+import com.vk.api.sdk.auth.VKAuthenticationResult
+import com.vk.api.sdk.auth.VKScope
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private lateinit var navigator: HomeNavigator
     private lateinit var builder: NotificationCompat.Builder
+    lateinit var authVkLauncher: ActivityResultLauncher<Collection<VKScope>>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         initVK()
         initNavigator(savedInstanceState?.getInt("id"))
         initNotification()
+        if (!VK.isLoggedIn())
+            binding.navView.visibility = View.INVISIBLE
+
+
         setContentView(binding.root)
         getLocationPermission()
     }
@@ -69,6 +78,8 @@ class MainActivity : AppCompatActivity() {
             cancel(notificationId)
         }
         WorkManager.getInstance(applicationContext).cancelAllWorkByTag("VKMusic")
+
+
         super.onDestroy()
     }
 
@@ -78,6 +89,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun initVK() {
         VK.setConfig(VKApiConfig(applicationContext, BuildConfig.vk_id.toInt()))
+        authVkLauncher = VK.login(this) { result: VKAuthenticationResult ->
+            when (result) {
+                is VKAuthenticationResult.Success -> {
+                    Log.d("VK_auth", VK.getUserId().toString())
+                    binding.navView.selectedItemId = R.id.home
+                    binding.navView.visibility = View.VISIBLE
+                }
+                is VKAuthenticationResult.Failed -> {
+                    Log.d("VK_auth", "FAILURE")
+                }
+            }
+        }
     }
 
     private fun initNavigator(selectedId: Int?) {
@@ -110,6 +133,7 @@ class MainActivity : AppCompatActivity() {
         VK.logout()
         VK.clearAccessToken(this)
         navigator.setScreen(Screen.SignIn)
+        binding.navView.visibility = View.INVISIBLE
     }
 
     private fun initNotification() {

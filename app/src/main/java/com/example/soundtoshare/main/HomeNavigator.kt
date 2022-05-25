@@ -24,7 +24,7 @@ open class HomeNavigator(fragmentManager: FragmentManager, containerId: Int) :
             }
 
             is Screen.SignIn -> {
-                replaceFragment(SignIn())
+                selectFragment(SignIn())
             }
             else -> return
         }
