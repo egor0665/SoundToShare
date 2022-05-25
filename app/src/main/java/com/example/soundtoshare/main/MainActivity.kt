@@ -46,9 +46,6 @@ class MainActivity : AppCompatActivity() {
         initVK()
         initNavigator(savedInstanceState?.getInt("id"))
         initNotification()
-        if (!VK.isLoggedIn())
-            binding.navView.visibility = View.INVISIBLE
-
 
         setContentView(binding.root)
     }
@@ -118,16 +115,15 @@ class MainActivity : AppCompatActivity() {
             }
             return@setOnItemSelectedListener true
         }
-            if (selectedId != null) {
+
+        if (VK.isLoggedIn()) {
+            if (selectedId != null)
                 binding.navView.selectedItemId = selectedId
-            } else {
-                if (VK.isLoggedIn()) {
-                    navigator.setScreen(Screen.Home)
-                } else {
-                    binding.navView.visibility = View.INVISIBLE
-                    navigator.setScreen(Screen.SignIn)
-                }
-            }
+            navigator.setScreen(Screen.Home)
+        } else {
+            binding.navView.visibility = View.INVISIBLE
+            navigator.setScreen(Screen.SignIn)
+        }
     }
 
     fun vkSignOut() {
