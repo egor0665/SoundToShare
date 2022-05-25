@@ -5,27 +5,7 @@
       <map>
         <entry key="..\:/SoundToShare/app/src/main/res/layout/activity_main.xml" value="0.17135416666666667" />
         <entry key="..\:/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.17135416666666667" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_approve_hand_like_thumb_up_icon.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_circle_dot_record_round_icon.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_circle_fill_play_icon.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_circle_fill_play_icon_reversed.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_heart_love_like_icon.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_like_thumbs_up_icon.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_like_thumbs_up_icon_map.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_like_thumbs_up_icon_map_reversed.xml" value="0.218" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/ic_tmplogo.xml" value="0.174" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/drawable/oval_button.xml" value="0.1995" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/custom_info_window.xml" value="1.8571428571428572" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/custom_info_window_new.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/custom_infowindow.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_home.xml" value="0.25" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_map.xml" value="0.22327898550724637" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/fragment_sign_in.xml" value="0.25" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/home_layout_name.xml" value="0.2140625" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/home_recyclerview_item.xml" value="0.25" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/home_recyclerview_likedsong_item.xml" value="0.25052083333333336" />
-        <entry key="..\:/Users/galan/StudioProjects/SoundToShare/app/src/main/res/layout/home_recyclerview_reaction_item.xml" value="0.25052083333333336" />
-      </map>
+        </map>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">

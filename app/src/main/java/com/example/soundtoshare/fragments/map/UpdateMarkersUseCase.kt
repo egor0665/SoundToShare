@@ -1,34 +1,100 @@
 package com.example.soundtoshare.fragments.map
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
+import android.net.Uri
 import android.util.Log
-import android.view.animation.BounceInterpolator
-import android.view.animation.Interpolator
+import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.soundtoshare.R
 import com.example.soundtoshare.external.FirestoreDatabase
 import com.example.soundtoshare.repositories.CacheRepository
 import com.example.soundtoshare.repositories.User
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.*
-import com.google.firebase.Timestamp
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import com.nostra13.universalimageloader.core.assist.FailReason
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import java.util.*
-import kotlin.math.max
 
 
-class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fireStoreDatabase: FirestoreDatabase, private val context: Context) {
+class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fireStoreDatabase: FirestoreDatabase, private val context: Context)
+    : GoogleMap.OnMarkerClickListener,
+    GoogleMap.OnInfoWindowClickListener {
     private lateinit var map: GoogleMap
     private var myVkAccount: String = cacheRepository.getUserInfo().id
     private val markersMap = mutableMapOf<String, Marker>()
+    private val imageLoader = ImageLoader.getInstance()
 
     fun initUseCase(googleMap: GoogleMap) {
         map = googleMap
+        imageLoader.init(ImageLoaderConfiguration.createDefault(context))
+    }
+
+    override fun onInfoWindowClick(marker: Marker) {
+        val user = marker.tag as User
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id"+user.VKAccountID)).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val user = marker.tag as User
+        if (user.bitmap == null) {
+
+            imageLoader.loadImage(user.avatar, object : ImageLoadingListener {
+                override fun onLoadingStarted(imageUri: String?, view: View?) {
+                }
+
+                override fun onLoadingFailed(
+                    imageUri: String?,
+                    view: View?,
+                    failReason: FailReason?
+                ) {
+                    Toast.makeText(
+                        context,
+                        "Failed to load avatar",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                override fun onLoadingComplete(
+                    imageUri: String?,
+                    view: View?,
+                    loadedImage: Bitmap?
+                ) {
+                    Log.d("kek", "lel")
+                    user.bitmap = loadedImage
+                    marker.tag = user
+                    if (marker.isInfoWindowShown) {
+                        marker.hideInfoWindow()
+                    } else {
+                        map.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                            LatLng(user.geoPoint.latitude, user.geoPoint.longitude),
+                                map.cameraPosition.zoom))
+                        marker.showInfoWindow()
+                    }
+                }
+                override fun onLoadingCancelled(imageUri: String?, view: View?) {
+                }
+            })
+        }
+        else {
+            if (marker.isInfoWindowShown) {
+                marker.hideInfoWindow()
+            } else {
+                map.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(user.geoPoint.latitude, user.geoPoint.longitude),
+                        map.cameraPosition.zoom))
+                marker.showInfoWindow()
+            }
+        }
+        return true
     }
 
     fun getClosest() {
@@ -49,7 +115,7 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()){
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 60000) {
+                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time - user.lastUpdate < 600000) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
                 }
@@ -58,28 +124,29 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
     }
 
     private fun addOrUpdateMarker(newUser: User) {
+
         val oldMarker = markersMap[newUser.VKAccountID]
         if (oldMarker != null) {
             oldMarker.position = LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude)
+            newUser.bitmap = (oldMarker.tag as User).bitmap
+            oldMarker.tag = newUser
         }
         else {
             val userIndicator = MarkerOptions()
                 .position(LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude))
                 .title(newUser.VKAccountID)
                 .snippet("lat:" + newUser.geoPoint.latitude + ", lng:" + newUser.geoPoint.longitude)
-                //.icon(BitmapFromVector(context, R.drawable.ic_circle_dot_record_round_icon))
+                .icon(bitmapFromVector(context, R.drawable.ic_circle_dot_record_round_icon))
+                .anchor(0.5f, 0.5f)
             val newMarker = map.addMarker(userIndicator)
-                //dropPinEffect(newMarker!!)
             newMarker!!.tag = newUser
             markersMap[newUser.VKAccountID] = newMarker
         }
     }
 
-    private fun BitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
-        // below line is use to generate a drawable.
+    private fun bitmapFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
 
-        // below line is use to set bounds to our vector drawable.
         vectorDrawable!!.setBounds(
             0,
             0,
@@ -87,55 +154,27 @@ class UpdateMarkersUseCase(val cacheRepository: CacheRepository, private val fir
             vectorDrawable.intrinsicHeight
         )
 
-        // below line is use to create a bitmap for our
-        // drawable which we have added.
         val bitmap = Bitmap.createBitmap(
             vectorDrawable.intrinsicWidth,
             vectorDrawable.intrinsicHeight,
             Bitmap.Config.ARGB_8888
         )
 
-        // below line is use to add bitmap in our canvas.
         val canvas = Canvas(bitmap)
-
-        // below line is use to draw our
-        // vector drawable in canvas.
         vectorDrawable.draw(canvas)
 
-        // after generating our bitmap we are returning our bitmap.
         return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
-    private fun dropPinEffect(marker: Marker) {
-        val handler = Handler(Looper.getMainLooper())
-        val start = SystemClock.uptimeMillis()
-        val duration: Long = 1500
-        val interpolator: Interpolator = BounceInterpolator()
-        handler.post(object : Runnable {
-            override fun run() {
-                val elapsed = SystemClock.uptimeMillis() - start
-                val t = max(
-                    1 - interpolator.getInterpolation(
-                        elapsed.toFloat()
-                                / duration
-                    ), 0f
-                ).toFloat()
-                marker.setAnchor(0.5f, 1.0f + 14 * t)
-                if (t > 0.0) {
-                    // Post again 15ms later.
-                    handler.postDelayed(this, 15)
-                }
-            }
-        })
-    }
-
-    fun removeInvisibleMarkers() {
+    fun removeMarkers() {
         val bounds = map.projection.visibleRegion.latLngBounds
-        val invisibleMarkers = markersMap.filterValues {
+        val invisibleAndOldMarkers = markersMap.filterValues {
+            val user = it.tag as User
             it.position.latitude > bounds.northeast.latitude || it.position.longitude > bounds.northeast.longitude ||
-            it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude
+            it.position.latitude < bounds.southwest.latitude || it.position.longitude < bounds.southwest.longitude ||
+            Date().time - user.lastUpdate > 600000
         }
-        invisibleMarkers.forEach() {
+        invisibleAndOldMarkers.forEach() {
             it.value.remove()
             markersMap.remove(it.key)
         }

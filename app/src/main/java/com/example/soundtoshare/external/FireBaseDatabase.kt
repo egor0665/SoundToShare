@@ -16,11 +16,12 @@ class FireBaseDatabase {
     private var lastLike = LastLike("", Date().time)
     private val database = Firebase.database.reference
 
-    fun startListening(vkId: String, listeningCallback: DataSnapshot.() -> Unit ){
+    fun startListening(vkId: String, listeningCallback: Pair<DataSnapshot, Boolean>.() -> Unit ){
+        getReactions(vkId, listeningCallback)
         val childEventListener = object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
                 Log.d("firebase", "onChildAdded:" + dataSnapshot.key!!)
-                listeningCallback(dataSnapshot)
+                listeningCallback(Pair(dataSnapshot, true))
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
@@ -42,18 +43,19 @@ class FireBaseDatabase {
         database.child("reaction").child(vkId).addChildEventListener(childEventListener)
     }
 
-//    fun getReactions(vkId: String, getReactionsCallback: DataSnapshot.() -> Unit) {
-//        Log.d("firebase", "vk id:"+vkId)
-//        database.child("reaction")
-//            .child(vkId)
-//            .get()
-//            .addOnSuccessListener {
+    fun getReactions(vkId: String, listeningCallback: Pair<DataSnapshot, Boolean>.() -> Unit) {
+        Log.d("firebase", "vk id:"+vkId)
+        database.child("reaction")
+            .child(vkId)
+            .get()
+            .addOnSuccessListener {
+                listeningCallback(Pair(it, false))
+                Log.d("firebase", "Got value ${it.value}")
+            }.addOnFailureListener {
 //                getReactionsCallback(it)
-//                Log.d("firebase", "Got value ${it.value}")
-//            }.addOnFailureListener {
-//                Log.d("firebase", "Error getting data", it)
-//            }
-//    }
+                Log.d("firebase", "Error getting data", it)
+            }
+    }
 
     fun likeSong(toUser: User, fromUser: UserInfo) {
         Log.d("reaction", "newreaction2")

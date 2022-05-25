@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,8 +16,7 @@ import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
 import com.example.soundtoshare.recycler_view.RecyclerAdapterLikedSongs
 import com.example.soundtoshare.recycler_view.RecyclerAdapterReactions
-import com.example.soundtoshare.repositories.Reaction
-import com.example.soundtoshare.workers.VkWorker
+import com.example.soundtoshare.workers.UserDataWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
@@ -69,6 +69,12 @@ class Home : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        viewModel.getObservableReactions().value = mutableListOf()
+        viewModel.getObservableLikedSongs().value = mutableListOf()
+        super.onDestroy()
+    }
+
     private fun setUpRecyclers() {
         val recyclerView1: RecyclerView = binding.recyclerView1
         val recyclerView2: RecyclerView = binding.recyclerView2
@@ -85,7 +91,14 @@ class Home : Fragment() {
         recyclerView1.layoutManager = linearLayoutManager1
         recyclerView2.layoutManager = linearLayoutManager2
         viewModel.getObservableReactions().observe(activity as LifecycleOwner) {
-            recyclerView1.adapter = RecyclerAdapterReactions(it)
+            if (it != null) {
+                recyclerView1.adapter = RecyclerAdapterReactions(it)
+                if (it.isEmpty()) {
+                    binding.noLikes.visibility = View.VISIBLE
+                } else {
+                    binding.noLikes.visibility = View.GONE
+                }
+            }
         }
         viewModel.getObservableLikedSongs().observe(activity as LifecycleOwner) {
             recyclerView2.adapter = RecyclerAdapterLikedSongs(it)
@@ -96,7 +109,7 @@ class Home : Fragment() {
     private fun initWorkers() {
         WorkManager.getInstance(requireContext())
             .enqueue(
-                OneTimeWorkRequest.Builder(VkWorker::class.java)
+                OneTimeWorkRequest.Builder(UserDataWorker::class.java)
                     .addTag("VKMusic")
                     .setInitialDelay(10, TimeUnit.SECONDS)
                     .build()
