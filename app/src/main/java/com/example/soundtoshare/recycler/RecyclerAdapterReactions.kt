@@ -108,6 +108,6 @@ class RecyclerAdapterReactions(private val reactions: MutableList<Reaction>) : R
         const val minutesInHour = 60
         const val hoursInDay = 60
 
-        const val cornerRadiusPixel = 60
+        const val cornerRadiusPixel = 360
     }
 }
