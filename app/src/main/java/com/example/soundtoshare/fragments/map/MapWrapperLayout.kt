@@ -62,7 +62,11 @@ class MapWrapperLayout : RelativeLayout {
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         var ret = false
         // Make sure that the infoWindow is shown and we have all the needed references
-        if (marker != null && marker!!.isInfoWindowShown && map != null && infoWindow != null) {
+        if (marker == null || map == null) {
+            return ret || super.dispatchTouchEvent(ev)
+        }
+
+        if (marker!!.isInfoWindowShown && map != null) {
             // Get a marker position on the screen
             val point: Point = map!!.projection.toScreenLocation(marker!!.position)
 

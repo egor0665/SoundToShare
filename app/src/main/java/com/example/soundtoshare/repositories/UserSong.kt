@@ -5,7 +5,7 @@ import com.google.firebase.firestore.GeoPoint
 
 data class UserSong(
     val geoPoint: GeoPoint,
-    val VKAccount: String,
+    val vkAccount: String,
     val lastUpdate: Timestamp,
     val song: String,
     val artist: String

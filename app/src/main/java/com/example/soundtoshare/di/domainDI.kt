@@ -1,4 +1,4 @@
-package com.example.soundtoshare.dependency_injection
+package com.example.soundtoshare.di
 
 import com.example.soundtoshare.fragments.home.LikedSongsUseCase
 import com.example.soundtoshare.fragments.home.VkGetDataUseCase

@@ -1,4 +1,4 @@
-package com.example.soundtoshare.recycler_view
+package com.example.soundtoshare.recycler
 
 import android.content.Intent
 import android.net.Uri
@@ -58,32 +58,41 @@ class RecyclerAdapterLikedSongs(private val likedSongs: MutableList<LikedSong>) 
         val day: Long = TimeUnit.MILLISECONDS.toDays(dateDiff)
 
         when {
-            second < 60 -> {
+            second < secondsInMinute -> {
                 timeOfReaction = "$second Seconds ago"
             }
-            minute < 60 -> {
+            minute < minutesInHour -> {
                 timeOfReaction = "$minute Minutes ago"
             }
-            hour < 24 -> {
+            hour < hoursInDay -> {
                 timeOfReaction = "$hour Hours ago"
             }
-            day >= 7 -> {
+            day >= daysInWeek -> {
                 timeOfReaction = when {
-                    day > 365 -> {
-                        (day / 365).toString() + " Years ago"
+                    day > daysInYear -> {
+                        (day / daysInYear).toString() + " Years ago"
                     }
-                    day > 30 -> {
-                        (day / 30).toString() + " Months ago"
+                    day > daysInMonth -> {
+                        (day / daysInMonth).toString() + " Months ago"
                     }
                     else -> {
-                        (day / 7).toString() + " Week ago"
+                        (day / daysInWeek).toString() + " Week ago"
                     }
                 }
             }
-            day < 7 -> {
+            day < daysInWeek -> {
                 timeOfReaction = "$day Days ago"
             }
         }
         return timeOfReaction
+    }
+
+    companion object {
+        const val daysInYear = 365
+        const val daysInMonth = 30
+        const val daysInWeek = 7
+        const val secondsInMinute = 60
+        const val minutesInHour = 60
+        const val hoursInDay = 60
     }
 }

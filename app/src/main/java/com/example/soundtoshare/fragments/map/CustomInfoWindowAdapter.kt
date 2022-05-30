@@ -36,7 +36,7 @@ class CustomInfoWindowAdapter(
         MutableLiveData<Pair<User, Int>>()
     }
     init {
-        mapWrapperLayout.init(googleMap, getPixelsFromDp(context, 15.toFloat()))
+        mapWrapperLayout.init(googleMap, getPixelsFromDp(context, clickableButtonOffset))
         val infoButton1 = infoWindow.findViewById<View>(R.id.buttonLike) as AppCompatButton
         val infoButton2 = infoWindow.findViewById<View>(R.id.buttonPlay) as AppCompatButton
 
@@ -77,11 +77,11 @@ class CustomInfoWindowAdapter(
         val icon = infoWindow.findViewById<View>(R.id.avatar) as ImageView
         // Setting up the infoWindow with current's marker info
         val user: User = marker.tag as User
-        infoSnippet?.text = user.VKAccount
+        infoSnippet?.text = user.vkAccount
         infoTitle?.text = user.artist + " - " + user.song
 
         if (user.bitmap != null)
-            icon.setImageBitmap(getRoundedCornerBitmap(user.bitmap!!, 40))
+            icon.setImageBitmap(getRoundedCornerBitmap(user.bitmap!!, viewHeight))
 
         infoButtonListener.setMarker(marker)
         infoButtonListener2.setMarker(marker)
@@ -108,9 +108,15 @@ class CustomInfoWindowAdapter(
 
     private fun getPixelsFromDp(context: Context, dp: Float): Int {
         val scale = context.resources.displayMetrics.density
-        return (dp * scale + 0.5f).toInt()
+        return (dp * scale + dpOffset).toInt()
     }
     fun getObservableButtonClicked(): MutableLiveData<Pair<User, Int>> {
         return buttonClicked
+    }
+
+    companion object {
+        const val clickableButtonOffset = 15f
+        const val viewHeight = 40
+        const val dpOffset = 0.5f
     }
 }

@@ -37,28 +37,22 @@ class FirestoreDatabase {
                 Log.w("Firestore", "Error adding document UserInfo", e)
             }
     }
-    fun updateUserInformation(
-        latitude: Double,
-        longitude: Double,
-        vkAccount: String,
-        song: String,
-        artist: String,
-        vkId: String,
-        avatar: String
-    ) {
-        val user = hashMapOf(
-            "VKAccount" to vkAccount,
-            "VKId" to vkId,
-            "geoPoint" to GeoPoint(latitude, longitude),
-            "geoHash" to GeoFireUtils.getGeoHashForLocation(GeoLocation(latitude, longitude)),
-            "currentSong" to song,
-            "currentArtist" to artist,
+    fun updateUserInformation(user: User) {
+        val updatedUser = hashMapOf(
+            "VKAccount" to user.vkAccount,
+            "VKId" to user.vkAccountID,
+            "geoPoint" to user.geoPoint,
+            "geoHash" to GeoFireUtils.getGeoHashForLocation(
+                GeoLocation(user.geoPoint.latitude, user.geoPoint.longitude)
+            ),
+            "currentSong" to user.song,
+            "currentArtist" to user.artist,
             "lastUpdate" to Date().time,
-            "avatar" to avatar
+            "avatar" to user.avatar
         )
 
-        database.collection("Users").document(vkAccount)
-            .set(user)
+        database.collection("Users").document(user.vkAccount)
+            .set(updatedUser)
             .addOnSuccessListener {
                 Log.d("Firestore", "DocumentSnapshot added  ")
             }
@@ -72,7 +66,6 @@ class FirestoreDatabase {
         radiusInM: Double,
         fetchClosestCallback: List<User>.() -> Unit
     ) {
-        // TODO: Возможно заменить полную очистку на гибрид замены, очистки и добавления + добавить больше фильтрации
         _users.clear()
         val center = GeoLocation(targetDevice.latitude, targetDevice.longitude)
 
@@ -116,7 +109,7 @@ class FirestoreDatabase {
                             it.getField<String>("VKAccount").toString(),
                             song = it.getField<String>("currentSong")!!,
                             artist = it.getField<String>("currentArtist")!!,
-                            VKAccountID = it.getField<String>("VKId")!!,
+                            vkAccountID = it.getField<String>("VKId")!!,
                             lastUpdate = it.getField<Long>("lastUpdate")!!,
                             avatar = it.getField<String>("avatar")!!
                         )

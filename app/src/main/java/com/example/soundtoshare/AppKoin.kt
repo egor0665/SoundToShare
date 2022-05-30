@@ -1,9 +1,9 @@
 package com.example.soundtoshare
 
 import android.app.Application
-import com.example.soundtoshare.dependency_injection.appModule
-import com.example.soundtoshare.dependency_injection.dataModule
-import com.example.soundtoshare.dependency_injection.domainModule
+import com.example.soundtoshare.di.appModule
+import com.example.soundtoshare.di.dataModule
+import com.example.soundtoshare.di.domainModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

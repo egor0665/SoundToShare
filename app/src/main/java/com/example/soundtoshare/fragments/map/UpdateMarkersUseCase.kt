@@ -47,7 +47,7 @@ class UpdateMarkersUseCase(
     override fun onInfoWindowClick(marker: Marker) {
         val user = marker.tag as User
         context.startActivity(
-            Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id" + user.VKAccountID)).setFlags(
+            Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/id" + user.vkAccountID)).setFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK
             )
         )
@@ -61,6 +61,7 @@ class UpdateMarkersUseCase(
                 user.avatar,
                 object : ImageLoadingListener {
                     override fun onLoadingStarted(imageUri: String?, view: View?) {
+                        Log.d("Image loading", "Started")
                     }
 
                     override fun onLoadingFailed(
@@ -98,6 +99,7 @@ class UpdateMarkersUseCase(
                         }
                     }
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {
+                        Log.d("Image loading", "Cancelled")
                     }
                 }
             )
@@ -129,8 +131,8 @@ class UpdateMarkersUseCase(
         )
         fireStoreDatabase.fetchClosest(map.cameraPosition.target, results[0].toDouble()) {
             this.forEach() { user ->
-                if (user.VKAccountID != myVkAccount && user.VKAccountID != "null" && Date().time -
-                    user.lastUpdate < 60000
+                if (user.vkAccountID != myVkAccount && user.vkAccountID != "null" && Date().time -
+                    user.lastUpdate < oneMinuteDelay
                 ) {
                     addOrUpdateMarker(user)
                     Log.d("FireStore", "Updated Marker")
@@ -141,7 +143,7 @@ class UpdateMarkersUseCase(
 
     private fun addOrUpdateMarker(newUser: User) {
 
-        val oldMarker = markersMap[newUser.VKAccountID]
+        val oldMarker = markersMap[newUser.vkAccountID]
         if (oldMarker != null) {
             oldMarker.position = LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude)
             newUser.bitmap = (oldMarker.tag as User).bitmap
@@ -149,13 +151,13 @@ class UpdateMarkersUseCase(
         } else {
             val userIndicator = MarkerOptions()
                 .position(LatLng(newUser.geoPoint.latitude, newUser.geoPoint.longitude))
-                .title(newUser.VKAccountID)
+                .title(newUser.vkAccountID)
                 .snippet("lat:" + newUser.geoPoint.latitude + ", lng:" + newUser.geoPoint.longitude)
                 .icon(bitmapFromVector(context, R.drawable.ic_circle_dot_record_round_icon))
-                .anchor(0.5f, 0.5f)
+                .anchor(markerAnchor, markerAnchor)
             val newMarker = map.addMarker(userIndicator)
             newMarker!!.tag = newUser
-            markersMap[newUser.VKAccountID] = newMarker
+            markersMap[newUser.vkAccountID] = newMarker
         }
     }
 
@@ -189,11 +191,16 @@ class UpdateMarkersUseCase(
                 bounds.northeast.longitude ||
                 it.position.latitude < bounds.southwest.latitude || it.position.longitude <
                 bounds.southwest.longitude ||
-                Date().time - user.lastUpdate > 60000
+                Date().time - user.lastUpdate > oneMinuteDelay
         }
         invisibleAndOldMarkers.forEach() {
             it.value.remove()
             markersMap.remove(it.key)
         }
+    }
+
+    companion object {
+        const val oneMinuteDelay = 60000
+        const val markerAnchor = 0.5f
     }
 }

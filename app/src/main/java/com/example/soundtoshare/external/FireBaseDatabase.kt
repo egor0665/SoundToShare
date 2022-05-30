@@ -64,10 +64,10 @@ class FireBaseDatabase {
             "reaction" to 1,
             "song" to toUser.song,
             "time" to Date().time,
-            "avatar" to fromUser.avatar_uri
+            "avatar" to fromUser.avatarUri
         )
 
-        database.child("reaction").child(toUser.VKAccountID).push().setValue(reaction)
+        database.child("reaction").child(toUser.vkAccountID).push().setValue(reaction)
     }
 }
 data class LastLike(val toId: String, val time: Long)

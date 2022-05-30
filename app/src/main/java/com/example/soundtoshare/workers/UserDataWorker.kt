@@ -24,11 +24,15 @@ class UserDataWorker(val context: Context, params: WorkerParameters) :
                 .enqueue(
                     OneTimeWorkRequest.Builder(UserDataWorker::class.java)
                         .addTag("VKMusic")
-                        .setInitialDelay(20, TimeUnit.SECONDS)
+                        .setInitialDelay(workerDelay, TimeUnit.SECONDS)
                         .build()
                 )
             homeViewModel.uploadUserData()
         }
         return Result.success()
+    }
+
+    companion object {
+        const val workerDelay: Long = 20
     }
 }

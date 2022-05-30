@@ -5,7 +5,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.GeoPoint
 
-class MoveCameraUseCase() {
+class MoveCameraUseCase {
     private lateinit var map: GoogleMap
 
     fun initUseCase(googleMap: GoogleMap) {

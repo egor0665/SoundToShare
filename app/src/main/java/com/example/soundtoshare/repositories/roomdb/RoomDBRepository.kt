@@ -30,7 +30,7 @@ class RoomDBRepository(context: Context) {
                     song = toUser.song,
                     artist = toUser.artist,
                     time = System.currentTimeMillis(),
-                    user = toUser.VKAccount
+                    user = toUser.vkAccount
                 )
             )
         }
@@ -40,7 +40,7 @@ class RoomDBRepository(context: Context) {
         val ioScope = CoroutineScope(Dispatchers.IO + Job())
         ioScope.launch {
             getLikedSongsCallback(
-                likedSongDao.getLikedWithTime(System.currentTimeMillis(), toUser.VKAccount)
+                likedSongDao.getLikedWithTime(System.currentTimeMillis(), toUser.vkAccount)
             )
         }
     }

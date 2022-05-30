@@ -22,16 +22,20 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class Map : Fragment() {
     private val viewModel: MapViewModel by viewModel()
     private lateinit var binding: FragmentMapBinding
-    private var map: GoogleMap? = null
+    private var googleMap: GoogleMap? = null
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var runnableCode: Runnable
 
     @SuppressLint("InflateParams", "MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
-        map = googleMap
+        this.googleMap = googleMap
         val infoWindow = layoutInflater.inflate(R.layout.custom_info_window, null) as ViewGroup
-        val customInfoWindowAdapter = CustomInfoWindowAdapter(requireActivity(), infoWindow, map)
-        map?.apply {
+        val customInfoWindowAdapter = CustomInfoWindowAdapter(
+            requireActivity(),
+            infoWindow,
+            this.googleMap
+        )
+        this.googleMap?.apply {
             isMyLocationEnabled = true
             uiSettings.isMyLocationButtonEnabled = true
             setMapStyle(
@@ -45,8 +49,8 @@ class Map : Fragment() {
             setOnMarkerClickListener(viewModel.updateMarkersUseCase)
             setOnInfoWindowClickListener(viewModel.updateMarkersUseCase)
         }
-        viewModel.moveCameraUseCase.initUseCase(map!!)
-        viewModel.updateMarkersUseCase.initUseCase(map!!)
+        viewModel.moveCameraUseCase.initUseCase(this.googleMap!!)
+        viewModel.updateMarkersUseCase.initUseCase(this.googleMap!!)
         customInfoWindowAdapter.getObservableButtonClicked().observe(activity as LifecycleOwner) {
             when (it.second) {
                 1 -> viewModel.likeSong(it.first)
@@ -66,7 +70,7 @@ class Map : Fragment() {
         runnableCode = object : Runnable {
             override fun run() {
                 viewModel.onCameraIdle()
-                handler.postDelayed(this, 20000)
+                handler.postDelayed(this, handlerDelay)
             }
         }
         handler.post(runnableCode)
@@ -118,5 +122,7 @@ class Map : Fragment() {
         fun newInstance(): Map {
             return Map()
         }
+
+        const val handlerDelay: Long = 20000
     }
 }

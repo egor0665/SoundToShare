@@ -2,10 +2,10 @@ package com.example.soundtoshare.fragments.home
 
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +14,8 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.example.soundtoshare.R
 import com.example.soundtoshare.databinding.FragmentHomeBinding
-import com.example.soundtoshare.recycler_view.RecyclerAdapterLikedSongs
-import com.example.soundtoshare.recycler_view.RecyclerAdapterReactions
+import com.example.soundtoshare.recycler.RecyclerAdapterLikedSongs
+import com.example.soundtoshare.recycler.RecyclerAdapterReactions
 import com.example.soundtoshare.workers.UserDataWorker
 import com.nostra13.universalimageloader.core.DisplayImageOptions
 import com.nostra13.universalimageloader.core.ImageLoader
@@ -114,7 +114,7 @@ class Home : Fragment() {
             .enqueue(
                 OneTimeWorkRequest.Builder(UserDataWorker::class.java)
                     .addTag("VKMusic")
-                    .setInitialDelay(10, TimeUnit.SECONDS)
+                    .setInitialDelay(initialWorkerDelay, TimeUnit.SECONDS)
                     .build()
             )
     }
@@ -127,15 +127,17 @@ class Home : Fragment() {
     private fun startUserInfoObserving() {
         viewModel.getUserInfoLiveData().observe(activity as LifecycleOwner) {
             val options =
-                DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(360)).build()
+                DisplayImageOptions.Builder().displayer(RoundedBitmapDisplayer(cornerRadiusPixels))
+                    .build()
             val imageLoader = ImageLoader.getInstance()
             imageLoader.init(ImageLoaderConfiguration.createDefault(activity))
             imageLoader.displayImage(
-                it.avatar_uri,
+                it.avatarUri,
                 binding.avatar,
                 options,
                 object : ImageLoadingListener {
                     override fun onLoadingStarted(imageUri: String?, view: View?) {
+                        Log.d("Image loading", "Started")
                     }
 
                     override fun onLoadingFailed(
@@ -143,6 +145,7 @@ class Home : Fragment() {
                         view: View?,
                         failReason: FailReason?
                     ) {
+                        Log.d("Image loading", "Failed")
                     }
 
                     override fun onLoadingComplete(
@@ -158,6 +161,7 @@ class Home : Fragment() {
                     }
 
                     override fun onLoadingCancelled(imageUri: String?, view: View?) {
+                        Log.d("Image loading", "Cancelled")
                     }
                 }
             )
@@ -169,5 +173,8 @@ class Home : Fragment() {
         fun newInstance(): Home {
             return Home()
         }
+
+        const val initialWorkerDelay: Long = 10
+        const val cornerRadiusPixels = 360
     }
 }

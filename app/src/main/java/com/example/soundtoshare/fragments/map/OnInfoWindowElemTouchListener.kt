@@ -22,10 +22,10 @@ abstract class OnInfoWindowElemTouchListener(
     }
 
     override fun onTouch(vv: View, event: MotionEvent): Boolean {
-        if (0 <= event.x && event.x <= view.width && 0 <= event.y && event.y <= view.height) {
+        if (inViewArea(event.x, event.y, view.width, view.height)) {
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> startPress()
-                MotionEvent.ACTION_UP -> handler.postDelayed(confirmClickRunnable, 150)
+                MotionEvent.ACTION_UP -> handler.postDelayed(confirmClickRunnable, delayMillis)
                 MotionEvent.ACTION_CANCEL -> endPress()
                 else -> {}
             }
@@ -36,6 +36,10 @@ abstract class OnInfoWindowElemTouchListener(
             endPress()
         }
         return false
+    }
+
+    private fun inViewArea(x: Float, y: Float, width: Int, height: Int): Boolean {
+        return 0 <= x && x <= width && 0 <= y && y <= height
     }
 
     private fun startPress() {
@@ -67,4 +71,8 @@ abstract class OnInfoWindowElemTouchListener(
      * This is called after a successful click
      */
     protected abstract fun onClickConfirmed(v: View?, marker: Marker?)
+
+    companion object {
+        const val delayMillis: Long = 150
+    }
 }

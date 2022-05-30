@@ -3,7 +3,7 @@ package com.example.soundtoshare.repositories
 import androidx.lifecycle.MutableLiveData
 import com.vk.sdk.api.audio.dto.AudioAudio
 
-class CacheRepository() {
+class CacheRepository {
     private val userInfo: MutableLiveData<UserInfo> by lazy {
         MutableLiveData<UserInfo>()
     }
