@@ -6,5 +6,25 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="name_black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primary_green">#22EF7A</color>
+    <color name="secondary_green">#41A36C</color>
+    <color name="tab_bar">#00AE4D</color>
+    <color name="yandex">#ffcc00</color>
+    <color name="gray">#626363</color>
+    <color name="red">#ff0000</color>
+    <color name="textColor">#FF000000</color>
+    <color name="imageColor">#FF000000</color>
+    <color name="imageVkColorOut">#ff0000</color>
+    <color name="imageVkColorIn">#22EF7A</color>
+    <color name="backgroundTheme">#FFFFFFFF</color>
+    <color name="backgroundThemeNavigation">@color/primary_green</color>
+
+    <color name="shimmer_color">#C8C8C8</color>
+    <color name="backgroundThemeNavigationShimmer">#FFFFFFFF</color>
+
+    <color name="noAction">#FF000000</color>
+    <color name="yesAction">#22EF7A</color>
+
 </resources>

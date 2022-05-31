@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#626363</color>
+    <color name="name_black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="primary_green">#22EF7A</color>
+    <color name="secondary_green">#41A36C</color>
+    <color name="tab_bar">#00AE4D</color>
+    <color name="yandex">#ffcc00</color>
+    <color name="gray">#626363</color>
+    <color name="red">#ff0000</color>
+    <color name="textColor">#FFFFFFFF</color>
+    <color name="imageColor">#FFFFFFFF</color>
+    <color name="imageVkColorOut">#FFFFFFFF</color>
+    <color name="imageVkColorIn">#FFFFFFFF</color>
+    <color name="backgroundTheme">#212121</color>
+    <color name="backgroundThemeNavigation">#2d2d2d</color>
+
+    <color name="shimmer_color">#FFFFFFFF</color>
+    <color name="backgroundThemeNavigationShimmer">#2d2d2d</color>
+
+    <color name="noAction">#FFFFFFFF</color>
+    <color name="yesAction">#22EF7A</color>
+
+</resources>
